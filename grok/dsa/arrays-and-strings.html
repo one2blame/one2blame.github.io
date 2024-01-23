@@ -1,0 +1,284 @@
+<html>
+
+<head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8">
+    <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div class="txtdiv">
+        <pre>
+< <a href="../">Back</a>
+
+
+
+
+Arrays and Strings
+==================
+
+Arrays and strings are one-dimensional data structures that have similar representations: an ordered
+group of elements. The primary difference between arrays and strings is their mutable or
+immutable characteristics across languages.
+
+In languages like Python and Java, strings are immutable - this has an effect on our time and space
+complexity when conducting specific operations on strings. In comparison, in languages like C++,
+strings are mutable - this makes it easier to do operations on strings as we can directly access and
+modify the contents of a specific character.
+
+A majority of algorithmic problems covered involve an array or string as these data structures are
+extremely versatile. Below is table comparing the complexity of different array and string operations
+based on their mutability or immutability.
+
+┌───────────────────────────────────────────────────────┐
+| Operation                  | Array / List | Immutable |
+|────────────────────────────|──────────────|───────────|
+| Appending to end           |     O(1)     |   O(n)    |
+| Popping from end           |     O(1)     |   O(n)    |
+| Insertion, not from end    |     O(n)     |   O(n)    |
+| Deletion, not from end     |     O(n)     |   O(n)    |
+| Modifying an element       |     O(1)     |   O(n)    |
+| Random access              |     O(1)     |   O(1)    |
+| Checking if element exists |     O(n)     |   O(n)    |
+└───────────────────────────────────────────────────────┘
+
+
+Two Pointers
+============
+
+Two pointers is a common technique used to solve array and string problems. Some examples include:
+
+    Given a single input array, move the pointers towards each other until they meet.
+
+
+        def example(arr: List) -> None:
+            l = 0
+            r = len(arr) - 1
+
+            while l < r:
+                # Do an O(1) operation here
+                # Decision statement to decide one of the following:
+                    # 1. left += 1
+                    # 2. right -= 1
+                    # 3. left += 1; right -= 1
+
+
+    Given two input arrays, move the pointers across each array simultaneously, comparing the values at each index.
+
+
+        def example(arr1: List, arr2: List) -> None:
+            i = j = 0
+            m, n = len(arr1), len(arr2)
+
+            while i < m and j < n:
+                # Do an O(1) operation here
+                # Decision statement to decide one of the following:
+                    # 1. left += 1
+                    # 2. right -= 1
+                    # 3. left += 1; right -= 1
+
+            while i < m:
+                # Do an O(1) operation here
+                i += 1
+
+            while j < n:
+                # Do an O(1) operation here
+                j += 1
+
+
+Example Problems:
+
+    ~ <a href="https://leetcode.com/problems/reverse-string/">344</a>
+    ~ <a href="https://leetcode.com/problems/squares-of-a-sorted-array/">977</a>
+    ~ <a href="https://leetcode.com/problems/reverse-words-in-a-string-iii/">557</a>
+    ~ <a href="https://leetcode.com/problems/reverse-only-letters/">917</a>
+    ~ <a href="https://leetcode.com/problems/move-zeroes/">283</a>
+    ~ <a href="https://leetcode.com/problems/reverse-prefix-of-word/">2000</a>
+
+
+Sliding Window
+==============
+
+A sliding window defines a subarray, denoted by a start and end index, or sometimes called a left and
+right index for an array or string. To identify a sliding window problem, look out for the following
+details:
+
+    * The problem explicitly or implicitly defines criteria that makes a subarray valid. Validity is
+    comprised of two things:
+	    * A constraint metric, e.g. sum, product, number of unique elements, etc.
+	    * A restriction of the constraint metric making the metric valid for the subarray.
+
+    * The problem identifies a task for these valid subarrays such as finding the best or longest
+    subarray. Another paradigm is finding the number of subarrays.
+
+Below is some basic pseudocode to define the most common pattern for sliding window problems. Note
+that we maintain a left and right pointer for the sliding window, an answer variable that we maximize
+across the length of the array, and a current value for the window's metric, enabling us to make a
+decision on whether to add or remove elements when the sliding window violates our validity
+constraint.
+
+
+    def find_length(nums, k):
+        # curr is the current sum of the window
+        # left is the left boundary / index of the sliding window
+        # ans is the global, maximized answer for the array, nums
+        left = curr = ans = 0
+        # continue to expand the window to the right, dynamically
+        for right in range(len(nums)):
+            # update the value of the sliding window
+            curr += nums[right]
+            # while the sliding window metric is invalid given constraint k
+            while curr > k:
+                # remove elements from the left of the sliding window
+                curr -= nums[left]
+                # shrink the sliding window
+                left += 1
+            # keep the greatest value of the sliding window metric for nums
+            ans = max(ans, right - left + 1)
+
+        return ans
+
+
+_ Number of Subarrays:
+
+Sometimes questions will ask us to count the number of subarrays that are valid in a giving input
+array. This can simply be done by adding the length of the valid subarray we encounter as we
+dynamically grow the subarray. Example code for counting the number of valid subarrays can be found
+below:
+
+
+    def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
+        # impossible constraint, a subarray of numbers for a product cannot be 1
+        if k <= 1:
+            return 0
+
+        ans = left = 0
+        curr = 1
+
+        for right in range(len(nums)):
+            curr *= nums[right]
+            while curr >= k:
+                curr //= nums[left]
+                left += 1
+            # instead of maintaining only the largest subarray seen so far,
+            # we're adding the size of the currently valid subarray to the global
+            # subarray counter
+            ans += right - left + 1
+
+        return ans
+
+
+_ Fixed Sliding Window Size:
+
+Sometimes questions will ask us to maximize a metric across an array while constrained to a certain
+sliding window size. The best way to do this is to sum or evaluate contents of the array up to the
+max size of the requested sliding window. Afterwards, we slide the constrained sliding window from
+left to right, removing elements from the left and adding elements to the right, updating our global
+metric. An example for this can be found below:
+
+
+    def find_best_subarray(nums, k):
+        curr = 0
+        # acquire the value of the first constrained sliding window
+        for i in range(k):
+            curr += nums[i]
+
+        # update the global metric with the value of the first constrained sliding
+        # window
+        ans = curr
+        for i in range(k, len(nums)):
+            # update the current constrained sliding window metric with the rightmost
+            # element, and remove the leftmost element
+            curr += nums[i] - nums[i - k]
+            # update the global metric with the best value for the constrained
+            # sliding windows evaluated
+            ans = max(ans, curr)
+
+        return ans
+
+
+Example Problems:
+
+    ~ <a href="https://leetcode.com/problems/maximum-average-subarray-i/">643</a>
+    ~ <a href="https://leetcode.com/problems/max-consecutive-ones-iii/">1004</a>
+    ~ <a href="https://leetcode.com/problems/minimum-size-subarray-sum/">209</a>
+    ~ <a href="https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/">1456</a>
+
+
+Prefix Sum
+==========
+
+Prefix sum is a technique that can be used on arrays of numbers to preprocess an input array,
+decreasing our time complexity when answering questions about the sum of specific subarrays. In a 
+prefix sum array, each array index contains the sum of all array indices preceding it, inclusively.
+
+Preprocessing our prefix sum array allows us to query the value of a subarray in O(1) time. Example
+code demonstrating the creation of a prefix sum array and querying the value of a specific subarray
+defined by two array indices can be found below:
+
+
+    def answer_queries(nums, queries, limit):
+        prefix = [nums[0]]
+        # creating the prefix sum array by summing all preceding values at each
+        # index
+        for i in range(1, len(nums)):
+            prefix.append(nums[i] + prefix[-1])
+        
+        ans = []
+        # demonstration of querying the value of a subarray only using two indices
+        # in the prefix sum array
+        for x, y in queries:
+            curr = prefix[y] - prefix[x] + nums[x]
+            ans.append(curr < limit)
+
+        return ans
+
+
+Example Problems:
+
+    ~ <a href="https://leetcode.com/problems/number-of-ways-to-split-array/">2270</a>
+    ~ <a href="https://leetcode.com/problems/running-sum-of-1d-array/">1480</a>
+    ~ <a href="https://leetcode.com/problems/minimum-value-to-get-positive-step-by-step-sum/">1413</a>
+    ~ <a href="https://leetcode.com/problems/k-radius-subarray-averages/">2090</a>
+
+
+Common Patterns
+===============
+
+In languages where strings are immutable, like Python and Java, building a string character by
+character can be timely and expensive. A trick to building strings quickly is to use the `"".join()`
+operation on a `list` of characters. An example can be found below:
+
+
+    def build_string(s):
+        arr = []
+        for c in s: arr.append(c)
+        return "".join(arr)
+
+
+_ Subarrays, Substrings, Subsequences, and Subsets:
+
+Here are some important reminders to remember the definition of and difference between subarrays,
+substrings, subsequences, and subsets.
+
+Subarrays and substrings are contiguous sections of an array or string. Look out for problems that
+ask for the minimum or max length of a subarray or substring, the number of subarrays or substrings,
+or the maximum or minimum sum of a subarray or substring, while having constraints like being less
+than or equal to some number `k`.
+
+Subarray and substring problems usually can be solved by using a <a href="sliding-window.html">sliding window</a> or <a href="prefix-sum.html">prefix sum</a>.
+Finally, remember that the size of a subarray between `i` and `j` is `j - 1 + 1`. This is also the
+number of subarrays that end at `j`, starting from `i` or later.
+
+Subsequences are sets of elements of an array or string that keep the same relative order, but
+aren't contiguous like subarrays or substrings.
+
+Subsets is any set of elements from the original array or string, the order doesn't matter. This
+differs from subsequences.
+
+
+
+
+</pre>
+    </div>
+</body>
