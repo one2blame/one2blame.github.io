@@ -1,15 +1,15 @@
 <html>
 
 <head>
-    <title>one2bla.me</title>
-    <meta charset="utf-8">
-    <link href="../../../style.css" rel="stylesheet" type="text/css">
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-    <div class="txtdiv">
-        <pre>
-< <a href="../">Back</a>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
 
 
 
@@ -48,52 +48,52 @@ Two Pointers
 
 Two pointers is a common technique used to solve array and string problems. Some examples include:
 
-    Given a single input array, move the pointers towards each other until they meet.
+  Given a single input array, move the pointers towards each other until they meet.
 
 
-        def example(arr: List) -> None:
-            l = 0
-            r = len(arr) - 1
+    def example(arr: List) -> None:
+        l = 0
+        r = len(arr) - 1
 
-            while l < r:
-                # Do an O(1) operation here
-                # Decision statement to decide one of the following:
-                    # 1. left += 1
-                    # 2. right -= 1
-                    # 3. left += 1; right -= 1
-
-
-    Given two input arrays, move the pointers across each array simultaneously, comparing the values at each index.
+        while l < r:
+            # Do an O(1) operation here
+            # Decision statement to decide one of the following:
+                # 1. left += 1
+                # 2. right -= 1
+                # 3. left += 1; right -= 1
 
 
-        def example(arr1: List, arr2: List) -> None:
-            i = j = 0
-            m, n = len(arr1), len(arr2)
-
-            while i < m and j < n:
-                # Do an O(1) operation here
-                # Decision statement to decide one of the following:
-                    # 1. left += 1
-                    # 2. right -= 1
-                    # 3. left += 1; right -= 1
-
-            while i < m:
-                # Do an O(1) operation here
-                i += 1
-
-            while j < n:
-                # Do an O(1) operation here
-                j += 1
+  Given two input arrays, move the pointers across each array simultaneously, comparing the values at
+  each index.
 
 
-Example Problems:
+    def example(arr1: List, arr2: List) -> None:
+        i = j = 0
+        m, n = len(arr1), len(arr2)
 
-    ~ <a href="https://leetcode.com/problems/reverse-string/">344</a>
-    ~ <a href="https://leetcode.com/problems/squares-of-a-sorted-array/">977</a>
-    ~ <a href="https://leetcode.com/problems/reverse-words-in-a-string-iii/">557</a>
-    ~ <a href="https://leetcode.com/problems/reverse-only-letters/">917</a>
-    ~ <a href="https://leetcode.com/problems/move-zeroes/">283</a>
-    ~ <a href="https://leetcode.com/problems/reverse-prefix-of-word/">2000</a>
+        while i < m and j < n:
+            # Do an O(1) operation here
+            # Decision statement to decide one of the following:
+                # 1. left += 1
+                # 2. right -= 1
+                # 3. left += 1; right -= 1
+
+        while i < m:
+            # Do an O(1) operation here
+            i += 1
+
+        while j < n:
+            # Do an O(1) operation here
+            j += 1
+
+
+_ Example Problems:
+  ~ <a href="https://leetcode.com/problems/reverse-string/">344</a>
+  ~ <a href="https://leetcode.com/problems/squares-of-a-sorted-array/">977</a>
+  ~ <a href="https://leetcode.com/problems/reverse-words-in-a-string-iii/">557</a>
+  ~ <a href="https://leetcode.com/problems/reverse-only-letters/">917</a>
+  ~ <a href="https://leetcode.com/problems/move-zeroes/">283</a>
+  ~ <a href="https://leetcode.com/problems/reverse-prefix-of-word/">2000</a>
 
 
 Sliding Window
@@ -103,13 +103,13 @@ A sliding window defines a subarray, denoted by a start and end index, or someti
 right index for an array or string. To identify a sliding window problem, look out for the following
 details:
 
-    * The problem explicitly or implicitly defines criteria that makes a subarray valid. Validity is
-    comprised of two things:
-	    * A constraint metric, e.g. sum, product, number of unique elements, etc.
-	    * A restriction of the constraint metric making the metric valid for the subarray.
+  * The problem explicitly or implicitly defines criteria that makes a subarray valid. Validity is
+  comprised of two things:
+    * A constraint metric, e.g. sum, product, number of unique elements, etc.
+    * A restriction of the constraint metric making the metric valid for the subarray.
 
-    * The problem identifies a task for these valid subarrays such as finding the best or longest
-    subarray. Another paradigm is finding the number of subarrays.
+  * The problem identifies a task for these valid subarrays such as finding the best or longest
+  subarray. Another paradigm is finding the number of subarrays.
 
 Below is some basic pseudocode to define the most common pattern for sliding window problems. Note
 that we maintain a left and right pointer for the sliding window, an answer variable that we maximize
@@ -118,25 +118,25 @@ decision on whether to add or remove elements when the sliding window violates o
 constraint.
 
 
-    def find_length(nums, k):
-        # curr is the current sum of the window
-        # left is the left boundary / index of the sliding window
-        # ans is the global, maximized answer for the array, nums
-        left = curr = ans = 0
-        # continue to expand the window to the right, dynamically
-        for right in range(len(nums)):
-            # update the value of the sliding window
-            curr += nums[right]
-            # while the sliding window metric is invalid given constraint k
-            while curr > k:
-                # remove elements from the left of the sliding window
-                curr -= nums[left]
-                # shrink the sliding window
-                left += 1
-            # keep the greatest value of the sliding window metric for nums
-            ans = max(ans, right - left + 1)
+  def find_length(nums, k):
+      # curr is the current sum of the window
+      # left is the left boundary / index of the sliding window
+      # ans is the global, maximized answer for the array, nums
+      left = curr = ans = 0
+      # continue to expand the window to the right, dynamically
+      for right in range(len(nums)):
+          # update the value of the sliding window
+          curr += nums[right]
+          # while the sliding window metric is invalid given constraint k
+          while curr > k:
+              # remove elements from the left of the sliding window
+              curr -= nums[left]
+              # shrink the sliding window
+              left += 1
+          # keep the greatest value of the sliding window metric for nums
+          ans = max(ans, right - left + 1)
 
-        return ans
+      return ans
 
 
 _ Number of Subarrays:
@@ -147,25 +147,25 @@ dynamically grow the subarray. Example code for counting the number of valid sub
 below:
 
 
-    def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
-        # impossible constraint, a subarray of numbers for a product cannot be 1
-        if k <= 1:
-            return 0
+  def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
+      # impossible constraint, a subarray of numbers for a product cannot be 1
+      if k <= 1:
+          return 0
 
-        ans = left = 0
-        curr = 1
+      ans = left = 0
+      curr = 1
 
-        for right in range(len(nums)):
-            curr *= nums[right]
-            while curr >= k:
-                curr //= nums[left]
-                left += 1
-            # instead of maintaining only the largest subarray seen so far,
-            # we're adding the size of the currently valid subarray to the global
-            # subarray counter
-            ans += right - left + 1
+      for right in range(len(nums)):
+          curr *= nums[right]
+          while curr >= k:
+              curr //= nums[left]
+              left += 1
+          # instead of maintaining only the largest subarray seen so far,
+          # we're adding the size of the currently valid subarray to the global
+          # subarray counter
+          ans += right - left + 1
 
-        return ans
+      return ans
 
 
 _ Fixed Sliding Window Size:
@@ -177,39 +177,38 @@ left to right, removing elements from the left and adding elements to the right,
 metric. An example for this can be found below:
 
 
-    def find_best_subarray(nums, k):
-        curr = 0
-        # acquire the value of the first constrained sliding window
-        for i in range(k):
-            curr += nums[i]
+  def find_best_subarray(nums, k):
+      curr = 0
+      # acquire the value of the first constrained sliding window
+      for i in range(k):
+          curr += nums[i]
 
-        # update the global metric with the value of the first constrained sliding
-        # window
-        ans = curr
-        for i in range(k, len(nums)):
-            # update the current constrained sliding window metric with the rightmost
-            # element, and remove the leftmost element
-            curr += nums[i] - nums[i - k]
-            # update the global metric with the best value for the constrained
-            # sliding windows evaluated
-            ans = max(ans, curr)
+      # update the global metric with the value of the first constrained sliding
+      # window
+      ans = curr
+      for i in range(k, len(nums)):
+          # update the current constrained sliding window metric with the rightmost
+          # element, and remove the leftmost element
+          curr += nums[i] - nums[i - k]
+          # update the global metric with the best value for the constrained
+          # sliding windows evaluated
+          ans = max(ans, curr)
 
-        return ans
+      return ans
 
 
-Example Problems:
-
-    ~ <a href="https://leetcode.com/problems/maximum-average-subarray-i/">643</a>
-    ~ <a href="https://leetcode.com/problems/max-consecutive-ones-iii/">1004</a>
-    ~ <a href="https://leetcode.com/problems/minimum-size-subarray-sum/">209</a>
-    ~ <a href="https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/">1456</a>
+_ Example Problems:
+  ~ <a href="https://leetcode.com/problems/maximum-average-subarray-i/">643</a>
+  ~ <a href="https://leetcode.com/problems/max-consecutive-ones-iii/">1004</a>
+  ~ <a href="https://leetcode.com/problems/minimum-size-subarray-sum/">209</a>
+  ~ <a href="https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/">1456</a>
 
 
 Prefix Sum
 ==========
 
 Prefix sum is a technique that can be used on arrays of numbers to preprocess an input array,
-decreasing our time complexity when answering questions about the sum of specific subarrays. In a 
+decreasing our time complexity when answering questions about the sum of specific subarrays. In a
 prefix sum array, each array index contains the sum of all array indices preceding it, inclusively.
 
 Preprocessing our prefix sum array allows us to query the value of a subarray in O(1) time. Example
@@ -223,7 +222,7 @@ defined by two array indices can be found below:
         # index
         for i in range(1, len(nums)):
             prefix.append(nums[i] + prefix[-1])
-        
+
         ans = []
         # demonstration of querying the value of a subarray only using two indices
         # in the prefix sum array
@@ -234,12 +233,11 @@ defined by two array indices can be found below:
         return ans
 
 
-Example Problems:
-
-    ~ <a href="https://leetcode.com/problems/number-of-ways-to-split-array/">2270</a>
-    ~ <a href="https://leetcode.com/problems/running-sum-of-1d-array/">1480</a>
-    ~ <a href="https://leetcode.com/problems/minimum-value-to-get-positive-step-by-step-sum/">1413</a>
-    ~ <a href="https://leetcode.com/problems/k-radius-subarray-averages/">2090</a>
+_ Example Problems:
+  ~ <a href="https://leetcode.com/problems/number-of-ways-to-split-array/">2270</a>
+  ~ <a href="https://leetcode.com/problems/running-sum-of-1d-array/">1480</a>
+  ~ <a href="https://leetcode.com/problems/minimum-value-to-get-positive-step-by-step-sum/">1413</a>
+  ~ <a href="https://leetcode.com/problems/k-radius-subarray-averages/">2090</a>
 
 
 Common Patterns
@@ -250,10 +248,10 @@ character can be timely and expensive. A trick to building strings quickly is to
 operation on a `list` of characters. An example can be found below:
 
 
-    def build_string(s):
-        arr = []
-        for c in s: arr.append(c)
-        return "".join(arr)
+  def build_string(s):
+      arr = []
+      for c in s: arr.append(c)
+      return "".join(arr)
 
 
 _ Subarrays, Substrings, Subsequences, and Subsets:
@@ -280,5 +278,5 @@ differs from subsequences.
 
 
 </pre>
-    </div>
+  </div>
 </body>
