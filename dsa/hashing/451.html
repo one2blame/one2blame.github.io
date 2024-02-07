@@ -46,7 +46,7 @@ The solution is as follows:
           if not s: return s
           counts = Counter(s)
           max_freq = max(counts.values())
-          
+
           buckets = defaultdict(list)
           for char, count in counts.items():
               buckets[count] += [char]
