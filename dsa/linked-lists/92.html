@@ -16,23 +16,53 @@
 
 <a href="https://leetcode.com/problems/reverse-linked-list-ii/">92. Reverse Linked List II</a>
 
-Given a singly linked list, return the middle element. Pretty straight forward with a fast and slow
-pointer. If the fast pointer moves two nodes for every one node the slow pointer moves, then when the
-fast pointer reaches the end of the list, the slow pointer will be at the middle node.
+Given a singly linked list and a left and right index, reverse the nodes between the two indicies
+and return the modified list. How do we do this?
+
+First we maintain a curr pointer and iteratively move the curr pointer to the first index, left.
+While we do this, we maintain a prev pointer to the node before the left index. This is important
+because we eventually need to relink the reversed segment of the linked list.
+
+We create two more pointers, tail and conn. The tail points to curr, as curr will be the tail of the
+reversed segment. The conn points to prev, the node that will complete the connection from the head
+of the list to the reversed segment.
+
+We conduct our standard linked list reversal for the segment, iterating in the range between
+right - left + 1.
+
+Finally, we check to see if the conn pointer is None. If so, we know that prev was None before the
+reversal of the linked list segment. Now prev points to the beginning of the reversed linked list
+segment. Therefore, we set prev to head. Otherwise, we set conn.next to prev.
+
+The tail pointer still points to the last node of the reversed linked list segment. We can now set
+its .next pointer to curr, as curr now points to the node after the reversed segment.
 
 The solution is as follows:
 
 
   class Solution:
-      def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
-          slow, fast = head, head.next
+      def reverseBetween(
+          self, head: Optional[ListNode], left: int, right: int
+      ) -> Optional[ListNode]:
+          prev = None
+          curr = head
+          for i in range(left - 1):
+              prev = curr
+              curr = curr.next
 
-          while fast:
-              fast = fast.next
-              if fast: fast = fast.next
-              slow = slow.next
+          tail, conn = curr, prev
+          for j in range(right - left + 1):
+              next_node = curr.next
+              curr.next = prev
+              prev = curr
+              curr = next_node
 
-          return slow
+          if conn:
+              conn.next = prev
+          else:
+              head = prev
+          tail.next = curr
+          return head
 
 
 _ Time Complexity:
@@ -41,7 +71,7 @@ _ Time Complexity:
 
 _ Space Complexity:
 
-  O(1) - We maintain two pointers, slow and fast.
+  O(1) - We maintain pointers which occupy constant space.
 
 
 
