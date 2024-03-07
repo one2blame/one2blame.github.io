@@ -34,21 +34,21 @@ check to see if the size of the stack is less than size k - if so, we append the
 The solution is as follows:
 
 
-class Solution:
-    def mostCompetitive(self, nums: List[int], k: int) -> List[int]:
-        stack = []
-        n, m = len(nums), 0
+  class Solution:
+      def mostCompetitive(self, nums: List[int], k: int) -> List[int]:
+          stack = []
+          n, m = len(nums), 0
 
-        for i in range(n):
-            while stack and stack[-1] > nums[i] and n - i - 1 >= k - m:
-                stack.pop()
-                m -= 1
+          for i in range(n):
+              while stack and stack[-1] > nums[i] and n - i - 1 >= k - m:
+                  stack.pop()
+                  m -= 1
 
-            if m < k:
-                stack.append(nums[i])
-                m += 1
+              if m < k:
+                  stack.append(nums[i])
+                  m += 1
 
-        return stack
+          return stack
 
 
 _ Time Complexity:
