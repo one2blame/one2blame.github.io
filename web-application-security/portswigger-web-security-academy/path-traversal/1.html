@@ -17,7 +17,7 @@
 <a href="https://portswigger.net/web-security/file-path-traversal/lab-simple/">
 1. File path traversal, simple case</a>
 
-We're asked to retrieve /etc/password from a machine through a vulnerable web application that
+We're asked to retrieve /etc/passwd from a machine through a vulnerable web application that
 contains a path traversal vulnerability. We discover the vulnerability by observing how the images
 are being loaded for the web application. We notice the "images" endpoint for this web application
 allows us to provide a query for "filename" - no sanitization is being conducted for queries
