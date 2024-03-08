@@ -1,5 +1,5 @@
 # usage:
-# python3 2.py \
+# python3 3.py \
 # --u https://0aaa00a7037819be80f76c960063008a.web-security-academy.net \
 # --d carlos
 
