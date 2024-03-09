@@ -1,0 +1,37 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://portswigger.net/web-security/access-control/lab-user-id-controlled-by-request-parameter-with-unpredictable-user-ids/">
+4. User ID controlled by request parameter, with unpredictable user IDs</a>
+
+Fun problem. We have to access carlos' API key in his my-account/ page, however, we need to know his
+userId. This is an example of horizontal privilege escalation. The userIds are GUIDs and
+unpredictable, so we need to find somewhere on the site where the userIds are exposed.
+
+Reading the blog posts on the front page, if a user makes a post, their userId is exposed in the
+HTML. We scrape the blogs until we find carlos' userId. We login with known credentials,
+wiener:peter, and then we visit the my-account?id=/ page with carlos' userId. carlos' API key will
+be exposed in the HTML, which we provide to the submitSolution/ page.
+
+
+<a href="4.py">Solution</a>
+
+
+
+
+</pre>
+  </div>
+</body>
