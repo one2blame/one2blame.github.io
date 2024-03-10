@@ -1,0 +1,34 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://portswigger.net/web-security/authentication/password-based/lab-username-enumeration-via-different-responses/">
+1. Username enumeration via different responses</a>
+
+We're asked to brute-force attack this website. The login page provides different responses based on
+whether or not a valid or invalid username or password is provided. We first use a wordlist of
+usernames against the /login page, checking for the string "Invalid password" in the HTML response.
+Once we've discovered the username, we brute-force the username with a wordlist of passwords until
+the "Invalid password" string is no longer present in the HTML response.
+
+
+<a href="1.py">Solution</a>
+
+
+
+
+</pre>
+  </div>
+</body>
