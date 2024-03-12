@@ -1,0 +1,34 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-content-type-restriction-bypass/">
+2. Web shell upload via Content-Type restriction bypass</a>
+
+We abuse the same vulnerability as <a href="1.html">lab 1</a>, but this time the website restricts
+the Content-Type of the uploaded file. We bypass this restriction by uploading a file with a valid
+Content-Type, image/jpeg, but the file's extension and contents are PHP. We then access the file
+directly to gain remote code execution on the server, downloading the contents of
+/home/carlos/secret.
+
+
+<a href="2.py">Solution</a>
+
+
+
+
+</pre>
+  </div>
+</body>
