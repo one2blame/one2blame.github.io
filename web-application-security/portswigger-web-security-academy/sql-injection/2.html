@@ -1,0 +1,37 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://portswigger.net/web-security/sql-injection/lab-login-bypass">
+2. SQL injection vulnerability allowing login bypass</a>
+
+We're able to bypass the password check for the /login page's POST request because of an existing
+SQL injection vulnerability in the server backend code. The username and password parameters of the
+POST request are not sanitized. The username and password parameters are used to query the SQL
+database for the username and password's existence. We escape the SQL query using the ' character
+after entering the username parameter, providing a SQL comment -- to end the query.
+
+This causes the SQL query to ignore the password parameter, allowing the attacker to login as any
+valid user.
+
+
+<a href="2.py">Solution</a>
+
+
+
+
+</pre>
+  </div>
+</body>
