@@ -1,0 +1,35 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://portswigger.net/web-security/sql-injection/union-attacks/lab-retrieve-multiple-values-in-single-column/">
+6. SQL injection UNION attack, retrieving multiple values in a single column</a>
+
+We don't have enough columns in this SQL injection UNION attack to expose the username and password
+in separate columns. We use string concatenation to retrieve the data in a single column. We start
+by determining how many columns are in the vulnerable target table, 'Gifts'. After discovery, we
+determine which columns accept string input. Finally, we use the string column and concatenate the
+username and password columns for the user table into one column in our UNION attack. After
+exposing the username and password for the administrator, we can log in as the administrator.
+
+
+<a href="6.py">Solution</a>
+
+
+
+
+</pre>
+  </div>
+</body>
