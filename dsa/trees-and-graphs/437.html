@@ -1,0 +1,64 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/path-sum-iii/">437. Path Sum III</a>
+
+TODO
+
+The solution is as follows:
+
+
+  from collections import defaultdict
+
+  class Solution:
+      def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+          self.ans = 0
+          h = defaultdict(int)
+
+          def dfs(node: Optional[TreeNode], currSum: int) -> None:
+              if not node:
+                  return
+
+              currSum += node.val
+
+              if currSum == targetSum:
+                  self.ans += 1
+
+              self.ans += h[currSum - targetSum]
+
+              h[currSum] += 1
+              dfs(node.left, currSum)
+              dfs(node.right, currSum)
+              h[currSum] -= 1
+
+          dfs(root, 0)
+          return self.ans
+
+
+_ Time Complexity:
+
+  O(n) - We traverse O(n) nodes of the tree.
+
+_ Space Complexity:
+
+  O(n) - We maintain a hashmap of size O(n).
+
+
+
+
+</pre>
+  </div>
+</body>
