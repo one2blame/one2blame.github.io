@@ -1,0 +1,35 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://portswigger.net/web-security/sql-injection/examining-the-database/lab-listing-database-contents-non-oracle/">
+8. SQL injection attack, listing the database contents on non-Oracle databases</a>
+
+We abuse a SQL injection vulnerability to conduct another UNION attack. This time, we use the UNION
+attack to retrieve information about the target's database, particularly the tables that exist and
+their columns. After exposing the name of the user's table, we expose the user table's username and
+password columns. Then we use the previous CONCAT() oriented attack to leak the administrator's
+username and password. After exposing the administrator's credentials, we can log in as the
+administrator.
+
+
+<a href="8.py">Solution</a>
+
+
+
+
+</pre>
+  </div>
+</body>
