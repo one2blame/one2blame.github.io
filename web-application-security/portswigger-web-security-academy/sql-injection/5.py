@@ -1,5 +1,5 @@
 # usage:
-# python3 3.py \
+# python3 5.py \
 # --u https://0aaa00a7037819be80f76c960063008a.web-security-academy.net
 
 import re
