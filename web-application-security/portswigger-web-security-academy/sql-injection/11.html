@@ -1,0 +1,38 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://portswigger.net/web-security/sql-injection/blind/lab-sql-injection-visible-error-based/">
+11. Visible error-based SQL injection</a>
+
+The target contains a SQL injection vulnerability in its cookies. It provides a TrackingId cookie to
+keep track of visitors for analytics purposes. The queries to search for this TrackingId are
+injectable. When this web application encounters an error in a SQL query, debugging information,
+including the SQL query being executed, is returned in the response.
+
+Forcing a type mismatch with the CAST operator, we can leak the administrator password by trying to
+cast the password string to an integer. This will cause the SQL query to return an ERROR,
+complaining that the string cannot be cast to an integer. We can then extract the password from the
+error message.
+
+
+<a href="11.py">Solution</a>
+
+
+
+
+</pre>
+  </div>
+</body>

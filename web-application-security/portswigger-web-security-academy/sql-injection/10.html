@@ -1,0 +1,45 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://portswigger.net/web-security/sql-injection/blind/lab-conditional-errors/">
+10. Blind SQL injection with conditional errors</a>
+
+The target contains a SQL injection vulnerability in its cookies. It provides a TrackingId cookie to
+keep track of visitors for analytics purposes. This TrackingId cookie is injectable. Unfortunately,
+this target doesn't give us any indication of whether the SQL query was executed successfully or not.
+To remedy this, we intentionally trigger an error in the SQL query, which causes the application to
+return a 500 error.
+
+This target uses Oracle as its database management system. We make some minor changes to our SQL
+query and use an if / else statement to trigger an error if we've correctly guessed a character of
+the password. We use binary search to find each character of the administrator password. This lab
+only uses lowercase letters and numbers in the password, so our range of characters to search
+through is:
+
+0123456789abcdefghijklmnopqrstuvwxyz
+
+We binary search each character of the password, one by one, until we have the full password. Then
+we login as the administrator.
+
+
+<a href="10.py">Solution</a>
+
+
+
+
+</pre>
+  </div>
+</body>
