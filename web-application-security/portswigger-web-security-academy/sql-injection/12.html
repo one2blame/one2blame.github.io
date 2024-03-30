@@ -1,0 +1,42 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://portswigger.net/web-security/sql-injection/blind/lab-time-delays-info-retrieval/">
+12. Blind SQL injection with time delays and information retrieval</a>
+
+Similar lab to the previous blind SQL injection password disclosure labs. This web application
+doesn't provide error messages, stack traces, etc. when invalid SQL queries are executed. We can,
+however, detect what type of SQL database is being used and whether or not the query is injectable
+by using a time delay.
+
+To confirm that SQL injection exists, we use a sleep function specific to PostgreSQL. If the
+database were Microsoft, Oracle, etc. we can always detect what type of SQL database based on the
+syntax of the sleep command.
+
+Like the previous labs, we execute a binary search using time to detect where our character is in
+the character array. If we guess the character of the password correctly, or if we guess its
+direction correctly, we delay time by 3 seconds and detect that. Otherwise, the response will
+return immediately.
+
+
+<a href="12.py">Solution</a>
+
+
+
+
+</pre>
+  </div>
+</body>
