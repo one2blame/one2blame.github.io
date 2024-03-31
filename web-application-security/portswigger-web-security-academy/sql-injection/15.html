@@ -1,0 +1,36 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://portswigger.net/web-security/sql-injection/lab-sql-injection-with-filter-bypass-via-xml-encoding/">
+15. SQL injection with filter bypass via XML encoding</a>
+
+This lab contains a SQL injection vulnerability wherein the /product/stock API uses XML to read SQL
+query parameters. These are directly passed to the SQL backend, however, a WAF exists that detects
+if a SQL injection attack is being attempted and blocks the request.
+
+To bypass this, we use HTML entity encoding to encode our SQL injection payload. These HTML entities
+bypass the WAF, and then are processed by the server and sent to the SQL backend. Using this, we can
+leak the administrator's password to login.
+
+
+<a href="15.py">Solution</a>
+
+
+
+
+</pre>
+  </div>
+</body>
