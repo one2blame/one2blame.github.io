@@ -14,20 +14,10 @@
 
 
 
-<a href="https://portswigger.net/web-security/api-testing/lab-exploiting-unused-api-endpoint/">
-2. Finding and exploiting an unused API endpoint</a>
+<a href="index.html">
+3. TODO</a>
 
-We're asked to purchase the "Lightweight l33t leather jacket" from the store, but we have no store
-credit! We need to find a way to get the jacket for free. Browsing through the site, we notice that
-a request is made to /api/products/1/price when we view the jacket. Reading through the HTML, we
-also see the usage of some Javascript resource to acquire price information from the backend.
-
-We inspect /resources/js/api/productPrice.js and find that the price is fetched from the backend,
-but we also see other methods like setPrice that are pretty interesting. Making a POST request to
-the /api/products/1/price endpoint, we receive a response saying that GET and PATCH requests are
-allowed. First we login to make sure we're authenticated before interacting with the API.
-We use the PATCH method to set the price of the jacket to 0. We then POST to add the jacket to our
-cart, and finally we checkout.
+TODO
 
 
 <a href="3.py">Solution</a>
