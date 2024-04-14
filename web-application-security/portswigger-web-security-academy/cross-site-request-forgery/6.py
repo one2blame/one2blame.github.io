@@ -1,5 +1,5 @@
 # usage:
-# python3 5.py \
+# python3 6.py \
 # --u https://0aaa00a7037819be80f76c960063008a.web-security-academy.net
 # --w wiener
 # --p peter
@@ -24,11 +24,10 @@ class Solution:
         self.s = requests.Session()
         login_url = f"{self.url}/login"
         r = self.s.get(login_url)
-        csrf = re.findall(r"csrf value=([\w]+)", r.text)[0]
         r = self.s.post(
             login_url,
             data={
-                "csrf": csrf,
+                "csrf": self.s.cookies["csrf"],
                 "username": username,
                 "password": password,
             },
@@ -38,12 +37,7 @@ class Solution:
 
     def solve(self) -> None:
         self.login(self.who, self.password)
-        change_email_url = f"{self.url}/my-account"
-        r = self.s.get(change_email_url)
-        csrf = re.findall(r"csrf value=([\w]+)", r.text)[0]
-        
-        print(f"CSRF cookie: {self.s.cookies['csrfKey']}")
-        print(f"CSRF token: {csrf}")
+        print(f"CSRF cookie: {self.s.cookies['csrf']}")
 
 
 def main():
