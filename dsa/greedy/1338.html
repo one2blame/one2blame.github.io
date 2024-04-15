@@ -37,23 +37,23 @@ index.
 The solution is as follows:
 
 
-from collections import Counter
-from math import ceil
+  from collections import Counter
+  from math import ceil
 
-class Solution:
-    def minSetSize(self, arr: List[int]) -> int:
-        freq = Counter(arr)
-        max_freq = max(freq.values())
-        freq_count = Counter(freq.values())
-        ans, target, i = 0, len(arr) // 2, max_freq
+  class Solution:
+      def minSetSize(self, arr: List[int]) -> int:
+          freq = Counter(arr)
+          max_freq = max(freq.values())
+          freq_count = Counter(freq.values())
+          ans, target, i = 0, len(arr) // 2, max_freq
 
-        while target > 0:
-            remove = min(freq_count[i], ceil(target / i))
-            ans += remove
-            target -= remove * i
-            i -= 1
+          while target > 0:
+              remove = min(freq_count[i], ceil(target / i))
+              ans += remove
+              target -= remove * i
+              i -= 1
 
-        return ans
+          return ans
 
 
 _ Time Complexity:
