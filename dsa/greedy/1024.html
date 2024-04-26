@@ -76,6 +76,32 @@ _ Space Complexity:
   O(n) - Python sorting takes O(n) space.
 
 
+Alternative counting sort answer with O(n) time and O(n) space:
+
+
+  class Solution:
+      def videoStitching(self, clips: List[List[int]], time: int) -> int:
+          max_length = [0] * (time + 1)
+
+          for i in range(len(clips)):
+              start, end = max(0, min(time, clips[i][0])), min(time, clips[i][1])
+              max_length[start] = max(max_length[start], end)
+
+          ans = curr_end = next_end = 0
+
+          for i in range(time + 1):
+              if i > next_end:
+                  return -1
+
+              if i > curr_end:
+                  ans += 1
+                  curr_end = next_end
+
+              next_end = max(next_end, max_length[i])
+
+          return ans
+
+
 
 
 </pre>
