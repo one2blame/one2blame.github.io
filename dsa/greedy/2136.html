@@ -36,16 +36,16 @@ time where all flowers are blooming.
 The solution is as follows:
 
 
-class Solution:
-    def earliestFullBloom(self, plantTime: List[int], growTime: List[int]) -> int:
-        germ = sorted([(start, end) for start, end in zip(plantTime, growTime)], key=lambda x: -x[1])
-        ans = t = 0
+  class Solution:
+      def earliestFullBloom(self, plantTime: List[int], growTime: List[int]) -> int:
+          germ = sorted([(start, end) for start, end in zip(plantTime, growTime)], key=lambda x: -x[1])
+          ans = t = 0
 
-        for start, end in germ:
-            t += start
-            ans = max(ans, t + end)
+          for start, end in germ:
+              t += start
+              ans = max(ans, t + end)
 
-        return ans
+          return ans
 
 
 _ Time Complexity:
