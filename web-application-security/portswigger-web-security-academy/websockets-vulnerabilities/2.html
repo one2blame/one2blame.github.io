@@ -1,0 +1,40 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://portswigger.net/web-security/websockets/lab-manipulating-handshake-to-exploit-vulnerabilities/">
+2. Manipulating the WebSocket handshake to exploit vulnerabilities</a>
+
+This lab demonstrates exploiting a XSS (cross site scripting) vulnerability in a chat box
+implemented with WebSockets. Using Python's BeautifulSoup and websockets libraries, we're able to
+extract the WebSockets endpoint from this site's HTML, initiate a new connection, and inject
+IMG tags to attempt to load an image from the src "/". Obviously, this will fail and, onerror, we'll
+execute a script to trigger the alert() function.
+
+This website implements a XSS WAF on messages received via the connection, and if it sees the string
+"onerror", it will detect event-based script injection and blacklist the IP address of the attacker.
+We can bypass this by modifiying our headers for the WebSocket handshake, adding the
+"X-Forwarded-For" header with a bogus IP address to bypass the blacklist. We then test our attack
+again by SpongeBob-casing our "onerror" statement -> "oNeRrOr".
+
+
+<a href="2.py">Solution</a>
+
+
+
+
+</pre>
+  </div>
+</body>
