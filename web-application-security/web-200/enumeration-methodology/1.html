@@ -1,0 +1,63 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+1. Reconnaissance
+
+Before pentesting or running tools against a website or web application, we need to understand what
+we are testing. This can include information gathering from sources outside of the web application,
+using OSINT. We can also gain first-hand information from the pentest by doing things like
+registering a user account, etc. - this is still passive.
+
+Scoping is important for testing web applications because a web application might rely upon so many
+external resources. Scope is usually defined as:
+
+  * Hostnames
+  * URLs
+  * IP addresses
+  * Application functionality
+
+Once scope is defined, we determine the web application's digital footprint in the terms provided
+above. Some great tools to obtain contact information for a domain or IP address are:
+
+  * whois
+  * https://lookup.icann.org/
+
+It will also be useful to collect the following information:
+
+  * Employees that work at target organization
+    * Names
+    * Email addresses
+
+This above information can be useful for deriving valid usernames and subsequent phishing campaigns.
+Social media might also be useful, leading us to a company's GitHub or GitLab organization, useful
+for finding what tech stack, programming languages, frameworks, etc. a company uses so we can pick
+appropriate payloads.
+
+Subdomains can also be identified by using tools like:
+
+  * DNSDumpster
+  * crt.sh
+
+Finally, a target's internet presence can be enumerated by using something like Shodan, as well:
+
+  * https://www.shodan.io/
+
+
+
+
+</pre>
+  </div>
+</body>
