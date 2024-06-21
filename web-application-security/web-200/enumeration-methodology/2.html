@@ -1,0 +1,57 @@
+<html>
+
+<head>
+  <title>one2bla.me</title>
+  <meta charset="utf-8">
+  <link href="../../../style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="txtdiv">
+    <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+2. Enumeration
+
+After identifying the scope and wrapping up passive information gathering, it's time to get active!
+What do we want to learn about the target web application? We're looking for running services and
+their versions so we can gain a better understanding of the tech stack of the target. This can be
+done using automated tools, or we can conduct more manual investigations.
+
+Web applications provide us with a lot of information. Some easy techniques up front are:
+
+  * Get the web application to dump and error message. Does this provide useful information?
+  * Check for outdated versions and components that could be vulnerable to exploits.
+  * Banner grab to identify running services and software versions on exposed ports.
+  * Use tools to crawl the site, or interact with it manually using a browser.
+
+More on <a href="https://csrc.nist.gov/glossary/term/banner_grabbing">banner grabbing</a>.
+
+Quick tip when messing with lab servers or targets where you're in a VPN connection and are lacking
+DNS connectivity. To make it easier to resolve a target based on hostname / domain name, alter the
+/etc/hosts file, appending the IP address and the hostname of the target to the tail.
+
+Another quick tip - when looking to find out what HTTP methods a web target supports, you can use:
+
+  * nmap -p 80 --script http-methods enum-sandbox
+
+Gathering information about a web server, especially its headers, is useful for determining if the
+web server itself is vulnerable to some sort of vulnerability. To grab just the headers of an HTTP
+response, we can use:
+
+  * curl -Iv http://{target}
+
+Manually searching for HTTP endpoints is tedious - would be great if we could automatically crawl
+all endpoints found in a website from a specific starting point. Oh wait, there's a tool for that:
+
+  * <a href="https://github.com/hakluke/hakrawler">hakrawler</a>
+
+
+
+
+</pre>
+  </div>
+</body>
