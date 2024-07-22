@@ -5,7 +5,7 @@ tags:
   - enumeration
   - pentesting
 ---
-# Enumeration
+## Enumeration
 Scan the 1000 most common ports, skip host discovery
 ```bash
 nmap -Pn {IP_ADDRESS : HOSTNAME}
@@ -42,13 +42,13 @@ Fuzz usernames with a wordlist to attempt information disclosure of valid userna
 ```bash
 ffuf -w wordlist.txt -u http://{IP_ADDRESS : HOSTNAME}/{ENDPOINT} -X POST -d 'username=FUZZ&password=bar' -H 'Content-Type: application/x-www-form-urlencoded'
 ```
-# Wordlists
+## Wordlists
 Creating a custom wordlist from a URL using [CeWL](https://github.com/digininja/CeWL)
 ```bash
 cewl --write output.txt --lowercase -m 4 http://{IP_ADDRESS : HOSTNAME}
 ```
 
-# Kali Linux
+## Kali Linux
 List available wordlists
 ```bash
 ls -alh /usr/share/wordlists
