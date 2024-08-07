@@ -42,6 +42,10 @@ Fuzz usernames with a wordlist to attempt information disclosure of valid userna
 ```bash
 ffuf -w wordlist.txt -u http://{IP_ADDRESS : HOSTNAME}/{ENDPOINT} -X POST -d 'username=FUZZ&password=bar' -H 'Content-Type: application/x-www-form-urlencoded'
 ```
+Get a server's HTTP options and CORS policy:
+```bash
+curl -X "OPTIONS" -i -k https://<IP_ADDRESS>
+```
 ## Wordlists
 Creating a custom wordlist from a URL using [CeWL](https://github.com/digininja/CeWL)
 ```bash
