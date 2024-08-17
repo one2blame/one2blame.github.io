@@ -1,6 +1,6 @@
 body {
-  color: #FEFEFE;
-  background-color: #0A0B11;
+  color: #fefefe;
+  background-color: #0a0b11;
   margin: 0 auto;
   padding: 1em 0 1em 0;
 }
@@ -12,13 +12,13 @@ a {
 
 @font-face {
   font-family: "unifont";
-  src: url("./unifont.woff") format('woff');
+  src: url("./unifont.woff") format("woff");
 }
 
 pre {
   font-family: "unifont", "Lucida Console", monospace, Monaco;
   font-size: 16px;
-  line-height: 1.0;
+  line-height: 1;
   padding-left: 20px;
 }
 
