@@ -14,7 +14,8 @@ Scan the 1000 most common ports, skip host discovery
 nmap -Pn {IP_ADDRESS : HOSTNAME}
 ```
 
-Scan the 1000 most common ports, [conduct service and version detection](https://nmap.org/book/man-version-detection.html)
+Scan the 1000 most common ports,
+[conduct service and version detection](https://nmap.org/book/man-version-detection.html)
 
 ```bash
 nmap -sV {IP_ADDRESS : HOSTNAME}
@@ -56,7 +57,8 @@ Use a wordlist to discover HTTP endpoints with a specific extension with DIRB
 dirb http://{IP_ADDRESS : HOSTNAME} -X .php
 ```
 
-Fuzz usernames with a wordlist to attempt information disclosure of valid usernames with [ffuf](https://github.com/ffuf/ffuf)
+Fuzz usernames with a wordlist to attempt information disclosure of valid usernames with
+[ffuf](https://github.com/ffuf/ffuf)
 
 ```bash
 ffuf -w wordlist.txt -u http://{IP_ADDRESS : HOSTNAME}/{ENDPOINT} -X POST -d 'username=FUZZ&password=bar' -H 'Content-Type: application/x-www-form-urlencoded'
