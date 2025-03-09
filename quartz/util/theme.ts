@@ -30,7 +30,7 @@ export type ThemeKey = keyof Colors
 
 const DEFAULT_SANS_SERIF =
   '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif'
-const DEFAULT_MONO = "ui-monospace, SFMono-Regular, SF Mono, Menlo, monospace"
+const DEFAULT_MONO = "unifont, ui-monospace, SFMono-Regular, SF Mono, Menlo, monospace"
 
 export function googleFontHref(theme: Theme) {
   const { code, header, body } = theme.typography
@@ -52,8 +52,8 @@ ${stylesheet.join("\n\n")}
   --highlight: ${theme.colors.lightMode.highlight};
   --textHighlight: ${theme.colors.lightMode.textHighlight};
 
-  --headerFont: "${theme.typography.header}", ${DEFAULT_SANS_SERIF};
-  --bodyFont: "${theme.typography.body}", ${DEFAULT_SANS_SERIF};
+  --headerFont: "${theme.typography.header}", ${DEFAULT_MONO};
+  --bodyFont: "${theme.typography.body}", ${DEFAULT_MONO};
   --codeFont: "${theme.typography.code}", ${DEFAULT_MONO};
 }
 

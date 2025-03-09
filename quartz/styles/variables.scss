@@ -7,3 +7,8 @@ $fullPageWidth: $pageWidth + 2 * $sidePanelWidth;
 $boldWeight: 700;
 $semiBoldWeight: 600;
 $normalWeight: 400;
+
+@font-face {
+    font-family: "unifont";
+    src: url("./unifont.woff") format("woff");
+}
