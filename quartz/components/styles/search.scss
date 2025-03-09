@@ -6,7 +6,7 @@
   flex-grow: 0.3;
 
   & > #search-icon {
-    background-color: var(--lightgray);
+    background-color: var(--highlight);
     border-radius: 4px;
     height: 2rem;
     display: flex;
@@ -191,7 +191,7 @@
             &:hover,
             &:focus,
             &.focus {
-              background: var(--lightgray);
+              background: var(--highlight);
             }
 
             & > h3 {
