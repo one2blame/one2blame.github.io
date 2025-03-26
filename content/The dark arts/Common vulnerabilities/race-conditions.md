@@ -9,6 +9,10 @@ tags:
   - time
   - check
   - use
+  - memory
+  - corruption
+  - binary
+  - exploitation
 title: Race conditions
 ---
 

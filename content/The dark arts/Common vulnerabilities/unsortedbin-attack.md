@@ -13,6 +13,10 @@ tags:
   - malloc
   - house
   - orange
+  - memory
+  - corruption
+  - binary
+  - exploitation
 ---
 
 The **Unsortedbin Attack** and the Use-after-free (UAF) vulnerability are loosely related enough for
@@ -53,7 +57,7 @@ Honestly, the **Unsortedbin Attack** is often used to enable other techniques. I
 precursor to further exploitation but, by itself, it's not useful for gaining code execution.
 
 A great example technique that leverage the **Unsortedbin Attack** to gain code execution is the
-[House of Orange](./house-of-orange.md). In that example, however, the vulnerability leveraged to
+[House of Orange](house-of-orange.md). In that example, however, the vulnerability leveraged to
 overwrite the `bk` of the chunk in the Unsortedbin is a heap overflow.
 
 Another good example is the [zerostorage](#references) challenge from 0ctf 2016 . In this challenge,

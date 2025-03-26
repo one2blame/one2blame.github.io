@@ -10,6 +10,10 @@ tags:
   - free
   - file
   - stream
+  - memory
+  - corruption
+  - binary
+  - exploitation
 ---
 
 The original **House of Orange** technique used a heap overflow vulnerability to target the

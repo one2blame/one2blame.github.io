@@ -10,6 +10,10 @@ tags:
   - malloc
   - tunables
   - arena
+  - memory
+  - corruption
+  - binary
+  - exploitation
 ---
 
 Let's first define **heap grooming** by identifying that it's not **heap spraying**. While these two

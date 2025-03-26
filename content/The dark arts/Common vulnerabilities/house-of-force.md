@@ -10,6 +10,10 @@ tags:
   - chunk
   - house
   - force
+  - memory
+  - corruption
+  - binary
+  - exploitation
 title: House of Force
 ---
 

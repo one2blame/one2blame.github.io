@@ -12,6 +12,10 @@ tags:
   - small
   - large
   - tcache
+  - memory
+  - corruption
+  - binary
+  - exploitation
 title: Heap buffer overflow
 ---
 

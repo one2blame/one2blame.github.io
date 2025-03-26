@@ -9,6 +9,10 @@ tags:
   - free
   - chunk
   - malloc
+  - memory
+  - corruption
+  - binary
+  - exploitation
 ---
 
 Single byte overflows are pretty dangerous bugs to have in a program, given the right conditions. A

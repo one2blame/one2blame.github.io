@@ -5,6 +5,10 @@ tags:
   - buffer
   - overflow
   - frame
+  - memory
+  - corruption
+  - binary
+  - exploitation
 ---
 
 ## The stack

@@ -8,6 +8,10 @@ tags:
   - overflow
   - stack
   - frame
+  - memory
+  - corruption
+  - binary
+  - exploitation
 ---
 
 ## How uninitialized variables can be used for exploitation

@@ -9,6 +9,10 @@ tags:
   - malloc
   - hook
   - chunk
+  - memory
+  - corruption
+  - binary
+  - exploitation
 title: Fastbin Dup
 ---
 
