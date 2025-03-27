@@ -25,7 +25,7 @@ commonly used by attackers to implement a **Write-what-where** condition. [[2]](
 duplicate chunks in the fastbin, eventually allowing the attacker to acquire a pointer to free
 memory. [[3]](#references) **Heap overflows** can also lead to a UAF vulnerability, given the right
 conditions. This is discussed further in the exploitation portion of
-[Single Byte Overflows](single-byte-overflows.md) as we leak `glibc` addresses from an unsortedbin
+[[single-byte-overflows|Single Byte Overflows]] as we leak `glibc` addresses from an unsortedbin
 chunk using our overlapping chunk.
 
 Provided below is an example of a UAF from OWASP.org [[4]](#references):
@@ -58,9 +58,8 @@ int main(int argc, char **argv) {
 }
 ```
 
-The following sections, [Fastbin Dup](fastbin-dup.md) and
-[Unsortedbin Attack](unsortedbin-attack.md), demonstrate how UAF vulnerabilities can be leveraged
-to gain arbitrary code execution.
+The following sections, [[fastbin-dup|Fastbin Dup]] and [[unsortedbin-attack|Unsortedbin Attack]],
+demonstrate how UAF vulnerabilities can be leveraged to gain arbitrary code execution.
 
 ## References
 
