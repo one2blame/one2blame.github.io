@@ -17,11 +17,12 @@ tags:
 
 ## Gaining VBA script execution
 
-Visual Basic for Applications (VBA) is a scripting language available for use
-in Microsoft Office applications like Microsoft Word and Microsoft Excel. Over
-the years, plenty of mitigations have been implemented to prevent client-side
-code execution attacks using VBA in these products. Before we talk about that,
-let's talk about how scripts can be executed when Office documents are opened.
+**Visual Basic for Applications (VBA)** is a scripting language available for
+use in Microsoft Office applications like Microsoft Word and Microsoft Excel.
+Over the years, plenty of mitigations have been implemented to prevent
+client-side code execution attacks using VBA in these products. Before we talk
+about that, let's talk about how scripts can be executed when Office documents
+are opened.
 
 ### Document_Open
 
@@ -52,7 +53,7 @@ Word supported file formats
 
 ### Mark of the Web
 
-Mark of the Web (MoTW) is a metadata, boolean identifier used by Windows to
+**Mark of the Web (MoTW)** is a metadata, boolean identifier used by Windows to
 mark files downloaded from the internet. This mark is used by products like
 Microsoft Office and Excel to warn users that a file was downloaded from the
 internet, and that caution should be exercised when enabling certain features.
@@ -94,11 +95,12 @@ End Sub
 
 ### Windows Scripting Host
 
-A more powerful primitive for code execution is to use the Windows Scripting
-Host (WSH). This enables us to define an entire script for execution - rather
-than just executing a single program. Details and examples on how to create and
-run a WSH object can be found [here](https://ss64.com/vb/createobject.html).
-Here's an example of executing `cmd.exe` in a hidden window:
+A more powerful primitive for code execution is to use the **Windows
+Scripting** **Host (WSH)**. This enables us to define an entire script for
+execution - rather than just executing a single program. Details and examples
+on how to create and run a WSH object can be found
+[here](https://ss64.com/vb/createobject.html). Here's an example of executing
+`cmd.exe` in a hidden window:
 
 ```vba
 Sub Document_Open()
