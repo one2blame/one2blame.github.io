@@ -7,6 +7,7 @@ tags:
   - api
   - powershell
   - execution
+  - shellcode
 ---
 
 We can't execute **Win32API** methods directly from PowerShell. What are

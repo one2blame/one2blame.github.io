@@ -13,6 +13,8 @@ tags:
   - vba
   - visual
   - basic
+  - shellcode
+  - execution
 ---
 
 ## Gaining VBA script execution
