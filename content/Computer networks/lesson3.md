@@ -1,5 +1,5 @@
 ---
-title: Lesson 3
+title: Path algorithms
 tags:
   - dijkstra
   - algorithm

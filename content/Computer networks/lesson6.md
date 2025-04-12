@@ -1,5 +1,5 @@
 ---
-title: Lesson 6
+title: Firewalls
 tags:
   - firewalls
   - traffic

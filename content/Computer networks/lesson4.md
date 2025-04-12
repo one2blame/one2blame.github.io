@@ -1,5 +1,5 @@
 ---
-title: Lesson 4
+title: Internet architecture
 tags:
   - isp
   - ixp

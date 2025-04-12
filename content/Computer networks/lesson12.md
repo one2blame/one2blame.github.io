@@ -1,5 +1,5 @@
 ---
-title: Lesson 12
+title: Content distribution networks
 tags:
   - content
   - distribution

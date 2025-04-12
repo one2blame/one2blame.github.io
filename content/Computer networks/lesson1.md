@@ -1,5 +1,5 @@
 ---
-title: Lesson 1
+title: OSI model
 tags:
   - osi
   - model

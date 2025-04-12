@@ -1,5 +1,5 @@
 ---
-title: Lesson 10
+title: Network attacks
 tags:
   - cs6250
   - dns

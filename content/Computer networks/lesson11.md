@@ -1,5 +1,5 @@
 ---
-title: Lesson 11
+title: Streaming
 tags:
   - cs6250
   - streaming
