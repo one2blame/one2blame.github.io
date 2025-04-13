@@ -188,8 +188,8 @@ export function ExplorerNode({ node, opts, fullPath, fileData }: ExplorerNodePro
             <div class="folder-container">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="12"
-                height="12"
+                width="10"
+                height="10"
                 viewBox="5 8 14 8"
                 fill="none"
                 stroke="currentColor"
@@ -220,6 +220,7 @@ export function ExplorerNode({ node, opts, fullPath, fileData }: ExplorerNodePro
               // Inline style for left folder paddings
               style={{
                 paddingLeft: node.name !== "" ? "1.4rem" : "0",
+                fontSize: "0.80rem",
               }}
               class="content"
               data-folderul={folderPath}

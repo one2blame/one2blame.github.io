@@ -86,8 +86,7 @@ svg {
   & div > a {
     color: var(--secondary);
     font-family: var(--headerFont);
-    font-size: 0.95rem;
-    font-weight: $semiBoldWeight;
+    font-size: 0.80rem;
     line-height: 1.5rem;
     display: inline-block;
   }
@@ -109,10 +108,9 @@ svg {
     font-family: var(--headerFont);
 
     & span {
-      font-size: 0.95rem;
+      font-size: 0.80rem;
       display: inline-block;
       color: var(--secondary);
-      font-weight: $semiBoldWeight;
       margin: 0;
       line-height: 1.5rem;
       pointer-events: none;
