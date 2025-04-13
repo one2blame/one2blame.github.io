@@ -13,32 +13,36 @@ tags:
 
 ## Outline
 
-In previous chapters were covered random testing, or fuzzing. In this lesson, we'll cover automated
-test generation that takes a more directed approach. Some methodologies and examples are:
+In previous chapters were covered random testing, or fuzzing. In this lesson,
+we'll cover automated test generation that takes a more directed approach. Some
+methodologies and examples are:
 
 - Systematic testing - `Korat` is a tool that conducts systematic testing
   - This test suite targets programs with linked data structures
-- Feedback-directed random testing - `Randoop` is a tool that conducts this type of testing.
+- Feedback-directed random testing - `Randoop` is a tool that conducts this type
+  of testing.
   - This test suite targets Java Classes and Libraries.
 
 ## Insights
 
-Procedures have an infinite number of possible test inputs, however, only a finite number of test
-inputs are worth testing against the program. An insight is that, for test generation, we often find
-that systematically testing all inputs up to a small size can uncover a majority of the bugs.
+Procedures have an infinite number of possible test inputs, however, only a
+finite number of test inputs are worth testing against the program. An insight
+is that, for test generation, we often find that systematically testing all
+inputs up to a small size can uncover a majority of the bugs.
 
 ### Small test case hypothesis
 
-The **small test case hypothesis** is, if there is any test that causes the program to fail, this is
-such a small test. If a list function works for lists of length `0` through `3`, it probably works
-for all lists - the function is oblivious to the length.
+The **small test case hypothesis** is, if there is any test that causes the
+program to fail, this is such a small test. If a list function works for lists
+of length `0` through `3`, it probably works for all lists - the function is
+oblivious to the length.
 
 ## Korat test generation
 
-Remember, `Korat` targets applications / libraries with linked data structures. What `Korat` does is
-enumerate the types of each member of each data structure, determining what values each Class and
-Node can contain. `Korat` then generates test structures for all possible shapes of a given data
-structure.
+Remember, `Korat` targets applications / libraries with linked data structures.
+What `Korat` does is enumerate the types of each member of each data structure,
+determining what values each Class and Node can contain. `Korat` then generates
+test structures for all possible shapes of a given data structure.
 
 ## Korat's algorithm
 
@@ -58,17 +62,19 @@ To calculate the number of possible binary trees for `k` nodes, the formula is:
 
 ### An overestimate
 
-The formula above is an overestimation of the number of possible binary trees. Some of the tree
-shapes provided in the above equation are not even tree-shaped, and many of them are isomorphic -
-exactly the same shape as other possible combinations. In reality, there are only 9 distinct binary
-trees with at most 3 nodes.
+The formula above is an overestimation of the number of possible binary trees.
+Some of the tree shapes provided in the above equation are not even tree-shaped,
+and many of them are isomorphic - exactly the same shape as other possible
+combinations. In reality, there are only 9 distinct binary trees with at most 3
+nodes.
 
 ## Determining the precondition
 
-`Korat` uses a specific technique to cull test inputs by instrumenting the pre-condition of the
-function under test. `Korat` adds code to the function's actions, observing the fields accessed by
-the function. This allows them with the ability to enumerate the precondition - if a field isn't
-accessed by a precondition the precondition does not depend on the field.
+`Korat` uses a specific technique to cull test inputs by instrumenting the
+pre-condition of the function under test. `Korat` adds code to the function's
+actions, observing the fields accessed by the function. This allows them with
+the ability to enumerate the precondition - if a field isn't accessed by a
+precondition the precondition does not depend on the field.
 
 ## Enumerating tests
 
@@ -79,14 +85,14 @@ accessed by a precondition the precondition does not depend on the field.
   - Expanding the last field accessed by the pre-condition
   - Backtracking if all possibilities for a field are exhausted
 
-The key idea in this methodology is that `Korat` never expands parts of the test input if it's not
-examined by the function's pre-condition. `Korat` also checks for and discards shapes that are
-isomorphic to previously generated shapes.
+The key idea in this methodology is that `Korat` never expands parts of the test
+input if it's not examined by the function's pre-condition. `Korat` also checks
+for and discards shapes that are isomorphic to previously generated shapes.
 
 ## Strengths and weaknesses of Korat
 
-`Korat` is strong when we can enumerate all possibilities, for example a small test case for four
-nodes, two edges per node. `Korat` is good for:
+`Korat` is strong when we can enumerate all possibilities, for example a small
+test case for four nodes, two edges per node. `Korat` is good for:
 
 - Linked data structures
 - Small, easily specified procedures
@@ -96,22 +102,25 @@ nodes, two edges per node. `Korat` is good for:
 
 - Integers, Floating-point numbers, strings
 
-`Korat` is also as weak as the pre-condition for a function under test. If the pre-condition is not
-specific and thorough enough, `Korat` will generate less-than-useful test conditions.
+`Korat` is also as weak as the pre-condition for a function under test. If the
+pre-condition is not specific and thorough enough, `Korat` will generate
+less-than-useful test conditions.
 
 ## Overview of Randoop
 
-The problem with uniform random testing is that it creates too many illegal or redundant tests.
-`Randoop` aims to randomly create new tests guided by feedback from previously generated tests.
-`Randoop`'s recipe is as follows:
+The problem with uniform random testing is that it creates too many illegal or
+redundant tests. `Randoop` aims to randomly create new tests guided by feedback
+from previously generated tests. `Randoop`'s recipe is as follows:
 
 - Build new sequences incrementally, extending past sequences
 - As soon as a sequence is created, execute it
-- Use execution results to guide test generation towards sequences that create new object states
+- Use execution results to guide test generation towards sequences that create
+  new object states
 
 ### Sequence types
 
-- Illegal sequence - sequences that crash before the contract is checked, e.g. throw an exception
-- Redundant sequence - `Randoop` maintains a set of all objects created in execution of each
-  sequence. A sequence is redundant if an object created during its execution belongs to an object
-  in the maintained set.
+- Illegal sequence - sequences that crash before the contract is checked, e.g.
+  throw an exception
+- Redundant sequence - `Randoop` maintains a set of all objects created in
+  execution of each sequence. A sequence is redundant if an object created
+  during its execution belongs to an object in the maintained set.

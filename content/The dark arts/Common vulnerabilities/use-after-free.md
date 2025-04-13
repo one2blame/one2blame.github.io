@@ -17,16 +17,18 @@ tags:
   - exploitation
 ---
 
-The **Use-after-free** vulnerability can be defined as the use of heap allocated memory after it has
-been freed or deleted. [[1]](#references) This can lead to undefined behavior by the program and is
-commonly used by attackers to implement a **Write-what-where** condition. [[2]](#references)
+The **Use-after-free** vulnerability can be defined as the use of heap allocated
+memory after it has been freed or deleted. [[1]](#references) This can lead to
+undefined behavior by the program and is commonly used by attackers to implement
+a **Write-what-where** condition. [[2]](#references)
 
-**Double frees** and UAF vulnerabilities are closely related, and double frees can be used to
-duplicate chunks in the fastbin, eventually allowing the attacker to acquire a pointer to free
-memory. [[3]](#references) **Heap overflows** can also lead to a UAF vulnerability, given the right
-conditions. This is discussed further in the exploitation portion of
-[[single-byte-overflows|Single Byte Overflows]] as we leak `glibc` addresses from an unsortedbin
-chunk using our overlapping chunk.
+**Double frees** and UAF vulnerabilities are closely related, and double frees
+can be used to duplicate chunks in the fastbin, eventually allowing the attacker
+to acquire a pointer to free memory. [[3]](#references) **Heap overflows** can
+also lead to a UAF vulnerability, given the right conditions. This is discussed
+further in the exploitation portion of
+[[single-byte-overflows|Single Byte Overflows]] as we leak `glibc` addresses
+from an unsortedbin chunk using our overlapping chunk.
 
 Provided below is an example of a UAF from OWASP.org [[4]](#references):
 
@@ -58,8 +60,9 @@ int main(int argc, char **argv) {
 }
 ```
 
-The following sections, [[fastbin-dup|Fastbin Dup]] and [[unsortedbin-attack|Unsortedbin Attack]],
-demonstrate how UAF vulnerabilities can be leveraged to gain arbitrary code execution.
+The following sections, [[fastbin-dup|Fastbin Dup]] and
+[[unsortedbin-attack|Unsortedbin Attack]], demonstrate how UAF vulnerabilities
+can be leveraged to gain arbitrary code execution.
 
 ## References
 

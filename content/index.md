@@ -2,10 +2,11 @@
 title: Knowledge is power
 ---
 
-We live pretty long lives, and during our lives we learn a lot of things - but we also forget a lot
-of things, too. This is my attempt at remembering the thing's I've learned, to categorize them,
-relate them - make connections. I doubt any of the things I've learned and documented here are
-unique. Regardless, I hope you find something useful in these notes.
+We live pretty long lives, and during our lives we learn a lot of things - but
+we also forget a lot of things, too. This is my attempt at remembering the
+thing's I've learned, to categorize them, relate them - make connections. I
+doubt any of the things I've learned and documented here are unique. Regardless,
+I hope you find something useful in these notes.
 
 Welcome, stranger! And happy hunting.
 
