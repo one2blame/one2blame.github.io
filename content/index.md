@@ -1,21 +1,18 @@
 ---
-title: Knowledge is power
+title: ▒▒▒▒▒▒▒▒▒▒▒▒▒
 ---
 
-We live pretty long lives, and during our lives we learn a lot of things - but
-we also forget a lot of things, too. This is my attempt at remembering the
-thing's I've learned, to categorize them, relate them - make connections. I
-doubt any of the things I've learned and documented here are unique. Regardless,
-I hope you find something useful in these notes.
+Welcome, stranger.
 
-Welcome, stranger! And happy hunting.
+This site contains my grimoire of netrunner quickhacks and techniques, adjacent
+learnings and ideas. Can't guarantee anything you find here is novel or unique.
+Regardless, here's hoping you find something that's useful to you.
 
-### Socials
+Happy hunting.
 
-- [GitHub](https://github.com/one2blame/)
-- [LeetCode](https://leetcode.com/u/one2blame/)
-- [LinkedIn](https://www.linkedin.com/in/austinjheath/)
+---
 
-[Resume](https://one2bla.me/cv/)
-
-[Contact](mailto:one2blame@icloud.com)
+| [GitHub](https://github.com/one2blame/) |
+[LeetCode](https://leetcode.com/u/one2blame/) |
+[LinkedIn](https://www.linkedin.com/in/austinjheath/) |
+[Resume](https://one2bla.me/cv/) | [Contact](mailto:one2blame@icloud.com) |
