@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/minimum-addition-to-make-integer-beautiful/">
+2457. Minimum Addition to Make Integer Beautiful</a>
+
+We're given a target and an integer, n, that we need to make beautfiul - meaning the sum of the
+digits of n are less than target. We need to return the minimum integer, x, that accomplishes this
+when n + x.
+
+We start by figuring out how we're going to sum the digits of n. We can do this by creating a lambda
+to convert n to a str, then a list, then each character an int, and then finally we can sum the list.
+
+We keep track of the current digit we're inspecting, starting from the rightmost digit. We convert
+the rightmost digit to 0, and keep track of the difference. Then we shift left to the next digit.
+While the digit sum of n + x, where n is the original integer and x is the difference, is greater
+than the target, we continue to do these operations.
+
+Eventually, we'll find the minimum difference we need to add to be less than target.
+
+The solution is as follows:
+
+
+  class Solution:
+      def makeIntegerBeautiful(self, n: int, target: int) -> int:
+          digit_sum = lambda n: sum(map(int, list(str(n))))
+          digit, x = 10, 0
+
+          while digit_sum(n + x) > target:
+              x = digit - (n % digit)
+              digit *= 10
+
+          return x
+
+
+_ Time Complexity:
+
+  O(n) - Where n is the number of digits in the input.
+
+_ Space Complexity:
+
+  O(n) - We convert n digits to a list to sum the digits.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

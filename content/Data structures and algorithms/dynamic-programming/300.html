@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/longest-increasing-subsequence/">
+300. Longest Increasing Subsequence</a>
+
+Another quintessential dynamic programming problem. Often, we try to get linear or logarithmic
+performance from LeetCode solutions, however, dynamic programming solutions usually end up being
+polynomial in time complexity. This is one of those cases.
+
+We're asked to find the longest subsequence in the given list of integers, nums, such that all the
+integers in the selected subsequence are strictly increasing. To achieve this, we iterate from 0 to
+n - 1, where n is the length of the input, and during each iteration we iterate again from 0 to
+i - 1.
+
+We maintain a table of previous selections, these being the length of the longest increasing
+subsequence up to that point, dp[i]. During our second iteration with index j, if nums[j] is less
+than nums[i], nums[j] is part of the subsequence we're looking for, and so at dp[i] we take the
+maximum of the current answer we have for dp[i] versus dp[j] + 1 - adding nums[j] to the
+subsequence, essentially.
+
+Typical of dynamic programming solutions, we're using memoization to reuse precomputed answers to
+previous problems solved earlier in our iteration.
+
+The solution is as follows:
+
+
+  class Solution:
+      def lengthOfLIS(self, nums: List[int]) -> int:
+          dp = [1] * len(nums)
+
+          for i in range(1, len(nums)):
+              for j in range(i):
+                  if nums[i] > nums[j]:
+                      dp[i] = max(dp[i], dp[j] + 1)
+
+          return max(dp)
+
+
+_ Time Complexity:
+
+  O(n^2) - Where n is the length of nums, for each num, i, we iterate through 0 to i - 1.
+
+_ Space Complexity:
+
+  O(n) - We maintain a table of longest increasing subsequences up to the ith index.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/delete-leaves-with-a-given-value/">
+1325. Delete Leaves With a Given Value</a>
+
+Given the root of a binary tree, we're asked to delete all the leaves that have the same value as
+the target. Tricky - we also have to delete nodes that become leaves after their children are
+deleted.
+
+We conduct a DFS to recursively traverse the tree. If the current node has no children and its value
+is equal to the target, we return None. This will cause the parent calling this function to
+essentially delete its child node. If the current node has children, we recursively call this
+function on the left and right children, storing their return value.
+
+We then double check to see if the left and right children are now delete (== None). If that's the
+case, we return None. Otherwise, we return the current node.
+
+The solution is as follows:
+
+
+  class Solution:
+      def removeLeafNodes(self, root: Optional[TreeNode], target: int) -> Optional[TreeNode]:
+          if not root:
+              return None
+
+          if root.val == target and not root.left and not root.right:
+              return None
+
+          root.left = self.removeLeafNodes(root.left, target)
+          root.right = self.removeLeafNodes(root.right, target)
+
+          if root.val == target and not root.left and not root.right:
+              return None
+
+          return root
+
+
+_ Time Complexity:
+
+  O(n) - We traverse O(n) nodes of the tree.
+
+_ Space Complexity:
+
+  O(log(n)) - We use O(log(n)) space for the recursive call stack.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

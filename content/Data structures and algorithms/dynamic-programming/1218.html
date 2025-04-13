@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/longest-arithmetic-subsequence-of-given-difference/">
+1218. Longest Arithmetic Subsequence of Given Difference</a>
+
+We're asked to find the longest subsequence of numbers that all have a difference of difference from
+left to right.
+
+We solve this using dynamic programming, but not with a memoization table like usual. Instead, we
+maintain dictionary of numbers seen, because, for a subsequence, we're going to have to look
+backwards an arbitrary number of spaces.
+
+The dictionary contains, for a given number, num, the length of the subsequence prior to reaching
+that number wherein all numbers have a difference of difference. So for example, if we're looking at
+2 and the difference is 2, we the compliment would be 4. If we've seen 4 before, it will return from
+a dictionary lookup, and then we append 1 to the subsequence and store dp[2]. Otherwise, the
+subsequence for dp[2] will be 1.
+
+Across this process, we maximize the answer for the highest length subsequence we've seen so far.
+
+The solution is as follows:
+
+
+  from collections import defaultdict
+
+  class Solution:
+      def longestSubsequence(self, arr: List[int], difference: int) -> int:
+          dp = defaultdict(int)
+          ans = 1
+
+          for num in arr:
+              dp[num] = dp[num - difference] + 1
+              ans = max(ans, dp[num])
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n) - Where n is the length of arr, we iterate through the number list once.
+
+_ Space Complexity:
+
+  O(n) - We maintain a memoization dictionary of size n.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

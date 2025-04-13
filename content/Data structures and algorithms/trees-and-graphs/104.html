@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/maximum-depth-of-binary-tree/">
+104. Maximum Depth of Binary Tree</a>
+
+Pretty straight forward problem - find how deep this binary tree goes. We can solve this with
+depth-first search. What is depth-first search? It's a method of traversing a binary tree, however,
+instead of exploring all nodes on the same level, we continually explore the left branch first until
+we reach an empty node. Then we explore the right branch. Once those two are exhausted, we backtrack
+a level and explore the right branch of the parent node.
+
+We continue to do this in an iterative fashion using stack, maintaining the max level we've seen so
+far for the binary tree.
+
+The solution is as follows:
+
+
+  class Solution:
+      def maxDepth(self, root: Optional[TreeNode]) -> int:
+          ans = 0
+          stack = [(1, root)]
+
+          while stack:
+              level, node = stack.pop()
+
+              if node:
+                  ans = max(ans, level)
+                  stack.append((level + 1, node.right))
+                  stack.append((level + 1, node.left))
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n) - We inspect all nodes in the binary tree.
+
+_ Space Complexity:
+
+  O(n) - We maintain a stack of nodes to explore.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

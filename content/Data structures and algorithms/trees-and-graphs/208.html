@@ -1,0 +1,105 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/implement-trie-prefix-tree/">
+208. Implement Trie (Prefix Tree)</a>
+
+This question just asks us to implement the trie (pronounced "try") data structure. A trie is a
+tree-based data structure used to catalogue words to make them easily searchable. This is great for
+solutions like auto-complete, etc. We're asked to implement the insert, startsWith, and search
+methods for the class.
+
+Before we implement the class, we have to define a TrieNode. TrieNodes allow us to easily search the
+trie. The attributes will be whether or not the node represents a word, and the children of the
+node. Children will be other TrieNodes that are the succeeding letter for a word inserted into the
+trie.
+
+During insertion, we continuously create new nodes for letters that haven't been seen in the current
+path, otherwise we just traverse the path of the trie until we encounter a letter that hasn't been
+seen, yet. Once we hit the end of the word, we mark the leaf node's attribute .isWord as True.
+
+During startsWith(), we don't care to find the leaf node, we just see if we can traverse the entire
+trie with the prefix provided. If not, we know that words with the provided prefix don't exist in
+the trie, so we return False. If we're able to search the entire prefix, we know that some word in
+this trie starts with the prefix provided, so we return True.
+
+During search(), we follow the path(s) of the trie to the very end of the word provided and check
+if the .isWord attribute is marked as True for the leaf node. We either make it to the end and
+return True, or we fail to find the word and return False.
+
+The solution is as follows:
+
+
+  class TrieNode:
+      def __init__(self):
+          self.isWord = False
+          self.children = {}
+
+
+  class Trie:
+      def __init__(self):
+          self.root = TrieNode()
+
+      def insert(self, word: str) -> None:
+          curr = self.root
+
+          for char in word:
+              if char not in curr.children:
+                  curr.children[char] = TrieNode()
+
+              curr = curr.children[char]
+
+          curr.isWord = True
+
+      def startsWith(self, prefix: str) -> bool:
+          curr = self.root
+
+          for char in prefix:
+              if char not in curr.children:
+                  return False
+
+              curr = curr.children[char]
+
+          return True
+
+      def search(self, word: str) -> bool:
+          curr = self.root
+
+          for char in word:
+              if char not in curr.children:
+                  return False
+
+              curr = curr.children[char]
+
+          return curr.isWord
+
+
+_ Time Complexity:
+
+  O(l) - Where l is the length of the word provided during each opeartion, i.e. insert(), search(),
+  or startsWith().
+
+_ Space Complexity:
+
+  O(l) - Where l is the length of the word provided during the insert() operation, in the worst case
+  we create l nodes.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

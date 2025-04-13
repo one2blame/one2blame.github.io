@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/first-bad-version/">278. First Bad Version</a>
+
+We're given an API called isBadVersion() -> bool, and we're asked to find the first bad version from
+a range of n versions. Every version after the first bad version, from versions[bad:n + 1] will
+return True. We use binary search and decrease our search space to the left if the version isn't bad,
+and vice versa if the version is bad. Eventually, our left pointer will be at the first bad version.
+
+The solution is as follows:
+
+
+  class Solution:
+      def firstBadVersion(self, n: int) -> int:
+          l, r = 1, n
+
+          while l <= r:
+              m = (l + r) // 2
+
+              if not isBadVersion(m):
+                  l = m + 1
+              else:
+                  r = m - 1
+
+          return l
+
+
+_ Time Complexity:
+
+  O(logn) - Standard binary search time complexity.
+
+_ Space Complexity:
+
+  O(1) - We store a left and right pointer.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

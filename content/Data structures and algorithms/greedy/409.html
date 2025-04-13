@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/longest-palindrome/">409. Longest Palindrome</a>
+
+Given a string of characters, fine the length of the longest palindrome that we can construct. Pretty
+straightforward, just count the frequency of all the characters. Iterate through all frequencies and
+divide the frequency by 2 and multiply by 2. This let's us know how many pairs of characters exist
+for that frequency, and lets us know how many characters in total.
+
+If the answer is even, and the frequency of the current character is odd, we can add 1 to the answer,
+this will be the middle of the palindrome.
+
+The solution is as follows:
+
+
+  from collections import Counter
+
+  class Solution:
+      def longestPalindrome(self, s: str) -> int:
+          ans = 0
+
+          for v in Counter(s).values():
+              ans += v // 2 * 2
+
+              if ans % 2 == 0 and v % 2 == 1:
+                  ans += 1
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n) - We count the frequency of all characters and iterate through the frequency distribution.
+
+_ Space Complexity:
+
+  O(n) - We store the frequencies of all the characters.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

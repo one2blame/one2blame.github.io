@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/path-sum-ii/">113. Path Sum II</a>
+
+Given the root a binary tree, we're asked to find all paths from the root to the leaves that sum to
+a given targetSum. We conduct a DFS to recursively traverse the tree, maintaining the current path
+as well as the paths we've found so far. At each step of the recursion, we append the current node
+to the path and check to see if the current node sums to the targetSum, and if we're also a leaf.
+If so, we append the path to the paths list. Else, we subtract the current node's value from the
+targetSum and continue the recursion. We pop the current node from the path after the recursion
+completes.
+
+The solution is as follows:
+
+
+  class Solution:
+      def recurse_tree(
+          self,
+          node: Optional[TreeNode],
+          currSum: int,
+          path: List[int],
+          paths_list: List[List[int]],
+      ) -> None:
+          if not node:
+              return
+
+          path.append(node.val)
+
+          if currSum == node.val and not node.left and not node.right:
+              paths_list.append(list(path))
+          else:
+              self.recurse_tree(node.left, currSum - node.val, path, paths_list)
+              self.recurse_tree(node.right, currSum - node.val, path, paths_list)
+
+          path.pop()
+
+      def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+          res = []
+          self.recurse_tree(root, targetSum, [], res)
+          return res
+
+
+_ Time Complexity:
+
+  O(n^2) - We traverse O(n) nodes of the tree, but copying over O(n) nodes from the path to the
+  path list causes this to be O(n^2).
+
+_ Space Complexity:
+
+  O(n) - We keep track of the nodes in the path.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

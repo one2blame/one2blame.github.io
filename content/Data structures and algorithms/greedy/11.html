@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/container-with-most-water/">11. Container With Most Water</a>
+
+We're given an array of integers, height, where height[i] represents the height of the ith line.
+We need to find the maximum area of water that can be trapped between two lines. Using a greedy
+approach, we'll maximize the function:
+
+  min(height[l], height[r]) * (r - l)
+
+where l and r are the left and right pointers, respectively. We'll walk the pointers from the left
+and right towards each other, where the smaller of the two pointers will be incremented or
+decremented until they cross.
+
+The solution is as follows:
+
+
+  class Solution:
+      def maxArea(self, height: List[int]) -> int:
+          ans = l = 0
+          r = len(height) - 1
+
+          while l < r:
+              ans = max(ans, min(height[l], height[r]) * (r - l))
+
+              if height[l] > height[r]:
+                  r -= 1
+              else:
+                  l += 1
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n) - We iterate over each height in the input.
+
+_ Space Complexity:
+
+  O(1) - We use constant space to store the answer and pointers.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/find-the-town-judge/">997. Find the Town Judge</a>
+
+The judge is a node in the graph with only indegrees, no outdegrees. We process all edges and count
+the indegrees vs the outdegrees. The judge will have n - 1 indegrees and 0 outdegrees.
+
+The solution is as follows:
+
+
+  class Solution:
+      def findJudge(self, n: int, trust: List[List[int]]) -> int:
+          score = [0] * (n + 1)
+
+          for u, v in trust:
+              score[u] -= 1
+              score[v] += 1
+
+          for node in range(1, n + 1):
+              if score[node] == n - 1:
+                  return node
+
+          return -1
+
+
+_ Time Complexity:
+
+  O(e) - Where e is the number of edges.
+
+_ Space Complexity:
+
+  O(n) - Where n is the number of nodes.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

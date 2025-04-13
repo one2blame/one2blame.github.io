@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/01-matrix/">542. 01 Matrix</a>
+
+For each 1 in a n x m matrix, we need to return the distance of the nearest 0. The fastest way to
+solve this is to conduct a BFS from each 0 in the matrix. If we've already seen a 0, and the
+surrounding cells are also 0 or have already been seen, then we skip over the cell. As we expand out
+from 1s, we keep track of the distance from the nearest 0. This is updated on the execution of each
+step.
+
+We maintain the solution in the same matrix we were provided, updating the values of the cells as we
+conduct BFS from each 0, outward.
+
+The solution is as follows:
+
+
+  class Solution:
+      def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+          n = len(mat)
+          m = len(mat[0])
+
+          def is_valid(row: int, col: int) -> bool:
+              return -1 < row < n and -1 < col < m and mat[row][col] == 1
+
+          queue = []
+          seen = set()
+
+          for row in range(n):
+              for col in range(m):
+                  if mat[row][col] == 0:
+                      seen.add((row, col))
+                      queue.append((row, col, 1))
+
+          directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+          while queue:
+              curr_queue, queue = queue, []
+
+              for row, col, steps in curr_queue:
+                  for dy, dx in directions:
+                      nrow, ncol = row + dy, col + dx
+
+                      if (nrow, ncol) not in seen and is_valid(nrow, ncol):
+                          seen.add((nrow, ncol))
+                          mat[nrow][ncol] = steps
+                          queue.append((nrow, ncol, steps + 1))
+
+          return mat
+
+
+_ Time Complexity:
+
+  O(n * m) - We visit each cell.
+
+_ Space Complexity:
+
+  O(n * m) - We maintain the answer in the 2D matrix.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

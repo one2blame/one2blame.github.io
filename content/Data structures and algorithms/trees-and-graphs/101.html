@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/symmetric-tree/">101. Symmetric Tree</a>
+
+We're asked to determine if the tree is symmetric - essentially a mirror between the left and right
+subtrees starting from the root. Inuitively, we conduct recursion to process two nodes at a time.
+If both nodes are None, we're symmetric. If one of the nodes is None, we're not symmetric. Else,
+if the nodes have the same value, we recursively check node1.left vs node2.right and node2.right vs
+node1.left.
+
+The solution is as follows:
+
+
+  class Solution:
+      def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+          def is_mirror(node1: Optional[TreeNode], node2: Optional[TreeNode]) -> bool:
+              if not node1 and not node2:
+                  return True
+              if not node1 or not node2:
+                  return False
+              return (
+                  node1.val == node2.val
+                  and is_mirror(node1.right, node2.left)
+                  and is_mirror(node1.left, node2.right)
+              )
+
+          return is_mirror(root, root)
+
+
+_ Time Complexity:
+
+  O(n) - Where n is the number of nodes in the tree.
+
+_ Space Complexity:
+
+  O(h) - Where h is the height of the tree.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

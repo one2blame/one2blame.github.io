@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/the-k-th-lexicographical-string-of-all-happy-strings-of-length-n/">
+1415. The k-th Lexicographical String of All Happy Strings of Length n</a>
+
+We're given two integers, n and k. We're asked to create lexicographical strings of length n, and
+return the kth one. All of these string have to be happy strings! What does that mean? Means that
+for some string and i, where i is the index, string[i] != string[i + 1] - so basically no duplicate
+characters next to each other in the string.
+
+We use backtracking the essentially DFS our way to victory. We treat each choice of character in the
+string that we're creating as a node in the search. For a particular node, our neighbors will be the
+characters "abc", however, we won't travel the path where the next node's character is equal to
+current node's character.
+
+We keep searching until we hit a node where the string is equal to n. Then we decide to see if we're
+at the kth string. If not, we just return, decrementing k to keep track of the fact that we saw a
+node of length n.
+
+Eventually, we create our final node, and it will be the kth node in our search. We set our answer
+and then return. All other parts of our search during backtracking will check to see if we found the
+answer - if so, they immediately return. This helps us avoid checking other nodes when we've already
+found the answer.
+
+The solution is as follows:
+
+
+  class Solution:
+      def getHappyString(self, n: int, k: int) -> str:
+          self.ans, letters = "", "abc"
+
+          def backtrack(s: List[str], t: int) -> None:
+              nonlocal k
+
+              if t == n:
+                  k -= 1
+                  if not k:
+                      self.ans = "".join(s)
+                  return
+
+              for letter in letters:
+                  if t > 0 and s[-1] == letter:
+                      continue
+
+                  s.append(letter)
+                  backtrack(s, t + 1)
+                  s.pop()
+
+                  if self.ans:
+                      return
+
+          backtrack([], 0)
+
+          return self.ans
+
+
+_ Time Complexity:
+
+  O(3^n) - We make 3 choices during each part of the search, and our paths of a depth of n.
+
+_ Space Complexity:
+
+  O(n) - Our paths have a depth of n, so does our recursion stack.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

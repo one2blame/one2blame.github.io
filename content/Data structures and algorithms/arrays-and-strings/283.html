@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/move-zeroes/">283. Move Zeros</a>
+
+Another two-pointers problem, messes with your brain a little bit but it's pretty fun. Basically you
+have an array of integers, both negative and positive, and you need to move all zero values to the
+end of the array.
+
+We achieve this by using a pointer to iterate through the array, front to back, and another pointer
+that maintains the position of the last encountered zero. So if a value is non-zero, we swap the
+values maintained at each pointer and increment the zero pointer.
+
+Once we encounter a zero, we essentially do a no-op, but the zero pointer remains pointing to the
+zero value. Once we encounter a non-zero value, we swap the values at each pointer and increment the
+zero pointer. This achieves our goal of gradually moving all zero values to the back of the array.
+
+The solution is as follows:
+
+
+  class Solution:
+      def moveZeroes(self, nums: List[int]) -> None:
+          """
+          Do not return anything, modify nums in-place instead.
+          """
+          i = 0
+          for j in range(len(nums)):
+              if nums[j] != 0:
+                  if nums[i] == 0:
+                      nums[i], nums[j] = nums[j], nums[i]
+                  i += 1
+
+
+_ Time Complexity:
+
+  O(n) - We iterate through the array once, swapping values as we go.
+
+_ Space Complexity:
+
+  O(1) - We modify the array in-place.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/restore-ip-addresses/">93. Restore IP Addresses</a>
+
+We're given a string of numbers, s, and we're asked to find all ways in which this string could
+represent a valid IP address. First, we'll discuss some things we can check to determine if an octet
+in an IP address is valid.
+
+For an octet, it can be of length 1. If an octet's length is greater than 1, it can't start with a 0.
+If an octet's length is greater than 1, and it doesn't start with 0, it's length can't be greater
+than 3. Finally, if it's length is 3, its value can't be greater than 255.
+
+Now that we have that out of the way, we'll talk about our backtracking solution. For each step in
+the search, we'll start by selecting one number to begin constructing an octet. We'll keep track of
+where we started with an index reference, and we'll also keep track of where we delineate between
+each octet - essentially, we'll keep track of where we're placing the dots in the new IP address.
+
+When we make a new selection for the octet, which is the start and end index of the octet, we check
+the constraints we listed earlier to determine if it's a valid octet. If so, we continue our search,
+incrementing our start index by the length of the octet we've chose. If not, we backtrack and try a
+different selection.
+
+If we've selected 3 dots, and the remaining part of the string after our third dot is a valid octet,
+we reconstruct the IP address and append it to our answer array. If not, we ignore it.
+
+Finally, to decrease our search space, we check to see if the remaining part of the string is too
+large. We check how many octets we have left to create and multiply it by 3, the maximum size of each
+octet. If the remaining part of the string is larger than this value, we know that we have too many
+characters left that we won't be able to fit in the remaining octets, so we return. Likewise, if the
+number of characters left is less than the number of octets we have left to create, we return.
+
+The solution is as follows:
+
+
+  class Solution:
+      def restoreIpAddresses(self, s: str) -> List[str]:
+          n, self.ans = len(s), []
+
+          def valid(i: int, j: int) -> bool:
+              return j == 1 or (s[i] != "0" and (j < 3 or s[i : i + j] <= "255"))
+
+          def backtrack(dots: List[int], start: int) -> None:
+              m = len(dots)
+              remaining = n - start
+              remainingOctets = 4 - m
+
+              if remaining > remainingOctets * 3 or remaining < remainingOctets:
+                  return
+
+              if m == 3:
+                  if valid(start, remaining):
+                      octets, k = "", 0
+
+                      for dot in dots:
+                          octets += s[k : k + dot] + "."
+                          k += dot
+
+                      octets += s[start:]
+                      self.ans.append(octets)
+
+                  return
+
+              for curr in range(1, min(4, remaining + 1)):
+                  dots.append(curr)
+
+                  if valid(start, curr):
+                      backtrack(dots, start + curr)
+
+                  dots.pop()
+
+          backtrack([], 0)
+
+          return self.ans
+
+
+_ Time Complexity:
+
+  O(1) - For this question, we have constant time complexity - why? We'll, if the constraints were
+  variable length, the complexity would be O(m^n * n). There are at most m^n-1 possibilities, and
+  checking if an octet is valid takes m * n time. Since m is 3, and n is 4, we have a constant time
+  complexity.
+
+_ Space Complexity:
+
+  O(1) - For this question, we have constant space requirements - why? The space complexity would be
+  O(m * n) if the constraints were variable length. Since m is 3, and n is 4, we have a constant
+  space complexity.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/count-good-nodes-in-binary-tree/">
+1448. Count Good Nodes in Binary Tree</a>
+
+A good node in a binary tree is one whose value is greater than or equal to the highest value seen
+in the current path starting from the root node. We're asked to return the number of good nodes in
+the binary tree.
+
+We use depth-first search to maintain path traversal through the tree. We keep track of the maximum
+value seen starting from the root node. If the current node's value is greater than or equal to the
+maximum value seen in this path, we increment the good node counter. We update the maximum value
+and pass this information to the next left and right nodes in the path.
+
+The solution is as follows:
+
+
+  class Solution:
+      def goodNodes(self, root: TreeNode) -> int:
+          stack = [(root, float("-inf"))]
+          ans = 0
+
+          while stack:
+              node, maxVal = stack.pop()
+
+              if maxVal <= node.val:
+                  ans += 1
+
+              maxVal = max(maxVal, node.val)
+              if node.right:
+                  stack.append((node.right, maxVal))
+              if node.left:
+                  stack.append((node.left, maxVal))
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n) - We inspect all nodes in the binary tree.
+
+_ Space Complexity:
+
+  O(n) - We maintain a stack of nodes to explore.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

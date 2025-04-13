@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/squares-of-a-sorted-array/">977. Squares of a Sorted Array</a>
+
+This is another pattern of the two-pointer problem. One could trivially solve this problem in
+O(n log n) time by squaring all of the values and sorting the array, however, we can do better and
+achieve a solution in O(n) time.
+
+We maintain two pointers - one at the beginning of the array and one at the end. We also create
+another array to store the result as we won't be able to solve this problem in-place. Working
+backwards from the end of the array, we compare the absolute values of the integers at each pointer.
+
+If the value pointed to by the left pointer is greater, we add it to the end of the results array and
+square the value. We then increment the left pointer. We do the same for the right pointer, however,
+we decrement the right pointer instead.
+
+Eventually we evaluate all of the integers in the array and return the result.
+
+The solution is as follows:
+
+
+  class Solution:
+      def sortedSquares(self, nums: List[int]) -> List[int]:
+          n = len(nums)
+          result = [0] * n
+          l, r = 0, n - 1
+
+          for i in range(n - 1, -1, -1):
+              if abs(nums[l]) < abs(nums[r]):
+                  result[i] = nums[r]
+                  r -= 1
+              else:
+                  result[i] = nums[l]
+                  l += 1
+
+              result[i] *= result[i]
+
+          return result
+
+
+_ Time Complexity:
+
+  O(n) - We iterate through the entire array once.
+
+_ Space Complexity:
+
+  O(n) - We create a new array to store the result.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

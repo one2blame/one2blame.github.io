@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/">
+1481. Least Number of Unique Integers after K Removals</a>
+
+We have a list of integers, and an integer k that allows us to remove k integers from the list.
+We're asked to remove k elements from the list such that we've minimized the number of unique
+integers in the list.
+
+Greedily, we want to remove the integers with the least frequency. We could do this with a heap, but
+it's actually more performant and fun to use the counting sort approach. We take the frequency of
+each integer, and then we also get the frequency of the frequencies. Starting from 1, the lowest
+frequency, we find out how many integers have the frequency of 1.
+
+Between k // 1 and the number of integers with a frequency of 1, we choose the minimum - this will
+be the number of integers with frequency 1 that we remove. We update k, subtracting the frequency
+multiplied with the numbers of integers with this frequency. We update the number of unique integers
+by subtracting the number of integers with this frequency.
+
+If k is less than the current frequency, we couldn't possibly remove more integers from the list
+with a frequency greater than this one, so we return the current number of unique elements.
+
+The solution is as follows:
+
+
+  from collections import Counter
+
+  class Solution:
+      def findLeastNumOfUniqueInts(self, arr: List[int], k: int) -> int:
+          freq = Counter(arr)
+          uniq, n = len(freq), len(arr)
+          freq_count = Counter(freq.values())
+
+          for i in range(1, n + 1):
+              mfd = min(k // i, freq_count.get(i, 0))
+              k -= (i * mfd)
+              uniq -= mfd
+
+              if k < i:
+                  return uniq
+
+          return 0
+
+
+_ Time Complexity:
+
+  O(n) - Counting sort takes O(n) time.
+
+_ Space Complexity:
+
+  O(n) - We use O(n) space for our dictionaries.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

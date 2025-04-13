@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/non-decreasing-subsequences/">
+491. Non-decreasing Subsequences</a>
+
+We're given a list of integers, nums, and we're asked to create another list of all the possible
+non-decreasing subsequences, meaning sequence[i] <= sequence[i + 1] for some index, i.
+
+We use backtracking to solve this problem, treating each choice we make to construct the
+subsequence as a node in graph. For each decision, we'll make sure to only consider integers
+succeeding our current index. We'll also only consider visiting nodes such that our current node's
+value is less than or equal to the next node.
+
+Whenever we encounter a subsequence greater than 1 and it's not in our current answer array, we add
+it to the result. If we have a subsequence in size equal to the original array, we return
+immediately as we're at the end of our path.
+
+The solution is as follows:
+
+
+  class Solution:
+      def findSubsequences(self, nums: List[int]) -> List[List[int]]:
+          ans, n = set(), len(nums)
+
+          def backtrack(s: List[int], t: int, i: int) -> None:
+              if t > 1 and tuple(s) not in ans:
+                  ans.add(tuple(s))
+
+              if t == n:
+                  return
+
+              for j in range(i, n):
+                  if t > 0 and s[-1] > nums[j]:
+                      continue
+
+                  s.append(nums[j])
+                  backtrack(s, t + 1, j + 1)
+                  s.pop()
+
+          backtrack([], 0, 0)
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(2^n * n) - Where n is the length of nums.
+
+_ Space Complexity:
+
+  O(2^n * n) - Our recursion stack can reach length n.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

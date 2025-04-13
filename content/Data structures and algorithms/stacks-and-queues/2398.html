@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/maximum-number-of-robots-within-budget/">
+2398. Maximum Number of Robots Within Budget</a>
+
+This problem combines the concepts of monotonic queue and maximizing across a sliding window. We're
+told that the equation for total cost of a selection of robots is:
+
+  max(chargeTimes) + k * sum(runningCosts)
+
+where chargeTimes is a selection of chargeTimes from the chargeTimes list and runningCosts is a
+selection of runningCosts from the runningCosts list. k is the number of robots in our selection.
+
+Because we have to return the maximum number of consecutive robots that don't exceed the budget, we
+know we have to use a sliding window. Therefore, we use two pointers, r and l, to shrink and grow
+the window as we add robots. We also maintain a running total of the running costs, curr - we'll
+use this to essentially add and remove robots from our selection.
+
+Finally, charge times. We always need to know what the maximum charge time is. We maintain a
+monotonically decreasing queue. queue[0] will always be the maximum charge time for our selection of
+robots. When we exceed the budget, while we remove robots from the selection by shrinking the
+sliding window, if the robot referenced by l is the robot with the maximum charge time, we pop from
+the left end of the queue. This will maintain that queue[0] is always the maximum charge time for
+the robots in our sliding window.
+
+Finally, we maximize across the sizes of the sliding windows we've seen that fit the budget.
+
+The solution is as follows:
+
+
+  from collections import deque
+
+
+  class Solution:
+      def maximumRobots(
+          self, chargeTimes: List[int], runningCosts: List[int], budget: int
+      ) -> int:
+          queue = deque([])
+          r, l, curr, ans, n = 0, 0, 0, 0, len(chargeTimes)
+
+          while r < n:
+              while queue and chargeTimes[queue[-1]] < chargeTimes[r]:
+                  queue.pop()
+
+              queue.append(r)
+              curr += runningCosts[r]
+              r += 1
+
+              while l < r and chargeTimes[queue[0]] + (r - l) * curr > budget:
+                  if queue[0] == l:
+                      queue.popleft()
+
+                  curr -= runningCosts[l]
+                  l += 1
+
+              ans = max(ans, r - l)
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n) - We inspect all elements in the array once.
+
+_ Space Complexity:
+
+  O(n) - We maintain a monotonically decreasing queue.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

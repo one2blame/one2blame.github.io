@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/minimum-value-to-get-positive-step-by-step-sum/">
+1413. Minimum Value to Get Positive Step by Step Sum</a>
+
+Simple, sorta fun. Think of the problem this way, you want the start value answer to be the lowest
+number we calculate if we were to add the step by step value of each integer in the array with a
+start value of 0. Essentially, the start value will be the minimum number preventing the step by step
+value from becoming negative.
+
+We iterate through the list of integers, add each integer to our running total, and we maintain the
+minimum total we've encountered for the entire run of the iteration.
+
+The solution is as follows:
+
+
+  class Solution:
+      def minStartValue(self, nums: List[int]) -> int:
+          ans = total = 0
+
+          for num in nums:
+              total += num
+              ans = min(ans, total)
+
+          return -ans + 1
+
+
+_ Time Complexity:
+
+  O(n) - We traverse the array once.
+
+_ Space Complexity:
+
+  O(1) - We maintain our answer in constance space.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

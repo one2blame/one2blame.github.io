@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/find-largest-value-in-each-tree-row/">
+515. Find Largest Value in Each Tree Row</a>
+
+Given the root of a binary tree, we're asked to return the greatest value for each row of the tree.
+Naturally, we solve this with breadth-first search, as it allows us to inspect all nodes at the same
+depth for each iteration.
+
+We maintain a global array, ans, to store the maximum for each level. We maintain a queue of nodes
+to visit at each level. At each level, when we visit a new node, we record the maximum value
+between this node and the current maximum value for this level. After we finish processing the
+level, the maximum value encountered is appended to the ans array.
+
+The solution is as follows:
+
+
+  from collections import deque
+
+  class Solution:
+      def largestValues(self, root: Optional[TreeNode]) -> List[int]:
+          if not root:
+              return []
+
+          ans, queue = [], deque([root])
+
+          while queue:
+              curr_queue, queue = queue, deque()
+              greatest = float("-inf")
+
+              while curr_queue:
+                  node = curr_queue.popleft()
+                  greatest = max(greatest, node.val)
+
+                  if node.left:
+                      queue.append(node.left)
+
+                  if node.right:
+                      queue.append(node.right)
+
+              ans.append(greatest)
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n) - We inspect all nodes in the binary tree.
+
+_ Space Complexity:
+
+  O(n) - We maintain queues that can grow to the size of the number of nodes in the tree.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

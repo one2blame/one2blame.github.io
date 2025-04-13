@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/minimum-path-sum/">64. Minimum Path Sum</a>
+
+Similar to the previous question, <a href="62.html">62. Unique Paths</a>, we traverse nodes on a
+graph represented by a 2D matrix. Each node has a cost, we asked to find the minimum path sum from
+node (0, 0) to (m - 1, n - 1).
+
+We start from the end and work backwards, reusing the existing matrix so that way we don't have to
+duplicate a matrix and store our answer there. If we're at the edge of the matrix, we reuse values
+from the cell below or to the right, adding the value to our current grid location - this is the
+only direction we can go so.
+
+If we're in a position where we can access the results of both right or down without an
+out-of-bounds reference, we choose the minimum of the two path directions and add it to our current
+node. The reuse of these values eventually cascades into (0, 0) containing the minimum path sum -
+and we've done all this via memoization and dynamic programming.
+
+The solution is as follows:
+
+
+  class Solution:
+      def minPathSum(self, grid: List[List[int]]) -> int:
+          m, n = len(grid), len(grid[0])
+
+          for i in range(m - 1, -1, -1):
+              for j in range(n - 1, -1, -1):
+                  if i == m - 1 and j != n - 1:
+                      grid[i][j] += grid[i][j + 1]
+                  elif i != m - 1 and j == n - 1:
+                      grid[i][j] += grid[i + 1][j]
+                  elif i != m - 1 and j != n - 1:
+                      grid[i][j] += min(grid[i + 1][j], grid[i][j + 1])
+
+          return grid[0][0]
+
+
+_ Time Complexity:
+
+  O(m * n) - Where m is the number of rows, and n is the number of columns, this solution requires
+  polynomial time to calculate the minimum path sum.
+
+_ Space Complexity:
+
+  O(1) - We reuse the existing space provided in the input.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

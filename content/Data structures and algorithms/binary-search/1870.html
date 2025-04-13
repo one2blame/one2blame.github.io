@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/minimum-speed-to-arrive-on-time/">
+1870. Minimum Speed to Arrive on Time</a>
+
+We're given a list of distances that multiple trains cover, and we need to travel using each train
+in hour number of hours. We need to find the minimum speed (kilometers per hour) the trains need to
+travel in order to reach our destination before the provided hour.
+
+We use binary search, where our search space is given to us - 1 to 10e7. During each step of the
+binary search, we calculate the amount of hours it would take, t, to travel the n - 1 distances with
+the trains at the currently selected speed, m. For each calculation, we use ceil() to summarize to
+the next hour - each train can only take off for integer times, not floating point numbers. Finally,
+we process the nth train, and retain it's floating point result because we've reached our
+destination.
+
+If we reach the destination faster or equal to the time provided, we shift the binary search left -
+the trains can probably go slower. Otherwise, we shift the binary search right - the trains need to
+go faster.
+
+Eventually, we find the minimum speed it will take for us to reach our destination on time.
+
+The solution is as follows:
+
+
+  from math import ceil
+
+  class Solution:
+      def minSpeedOnTime(self, dist: List[int], hour: float) -> int:
+          l, r, n, ans = 1, 10e7, len(dist), -1
+
+          while l <= r:
+              m, t = (r + l) // 2, 0
+
+              for i in range(n - 1):
+                  t += ceil(dist[i] / m)
+              t += dist[n - 1] / m
+
+              if t <= hour:
+                  ans = m
+                  r = m - 1
+              else:
+                  l = m + 1
+
+          return int(ans)
+
+
+_ Time Complexity:
+
+  O(n log(k)) - Where n is the number of trains and their distances, and k is the search space of
+  (1, 10e7).
+
+_ Space Complexity:
+
+  O(1) - We use constant space to retain our variables.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

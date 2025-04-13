@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/reverse-prefix-of-word/">2000. Reverse Prefix of Word</a>
+
+This is a two-pointers problem that requires us to search for a specific character prior to reversing
+the substring defined by the beginning of the array and the position of the found character.
+
+Pretty straightfoward, iterate through the array until we find the character, then reverse the
+substring. We maintain a pointer to the beginning of the array and use it to reverse characters with
+the iterator defined to find the end of the substring.
+
+The solution is as follows:
+
+
+  class Solution:
+      def reversePrefix(self, word: str, ch: str) -> str:
+          i, ans = 0, list(word)
+          for j in range(len(ans)):
+              if ans[j] == ch:
+                  while i < j:
+                      ans[i], ans[j] = ans[j], ans[i]
+                      i += 1
+                      j -= 1
+
+                  return "".join(ans)
+
+          return "".join(ans)
+
+
+_ Time Complexity:
+
+  O(n) - We iterate through the array once.
+
+_ Space Complexity:
+
+  O(n) - We create a new array to store the reversed substring.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

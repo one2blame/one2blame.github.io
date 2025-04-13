@@ -1,0 +1,69 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/divide-chocolate/">1231. Divide Chocolate</a>
+
+This is a pretty difficult problem because the initial approach / intuition required isn't obvious.
+Initially, you're probably trying to figure out how to best segment the input into k + 1 subarrays,
+which is a pretty daunting task.
+
+Instead, we search for the minimum value that each chunk should be - we don't care if chunks are
+greater. We'll split split the chocolate bar into chunks that meet or exceed this minimum value, and
+check to make sure there are k + 1 chunks. If everyone gets a piece of chocolate, we know that the
+minimum (m) and everything lower (m - 1 ... etc) are valid sweetness sums for a chunk of chocolate.
+We need to binary search until we find the value m such that m + 1 is not a valid sweetness sum - we
+won't be able to cut everyone a piece of chocolate. Then we'll know that m is the maximum sweetness
+we can receive while satisfiying the constraint of cutting the chocolate into k + 1 pieces.
+
+The solution is as follows:
+
+
+  class Solution:
+      def maximizeSweetness(self, sweetness: List[int], k: int) -> int:
+          l, r = min(sweetness), sum(sweetness) // (k + 1)
+
+          while l < r:
+              m, curr_sweetness, p = (r + l + 1) // 2, 0, 0
+
+              for chunk in sweetness:
+                  curr_sweetness += chunk
+
+                  if curr_sweetness >= m:
+                      p += 1
+                      curr_sweetness = 0
+
+              if p >= k + 1:
+                  l = m
+              else:
+                  r = m - 1
+
+          return r
+
+
+_ Time Complexity:
+
+  O(n log(s)) - Where s is the sum of the sweetness array and n is the length of the sweetness array.
+
+_ Space Complexity:
+
+  O(1) - We use constant space to retain our variables.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

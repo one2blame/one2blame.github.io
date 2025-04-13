@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/target-sum/">494. Target Sum</a>
+
+We're given a list of numbers and we can assign them symbols, + or -. We're asked to find all
+possible ways to assign these symbols that reach a target sum, target.
+
+Using dynamic programming, at each index, i, we can make two choices, to assign the symbol + or - to
+the current number. We do this recursively until we have assessed all numbers. If we reach the
+target at the end, we record this as a valid combination and return 1, otherwise we return 0.
+
+Once our recursion is complete, we'll have evaluated all these combos and discovered the number of
+combos that sum to our target. We use the functools @cache decorator to reuse state's we've already
+solved to avoid recomputing solutions.
+
+The solution is as follows:
+
+
+  class Solution:
+      def findTargetSumWays(self, nums: List[int], target: int) -> int:
+          n = len(nums)
+
+          @cache
+          def dp(i: int, t: int) -> int:
+              if i == n:
+                  if t == target:
+                      return 1
+                  else:
+                      return 0
+
+              return dp(i + 1, t + nums[i]) + dp(i + 1, t - nums[i])
+
+          return dp(0, 0)
+
+
+_ Time Complexity:
+
+  O(n * t) - Where n is the length of nums and t is the target, we assess this many different
+  combinations.
+
+_ Space Complexity:
+
+  O(n * t) - This is the size of the recursion stack.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

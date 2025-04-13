@@ -1,0 +1,69 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/binary-tree-right-side-view/">
+199. Binary Tree Right Side View</a>
+
+Given the root of a binary tree, we're asked to return a list of values from ndoes on the
+"right side" of the tree. Imagine if you're viewing the tree in 3D space from the right side, these
+are the only nodes you will be able to see.
+
+In order to solve this problem, we used breadth-first search to traverse the tree level by level.
+The "right side" node at each level will be the last element in the queue for that particular level
+of breadth-first search.
+
+The solution is as follows:
+
+
+  from collections import deque
+
+  class Solution:
+      def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+          if not root:
+              return []
+
+          ans, queue = [], deque([root])
+
+          while queue:
+              curr_queue, queue = queue, deque()
+
+              while curr_queue:
+                  node = curr_queue.popleft()
+
+                  if node.left:
+                      queue.append(node.left)
+                  if node.right:
+                      queue.append(node.right)
+
+              ans.append(node.val)
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n) - We inspect all nodes in the binary tree.
+
+_ Space Complexity:
+
+  O(n) - We maintain queues that can grow to the size of the number of nodes in the tree.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

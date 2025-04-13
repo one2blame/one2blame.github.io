@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/intersection-of-multiple-arrays/">
+2248. Intersection of Multiple Arrays</a>
+
+Fun one. We've got a 2D array of integers, for each array the integers are distinct and non-empty. We
+want to find the intersection of all the arrays, the integers that are present in each array in this
+2D array. Finally, we want the answer to be sorted.
+
+Since the intersection exists in every array, we can use the first array to create a filter, using
+the values contained within as a set. We iterate through the remaining arrays conducting an AND
+operation, essentially finding the intersection between the filter and the current array under
+inspection.
+
+We update the filter with the result of the AND operation, and this essentially becomes our answer.
+Finally, we sort the filter, cast it to a list, and return it.
+
+The solution is as follows:
+
+
+  class Solution:
+      def intersection(self, nums: List[List[int]]) -> List[int]:
+          if len(nums) == 1: return sorted(nums[0])
+          ans = set(nums[0])
+          for arr in nums[1::]: ans &= set(arr)
+          return sorted(list(ans))
+
+
+_ Time Complexity:
+
+  O(n * m) - This is the worst case time complexity - if every element in the input is unique.
+
+_ Space Complexity:
+
+  O(m) - This is the worst case space complexity - if every element in the input is unique.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

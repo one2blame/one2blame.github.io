@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/">
+1047. Remove All Adjacent Duplicates In String</a>
+
+We're asked to remove adjacent duplicate characters from a string, and we're asked to continue
+removing adjacent duplicate characters until none remain. This could be done doing multiple passes
+through the string, but that's not super efficient.
+
+Using a stack allows us to intuitively track the last time we've seen a character. If we encounter a
+duplicate character and it matches the character on the top of the stack, we know that this
+character is an adjacent duplicate and we can pop it off the stack.
+
+Once we've omitted all adjacent duplicates, we can join the stack and return the result.
+
+The solution is as follows:
+
+
+  class Solution:
+      def removeDuplicates(self, s: str) -> str:
+          if not s: return s
+
+          res = []
+          for c in s:
+              if not res or res[-1] != c:
+                  res.append(c)
+              else:
+                  res.pop()
+
+          return "".join(res)
+
+
+_ Time Complexity:
+
+  O(n) - We inspect all characters within the string.
+
+_ Space Complexity:
+
+  O(n) - We maintain a stack of only unique characters.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

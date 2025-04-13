@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/balanced-binary-tree/">110. Balanced Binary Tree</a>
+
+Return True or False if the binary tree provided is height-balanced, meaning that the difference
+between the heights of the two subtrees of every node never exceeds 1.
+
+We use DFS to visit every node in the binary tree, starting with the left node for each recursive
+call. If the node we visit doesn't exist, we immediately return 0, True. Otherwise, we recursively
+call the function on the left and right nodes.
+
+During recursion, we maximize for the depth of the left and right nodes, and we add 1 to the maximum
+depth seen so far. We also return True or False if the absolute difference of the depth between the
+left and right nodes is less than 2.
+
+During recursion, if a node encounters that a left or right subtree is not balanced, it immediately
+terminates recursion by returning 0, False. This cascades to parent nodes, causing them to also
+return 0, False.
+
+The solution is as follows:
+
+
+  class Solution:
+      def isBalanced(self, root: Optional[TreeNode]) -> bool:
+          def dfs(root: Optional[TreeNode]) -> tuple:
+              if not root:
+                  return 0, True
+
+              left_depth, left_balance = dfs(root.left)
+
+              if not left_balance:
+                  return 0, False
+
+              right_depth, right_balance = dfs(root.right)
+
+              if not right_balance:
+                  return 0, False
+
+              return max(left_depth, right_depth) + 1, abs(left_depth - right_depth) < 2
+
+          return dfs(root)[1]
+
+
+_ Time Complexity:
+
+  O(n) - We visit every node in the binary tree during DFS.
+
+_ Space Complexity:
+
+  O(n) - Our recursive call stack reaches a depth of n, where n is the number of nodes in the binary
+  tree.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

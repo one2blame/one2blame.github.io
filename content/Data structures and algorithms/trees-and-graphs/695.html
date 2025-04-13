@@ -1,0 +1,96 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/max-area-of-island/">695. Max Area of Island</a>
+
+A graph connectivity question, however, we're asked to keep track of how large each connected
+component is. Using UnionFind, we process the grid keeping track of which nodes exist in the map,
+and setting the rank for each node to 1.
+
+For each valid island on the map, we access its adjacent locations and determine if they are also
+part of the island. If they are, these nodes are merged using union_set. During the merge, the rank
+of the child node is added to the parent node's rank - allowing us to keep track of the size of the
+disjoint set.
+
+Finally, we return the max rank which is the size of the largest connected component (island).
+
+The solution is as follows:
+
+
+  class UnionFind:
+      def __init__(self, grid: List[List[int]]) -> None:
+          n, m = len(grid), len(grid[0])
+          self.parent, self.rank = [0 for _ in range(n * m)], [0 for _ in range(n * m)]
+
+          for i in range(n):
+              for j in range(m):
+                  if grid[i][j] == 1:
+                      self.parent[i * m + j] = i * m + j
+                      self.rank[i * m + j] = 1
+
+      def find(self, x: int) -> int:
+          if self.parent[x] != x:
+              self.parent[x] = self.find(self.parent[x])
+          return self.parent[x]
+
+      def union_set(self, x: int, y: int) -> None:
+          xset, yset = self.find(x), self.find(y)
+
+          if xset != yset:
+              if self.rank[xset] < self.rank[yset]:
+                  xset, yset = yset, xset
+
+              self.parent[yset] = xset
+              self.rank[xset] += self.rank[yset]
+
+      def get_max_size(self) -> int:
+          return max(self.rank)
+
+  class Solution:
+      def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+          uf = UnionFind(grid)
+          n, m = len(grid), len(grid[0])
+
+          for i in range(n):
+              for j in range(m):
+                  if grid[i][j] == 1:
+                      grid[i][j] = 0
+                      if i - 1 > -1 and grid[i - 1][j] == 1:
+                          uf.union_set(i * m + j, (i - 1) * m + j)
+                      if i + 1 < n and grid[i + 1][j] == 1:
+                          uf.union_set(i * m + j, (i + 1) * m + j)
+                      if j - 1 > -1 and grid[i][j - 1] == 1:
+                          uf.union_set(i * m + j, i * m + (j - 1))
+                      if j + 1 < m and grid[i][j + 1] == 1:
+                          uf.union_set(i * m + j, i * m + (j + 1))
+
+          return uf.get_max_size()
+
+
+_ Time Complexity:
+
+  O(n^2) - We iterate through all locations on the map.
+
+_ Space Complexity:
+
+  O(n) - We track the parents and ranks of each node.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

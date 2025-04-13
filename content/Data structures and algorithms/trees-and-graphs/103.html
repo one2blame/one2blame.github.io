@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/">
+103. Binary Tree Zigzag Level Order Traversal</a>
+
+We just gotta traverse a binary tree in zigzag order for each level. So the first level is left to
+right, the second level is right to left, etc. We use our regular breadth-first search approach, but
+we maintain the direction we're reading with a boolean. If we're going to left to right, we append
+the node's value to the tail of the list for the current level. Vice versa, we append the node's
+value to the head of the list for the current level.
+
+At each level, we append the current list to the global result. We switch the direction boolean for
+the next level.
+
+The solution is as follows:
+
+
+  from collections import deque
+
+  class Solution:
+      def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+          if not root:
+              return []
+
+          ans = []
+          left_to_right = True
+          queue = deque([root])
+
+          while queue:
+              curr_queue, queue = queue, deque()
+              nodes = deque([])
+
+              while curr_queue:
+                  node = curr_queue.popleft()
+
+                  if left_to_right:
+                      nodes.append(node.val)
+                  else:
+                      nodes.appendleft(node.val)
+
+                  if node.left:
+                      queue.append(node.left)
+                  if node.right:
+                      queue.append(node.right)
+
+              ans.append(nodes)
+              left_to_right = not left_to_right
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n) - We inspect all nodes in the binary tree.
+
+_ Space Complexity:
+
+  O(n) - We maintain queues that can store all nodes in the binary tree.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

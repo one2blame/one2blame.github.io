@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/uncrossed-lines/">1035. Uncrossed Lines</a>
+
+Basically Edit Distance or Longest Common Subsequence question. Given two arrays of varying length,
+we're trying to draw lines between matching characters in the arrays, however, the lines can't
+cross.
+
+We process the arrays from left to right, and we have three decisions to make:
+
+  * If the characters match, we add to our answer and advance across both arrays
+  * If the characters don't match, we advance one array and maintain the other
+  * Vice versa from the above
+
+Using dynamic programming and maintaining a memoization table, we notice that, if both match, we
+use the previous solution from dp[i-1][j-1] (diagonal up and to the left). Otherwise, we use the max
+of dp[i-1] (above) or dp[j-1] (behind).
+
+Because we only look upwards one row, we can space optimize by only maintaining the previous row of
+solutions. But yeah, this is just like Edit Distance or Longest Common Subsequence - line drawing is
+just used to confuse the reader.
+
+The solution is as follows:
+
+
+  class Solution:
+      def maxUncrossedLines(self, nums1: List[int], nums2: List[int]) -> int:
+          m, n = len(nums1), len(nums2)
+          prev = [0 for _ in range(n + 1)]
+          curr = prev[:]
+
+          for i in range(1, m + 1):
+              for j in range(1, n + 1):
+                  if nums1[i - 1] == nums2[j - 1]:
+                      curr[j] = prev[j - 1] + 1
+                  else:
+                      curr[j] = max(curr[j - 1], prev[j])
+
+              prev = curr[:]
+
+          return curr[n]
+
+
+_ Time Complexity:
+
+  O(n1 * n2) - Where n1 is the size of nums1 and n2 is the size of n2 - we loop through both arrays
+  in a nested manner.
+
+_ Space Complexity:
+
+  O(n2) - We maintain two arrays, prev and curr, of size n2.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

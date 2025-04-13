@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/count-number-of-rectangles-containing-each-point/">
+2250. Count Number of Rectangles Containing Each Point</a>
+
+We're given a list of points defining the heighest point of a rectangle, starting from the origin,
+(0, 0). We're also given a list of points. We're asked to find the number of rectangles a particular
+point, point[j], is in.
+
+This problem is annoying because the trick is to notice that the maximum height is 100. From here, we
+just bin all the rectangles by their maximum height, with each bin containing the sorted lengths of
+the triangles in that bin.
+
+For each point, we process the bins from the point's height to the maximum height. For each bin, we
+binary search for the first rectangle length that is greater than or equal to the point's
+x-coordinate. With this index, we can find the number of rectangles that contain the point. We append
+the counts to the result list.
+
+After processing all points, we return the result list.
+
+The solution is as follows:
+
+
+  from bisect import bisect_left
+
+  class Solution:
+      def countRectangles(
+          self, rectangles: List[List[int]], points: List[List[int]]
+      ) -> List[int]:
+          max_h = 100
+          lengths = [[] for _ in range(max_h + 1)]
+
+          for l, h in rectangles:
+              lengths[h].append(l)
+
+          for h in range(1, max_h + 1):
+              lengths[h].sort()
+
+          ans = []
+
+          for x, y in points:
+              count = 0
+
+              for h in range(y, max_h + 1):
+                  if lengths[h]:
+                      i = bisect_left(lengths[h], x)
+                      count += len(lengths[h]) - i
+
+              ans.append(count)
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(r log(r) + p log(r)) - Where r is the number of rectangles and p is the number of points.
+
+_ Space Complexity:
+
+  O(r) - We store the lengths of the rectangles in bins.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

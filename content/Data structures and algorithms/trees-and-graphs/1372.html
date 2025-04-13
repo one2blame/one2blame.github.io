@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/">
+1372. Longest ZigZag Path in a Binary Tree</a>
+
+We're asked to find the longest path in a binary tree that zig zags, bouncing from the left and
+right nodes and vice versa for as long as possible. This longest path can start at any node in the
+tree. To solve this, we maintain a global answer variable that we maximize across all paths. We
+recursively execute DFS on the tree, and each time we call the DFS function on the left or right
+nodes, we alternate the count of the path length. This way, if we visit left twice in a row, or
+right twice in a row, the count resets to 1.
+
+The solution is as follows:
+
+
+  class Solution:
+      def longestZigZag(self, root: Optional[TreeNode]) -> int:
+          self.ans = 0
+
+          def dfs(node: Optional[TreeNode], left: int, right: int) -> None:
+              if not node:
+                  return
+
+              self.ans = max(self.ans, max(left, right))
+              dfs(node.left, right + 1, 0)
+              dfs(node.right, 0, left + 1)
+
+          dfs(root, 0, 0)
+          return self.ans
+
+
+_ Time Complexity:
+
+  O(n) - We traverse O(n) nodes of the tree.
+
+_ Space Complexity:
+
+  O(n) - The recursive call stack can reach O(n) in the worst case.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

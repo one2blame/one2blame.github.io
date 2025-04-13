@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/meeting-rooms/">252. Meeting Rooms</a>
+
+We're given a list of intervals of the type List[List[int, int]] where intervals[i][0] is the start
+time for a meeting, and intervals[i][1] is the end time. Can a person attend all the meetings?
+Return True if so, otherwise False.
+
+We sort the input, that way all meetings are sorted by when they start. Then we begin to iterate
+through the meetings, from 0 to the penultimate meeting. If the end time of the current meeting
+is greater than the start of the next meeting, we return False. Eventually, we'll return True.
+
+The solution is as follows:
+
+
+  class Solution:
+      def canAttendMeetings(self, intervals: List[List[int]]) -> bool:
+          intervals.sort()
+          n = len(intervals)
+
+          for i in range(n - 1):
+              if intervals[i][1] > intervals[i + 1][0]:
+                  return False
+
+          return True
+
+
+_ Time Complexity:
+
+  O(nlogn) - We sort the input.
+
+_ Space Complexity:
+
+  O(n) - Sorting in Python requires n space.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

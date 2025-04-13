@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/reverse-string/">344. Reverse String</a>
+
+This problem requires us to provide a solution that reverses an input string in-place, meaning we
+cannot allocate an additional array in memory to store our reversed string.
+
+This is a common two-pointers problem, wherein, we maintain two pointers to locations within the
+array, one at the beginning and one at the end. We continue to swap the characters in the array
+pointed to by the two pointers until the two pointers cross, incrementing the leftmost pointer and
+decrementing the rightmost pointer on each iteration.
+
+The solution is as follows:
+
+  class Solution:
+      reverseString(self, s: List[str]) -> None:
+          l, r = 0, len(s) - 1
+
+          while l < r:
+              s[l], s[r] = s[r], s[l]
+
+              l += 1
+              r -= 1
+
+
+_ Time Complexity:
+
+  O(n), where n is the length of the input string. Using two pointers, we iterate over the string n/2
+  times, which resolves to O(n).
+
+_ Space Complexity:
+
+  O(1), since we are not allocating any additional memory to store our reversed string.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

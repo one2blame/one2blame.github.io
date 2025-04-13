@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/min-stack/">155. Min Stack</a>
+
+Another fun problem. We're asked to create a stack class that will support regular stack operations,
+but we should also be able to provide the minimum element in the stack in O(1) time. Intuitively, we
+maintain two stacks - one regular, and one monoticically decreasing.
+
+Whenever we push a new value onto the stack, we check to see if it's less than the top of the
+monotonically decreasing stack - if so we push it to the decreasing stack. Whenever we pop, we check
+to see if the current value is equal to the top of the monotonically decreasing stack - if so we pop
+from the monotonically decreasing stack.
+
+The solution is as follows:
+
+
+  class MinStack:
+      def __init__(self):
+          self.minimum = [float("inf")]
+          self.stack = []
+
+      def push(self, val: int) -> None:
+          self.stack.append(val)
+          if val <= self.minimum[-1]:
+              self.minimum.append(val)
+
+      def pop(self) -> None:
+          if self.stack.pop() == self.minimum[-1]:
+              self.minimum.pop()
+
+      def top(self) -> int:
+          return self.stack[-1]
+
+      def getMin(self) -> int:
+          return self.minimum[-1]
+
+
+_ Time Complexity:
+
+  O(1) - All operations are O(1) time.
+
+_ Space Complexity:
+
+  O(n) - We maintain two stacks for this class.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

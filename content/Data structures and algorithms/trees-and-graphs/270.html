@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/closest-binary-search-tree-value/">
+270. Closest Binary Search Tree Value</a>
+
+We're given a target value and asked to find the node with the value closest to the target. We
+simply conduct a binary search in the binary search tree, maintaining a closest variable that
+contains the value of the node closest to the target. At each node, we update the closest variable
+with the value of the node that is closest to the target using the min() function with a lambda for
+comparison - this lambda being the subtraction of the target from the node value.
+
+The solution is as follows:
+
+
+  class Solution:
+      def closestValue(self, root: Optional[TreeNode], target: float) -> int:
+          closest = root.val
+          while root:
+              closest = min(root.val, closest, key = lambda x: (abs(target - x), x))
+              root = root.left if target < root.val else root.right
+          return closest
+
+
+_ Time Complexity:
+
+  O(n) - We inspect all nodes in the binary search tree.
+
+_ Space Complexity:
+
+  O(1) - We only maintain the closest variable.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

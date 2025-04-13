@@ -1,0 +1,87 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/palindrome-linked-list/">234. Palindrome Linked List</a>
+
+A fun question with a long solution. Determine if a linked list is a palindrome, meaning that the
+linked list is the same when read frontwards and backwards. We're asked to do this in place in O(1)
+space.
+
+So how do we solve this? Well using our usual techniques of finding the middle node, we'll create a
+fast and slow node to find the middle. Then we'll use our other technique of list reversal to reverse
+the second half of the list.
+
+Iterating through the first half and the reversed second half, we'll compare the value of the nodes.
+If the nodes are not equal, we return false. If we reach the end of the list, we return true.
+
+The solution is as follows:
+
+
+  class Solution:
+      def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+          prev = None
+          curr = head
+
+          while curr:
+              next_node = curr.next
+              curr.next = prev
+              prev = curr
+              curr = next_node
+
+          return prev
+
+      def findMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+          slow = head
+          fast = head
+
+          while fast.next and fast.next.next:
+              fast = fast.next.next
+              slow = slow.next
+
+          return slow
+
+      def isPalindrome(self, head: Optional[ListNode]) -> bool:
+          if not head:
+              return True
+
+          first_half_curr = head
+          second_half_curr = self.reverseList(self.findMiddle(head).next)
+
+          while second_half_curr:
+              if first_half_curr.val != second_half_curr.val:
+                  return False
+              first_half_curr, second_half_curr = (
+                  first_half_curr.next,
+                  second_half_curr.next,
+              )
+
+          return True
+
+
+_ Time Complexity:
+
+  O(n) - We traverse all nodes within the linked list.
+
+_ Space Complexity:
+
+  O(1) - We maintain pointers that occupy constant space.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

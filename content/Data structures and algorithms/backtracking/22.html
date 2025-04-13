@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/generate-parentheses/">22. Generate Parentheses</a>
+
+Given n, we're asked to generate all combinations of well-formed parentheses. This means that all
+opening parenthesis, (, have an accompanying closing one, ) - no half-open pairs are allowed.
+
+This is a classic backtracking problem, but the easiest way to reason about it would be to draw a
+diagram, graphing out the selections we can make at each step to show the combinations we can
+create.
+
+From this, we discover that we'll always start with an opening parenthesis, (, and that we only
+traverse paths where the number of open parentheses, (, is less than or equal to n. We also discover
+the we never start with a closed parenthesis, ), and we always traverse paths where the number of
+closed parenthesis, ), is less than or equal to the number of open parentheses.
+
+During our backtracking of this graph, whenever the sum of open and closed parentheses is equal to
+n * 2, we add the combination to our answer array and terminate traversal.
+
+The solution is as follows:
+
+
+  class Solution:
+      def generateParenthesis(self, n: int) -> List[str]:
+          ans = []
+
+          def backtrack(s: List[str], l: int, r: int) -> None:
+              if l + r == n * 2:
+                  ans.append("".join(s))
+
+              if l < n:
+                  s.append("(")
+                  backtrack(s, l + 1, r)
+                  s.pop()
+
+              if r < l:
+                  s.append(")")
+                  backtrack(s, l, r + 1)
+                  s.pop()
+
+          backtrack([], 0, 0)
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(4^n / sqrt(n)) - Where n is the number of parentheses pairs.
+
+_ Space Complexity:
+
+  O(n) - The recursion stack will have at most n frames.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

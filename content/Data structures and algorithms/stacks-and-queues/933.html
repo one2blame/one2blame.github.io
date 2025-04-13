@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/number-of-recent-calls/">933. Number of Recent Calls</a>
+
+We're asked to implement a class that return the number of recent pings within the last 3000ms.
+Whenever we receive a ping, we're provided with the current time. We maintain a queue and enqueue the
+ping we received with the time we received it. Immediately after, we dequeue all pings at the end of
+the queue that are older than t - 3000.
+
+The solution is as follows:
+
+
+  class RecentCounter:
+
+      def __init__(self):
+          self.queue = []
+
+      def ping(self, t: int) -> int:
+          self.queue.append(t)
+
+          while self.queue[0] < t - 3000:
+              self.queue.pop(0)
+
+          return len(self.queue)
+
+
+_ Time Complexity:
+
+  O(1) - The while loop will run at most 3000 times.
+
+_ Space Complexity:
+
+  O(1) - The maximal size of our queue is 3000, which is a constant.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

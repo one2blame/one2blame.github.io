@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/largest-divisible-subset/">368. Largest Divisible Subset</a>
+
+Requires knowledge of a random math corollary, should be marked as Hard. Nonetheless, the corollary
+we're going to build upon is the fact that, for any sorted list of integers such that:
+
+  * a < b < c
+
+and these integers already formulate a divisible subset, any value, d, that can be divided by the
+largest value in this subset, c, such that d % c == 0, can form a new divisible subset such that:
+
+  * a < b < c < d
+
+We're asked to construct the largest subset that maintains this property. Because dynamic
+programming problems usually take polynomial time, we can go ahead and sort the input in ascending
+order. This allows us to start building our subsets from the smallest numbers.
+
+We maintain a dictionary with our input values as keys, and the values are the subsets themselves.
+For each number in the sorted array, we'll search through our memoization dictionary for keys that
+can cleanly divide the current number. We'll lookup the divisible subset of the number that cleanly
+divides our current number, and then we'll keep the divisible subset with the maximum length. We
+then append the current number to the largest divisible subset and continue to the next number.
+
+Eventually, we'll have processed the entire input, and we return the largest divisible subset from
+the memoization dictionary. This is dynamic programming and memoization because we're reusing
+precomputed values, and we avoid redoing work.
+
+The solution is as follows:
+
+
+  class Solution:
+      def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+          subsets = {-1: set()}
+
+          for num in sorted(nums):
+              subsets[num] = max(
+                  [subsets[k] for k in subsets if num % k == 0], key=len
+              ) | {num}
+
+          return list(max(subsets.values(), key=len))
+
+
+_ Time Complexity:
+
+  O(n^2) - We iterate through the entire input, and for each number we iterate through the entire
+  memoization table.
+
+_ Space Complexity:
+
+  O(n^2) - We store all divisible subsets in a memoization table.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

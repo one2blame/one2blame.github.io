@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/nearest-exit-from-entrance-in-maze/">
+1926. Nearest Exit from Entrance in Maze</a>
+
+Another fun question. We're given a maze spec in an n x m matrix. Locations with "." are emtpy
+spots, locations with "+" have walls. We enter the maze from some location and are asked to find the
+shortest path to the exit - this being any location along the outside of the maze not blocked by a
+wall.
+
+We solve this problem naturally with BFS. Instead of maintaining a seen set, we can just mark
+visited locations with the "+" character. If a location is valid and also an exit, we return the
+steps we've travel so far + 1. We do this immediately because, with BFS, this is guaranteed to be
+the shortest path.
+
+The solution is as follows:
+
+
+  class Solution:
+      def nearestExit(self, maze: List[List[str]], entrance: List[int]) -> int:
+          n, m = len(maze), len(maze[0])
+
+          def is_valid(row: int, col: int) -> bool:
+              return -1 < row < n and -1 < col < m and maze[row][col] == "."
+
+          def is_exit(row: int, col: int) -> bool:
+              return row == 0 or row == n - 1 or col == 0 or col == m - 1
+
+          directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+          srow, scol = entrance[0], entrance[1]
+          maze[srow][scol] = "+"
+          queue = [(srow, scol, 0)]
+
+          while queue:
+              curr_queue, queue = queue, []
+
+              for row, col, steps in curr_queue:
+                  for dy, dx in directions:
+                      nrow, ncol = row + dy, col + dx
+
+                      if is_valid(nrow, ncol):
+                          if is_exit(nrow, ncol):
+                              return steps + 1
+
+                          maze[nrow][ncol] = "+"
+                          queue.append((nrow, ncol, steps + 1))
+
+          return -1
+
+
+_ Time Complexity:
+
+  O(n * m) - n is the number of nodes and m is the number of edges - standard BFS time complexity.
+
+_ Space Complexity:
+
+  O(max(n, m)) - We use constant space to mark visited locations. We use a queue to store the cells
+  visited.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

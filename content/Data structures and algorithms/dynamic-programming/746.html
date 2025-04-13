@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/min-cost-climbing-stairs/">746. Min Cost Climbing Stairs</a>
+
+Quentessential dynamic programming problem. We're asked to find the minimum number of steps to reach
+the top, where cost[i] is the cost to take a certain step. We can start from step 0 or step 1. We're
+allowed to make two choices during our ascent, picking to go up one stair or 2 stairs for each step.
+
+We intuit that we can start from index 2 since the 0th and 1st index are already completed for us.
+Starting from index 2, we look backwards one step and two steps, selecting the minimum cost. Making
+this optimal choice at each step in the cost[] array, and reusing already computing information, is
+central to our dynamic programming solution.
+
+Eventually, we reach the top, with cost 0, and cost[n - 1], with n being the size of the array,
+contains the minimum cost to reach the top of the stairs.
+
+The solution is as follows:
+
+
+  class Solution:
+      def minCostClimbingStairs(self, cost: List[int]) -> int:
+          cost.append(0)
+          n = len(cost)
+
+          for i in range(2, n):
+              cost[i] += min(cost[i - 1], cost[i - 2])
+
+          return cost[n - 1]
+
+
+_ Time Complexity:
+
+  O(n) - Where n is the length of cost[], we iterate over the entire array.
+
+_ Space Complexity:
+
+  O(1) - We append a single integer, 0, to the input array and use constant space to store the
+  length of the input array. All operations are conducted in O(1) space on the input array.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

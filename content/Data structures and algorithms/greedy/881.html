@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/boats-to-save-people/">881. Boats to Save People</a>
+
+This problem would be knapsack-esque if we could have more than 2 people per boat. Fortunately,
+we're only allowed to put 2 people on a boat at a time, so it makes it way easier to take the
+greedy approach.
+
+Since we're only allowed to place 2 people on the boat at a time and not bus the limit, we might as
+well put the heaviest and the lightest people on the boat, if they'll fit. We sort the list and
+maintain 2 pointers, l and r. If the boat can support the lightest person on the left of the array
+plus the heaviest person, we increment l. By default, we always decrement r, the heaviest person
+will always be placed on the boat. We update the number of boats, and continue to do this until
+l and r meet.
+
+The solution is as follows:
+
+
+  class Solution:
+      def numRescueBoats(self, people: List[int], limit: int) -> int:
+          people.sort()
+          l, r, ans = 0, len(people) - 1, 0
+
+          while l <= r:
+              if people[l] + people[r] <= limit:
+                  l += 1
+
+              r -= 1
+              ans += 1
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n log(n)) - Sorting takes O(n log(n)) time.
+
+_ Space Complexity:
+
+  O(1) - We use constant space.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

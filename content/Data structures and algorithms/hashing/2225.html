@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/find-players-with-zero-or-one-losses/">
+2225. Find Plays With Zero or One Losses</a>
+
+This is a regular counting problem. We have a list of matches of type [[int, int], ..., [int, int]]
+where match[0] is the winner and match[1] is the loser. The problem asks us to return a sorted list
+of winners (players who have 0 losses) and losers (players who have at most 1 loss).
+
+We solve this problem by using defaultdict(int) to create a dictionary of losers and their losses. We
+also maintain a set() of players just to track what players have actually played a match.
+
+We iterate through all matches, adding both the winners and the losers to the players set. We also
+add the loser to the losses dictionary, incrementing their loss by 1. Finally, we use a set operation
+with the players set to find players that are not in the losses dictionary. These are our winners.
+
+For each loser and number of losses, if the number of losses for a loser == 1, we add them to the
+losers list. Finally, we return a sorted list of winners and losers.
+
+The solution is as follows:
+
+
+  from collections import defaultdict
+
+  class Solution:
+      def findWinners(self, matches: List[List[int]]) -> List[List[int]]:
+          counts = defaultdict(int)
+          players = set()
+
+          for winner, loser in matches:
+              players.add(winner)
+              players.add(loser)
+              counts[loser] += 1
+
+          winners = players - set(counts.keys())
+          losers = []
+
+          for loser, losses in counts.items():
+              if losses == 1: losers += [loser]
+
+          return [sorted(list(winners)), sorted(losers)]
+
+
+_ Time Complexity:
+
+  O(n) - We iterate through each match in the input list once.
+
+_ Space Complexity:
+
+  O(n) - We store every player in the players set.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

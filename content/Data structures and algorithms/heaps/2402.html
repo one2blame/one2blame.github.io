@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/meeting-rooms-iii/">2402. Meeting Rooms III</a>
+
+We're given an array of meeting intervals, [start_i, end_i], and we have n meetings rooms that can
+be allocated. Meetings will take place in the rooms with the lowest number, and once a meeting starts
+in a room that room is no longer available. If a meeting is scheduled to start and no rooms are
+available, the meeting will be delayed and start when a room becomes available - retaining its
+original duration.
+
+To solve this, we use two min heaps - one for the vacant meeting rooms, and one for tracking the
+occupied rooms and their end times. We sort the meetings by start time, and iterate through them. For
+each iteration, while meetings in the occupied heap are ending before the current meeting starts, we
+pop them off the heap and push them to the vacancy list.
+
+If a room is vacant, the current meeting can start at its scheduled time. Otherwise, we pop a meeting
+from the occupied heap and make note of the end time for this meeting. We push the current meeting
+onto the occupied heap with a new end time, accounting for the delay and original duration. We keep
+track of the room we updated, and add the number of meetings handled in this room to the dictionary.
+
+Finally, we return the room number for the room with the greatest number of meetings.
+
+The solution is as follows:
+
+
+  from heapq import heappop, heappush
+
+  class Solution:
+      def mostBooked(self, n: int, meetings: List[List[int]]) -> int:
+          count = [0] * n
+          vacant, occupied = list(range(n)), []
+          meetings = sorted(meetings)
+
+          for start, end in meetings:
+              while occupied and occupied[0][0] <= start:
+                  heappush(vacant, heappop(occupied)[1])
+
+              if vacant:
+                  room = heappop(vacant)
+                  heappush(occupied, (end, room))
+              else:
+                  t, room = heappop(occupied)
+                  heappush(occupied, (t + end - start, room))
+
+              count[room] += 1
+
+          return count.index(max(count))
+
+
+_ Time Complexity:
+
+  O(m * log(m) + m * log(n)) - Sorting meetings requires mlog(m) time, we push and pop from the heap
+  in log(n) time, and we do this operation m times.
+
+_ Space Complexity:
+
+  O(n) - We need n space to store counts, and the heaps will store at most n elements.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

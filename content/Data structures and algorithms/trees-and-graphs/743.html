@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/network-delay-time/">743. Network Delay Time</a>
+
+We're given a list of tuples representing edges in the times input of the format (u_i, v_i, w_i)
+where u is the start node, v is the end node, and w is the weight of the edge. Given a starting
+node, k, we're asked to find the minimum time it takes for all nodes in the graph to be reached. If
+we can't reach all the nodes from the starting node, we return -1.
+
+This is a common Dijkstra's algorithm question, super similar to DFS except edges are directional
+and weighted. We construct a normal Dijkstra's algorithm search. Once the search is complete, we
+take the maximum distance from the distances array. If float("inf") is still present in the
+distances array, we know that not all nodes were reached, so we return -1. Otherwise, we return the
+max distance.
+
+The solution is as follows:
+
+
+  from collections import defaultdict
+  from heapq import heappush, heappop
+
+  class Solution:
+      def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+          distances = [float("inf") for _ in range(n)]
+          distances[k - 1] = 0
+          heap, edges = [(distances[k - 1], k - 1)], defaultdict(list)
+
+          for u, v, w in times:
+              edges[u - 1].append((v - 1, w))
+
+          while heap:
+              curr_dist, u = heappop(heap)
+
+              if curr_dist > distances[u]:
+                  continue
+
+              neighbors = edges[u]
+
+              for v, w in neighbors:
+                  dist = curr_dist + w
+
+                  if dist < distances[v]:
+                      distances[v] = dist
+                      heappush(heap, (dist, v))
+
+          ans = max(distances)
+          return ans if ans != float("inf") else -1
+
+
+_ Time Complexity:
+
+  O(n + elog(n)) - Where n is the number of nodes and e is the number of edges, this is the runtime
+  of Dijkstra's algorithm. We also have to add the time complexity for n, as we select for the max
+  distance in the distance array.
+
+_ Space Complexity:
+
+  O(n + e) - Building the adjaceny list takes e space. The distances array takes n space.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

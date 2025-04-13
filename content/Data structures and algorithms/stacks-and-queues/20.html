@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/valid-parentheses/">20. Valid Parentheses</a>
+
+This problem just requires us to validate that parentheses and brackets, etc. are opened and closed
+correctly in the given string. We accomplish this by using a stack to keep track of the most recently
+seen opening character. If we see a closing character, we pop the opening character off the stack and
+verify a match.
+
+If the closing bracket and the opening bracket from the stack don't match - we've got a problem.
+Otherwise, we continue to process the string until the end, returning True. If characters still
+remain in the stack, we know that we didn't see a matching closing bracket - another problem. In this
+case, we return False.
+
+The solution is as follows:
+
+
+  class Solution:
+      def isValid(self, s: str) -> bool:
+          pairs = dict([("(", ")"), ("{", "}"), ("[", "]")])
+          stack = []
+
+          for bracket in s:
+              if bracket in pairs:
+                  stack.append(bracket)
+              else:
+                  if stack:
+                      opening_bracket = stack.pop()
+                  else:
+                      return False
+
+                  if pairs[opening_bracket] != bracket:
+                      return False
+
+          if stack:
+              return False
+
+          return True
+
+
+_ Time Complexity:
+
+  O(n) - We inspect all characters within the string.
+
+_ Space Complexity:
+
+  O(n) - We maintain a stack of opening brackets.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

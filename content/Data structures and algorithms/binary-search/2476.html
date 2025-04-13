@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/closest-nodes-queries-in-a-binary-search-tree/">
+2476. Closest Nodes Queries in a Binary Search Tree</a>
+
+We're given a binary search tree and asked to find the maximum value that's less than or equal to
+target in queries[i] and the minimum value that's greater than or equal to target in queries[i].
+Initially, I tried to traverse the binary search tree in order and record the max minval and the min
+maxval, but we run into a time limit exceeded because we have issues finishing early when we find
+the correct values - we process unnecessary nodes in the binary search tree.
+
+For faster resolution, we process the binary search tree inorder in O(n) time and collect the tree's
+values in a list in increasing order. For each query, we conduct binary search in log(n) time to find
+the target in queries[i]. If we find the target, the max and min values are the target. If we don't
+find the target, but our ending point is greater than the target, we set the max value to the ending
+point and the min value to the ending point - 1. If our ending point is less than the target, we set
+the max value to the ending point + 1 and the min value to the ending point.
+
+The solution is as follows:
+
+
+  class Solution:
+      def closestNodes(self, root: Optional[TreeNode], queries: List[int]) -> List[List[int]]:
+          def inorder(root: Optional[TreeNode]) -> None:
+              if not root:
+                  return
+
+              inorder(root.left)
+
+              self.nums.append(root.val)
+              self.n += 1
+
+              inorder(root.right)
+
+          self.nums, self.n = [], 0
+          inorder(root)
+          ans = []
+
+          for target in queries:
+              l, r = 0, self.n - 1
+
+              while l <= r:
+                  m = (r + l) // 2
+
+                  if self.nums[m] == target:
+                      break
+                  elif self.nums[m] > target:
+                      r = m - 1
+                  else:
+                      l = m + 1
+
+              if self.nums[m] == target:
+                  ans.append([self.nums[m], self.nums[m]])
+              elif self.nums[m] > target:
+                  minval = -1 if m - 1 < 0 else self.nums[m - 1]
+                  ans.append([minval, self.nums[m]])
+              else:
+                  maxval = self.nums[m + 1] if m + 1 < self.n - 1 else -1
+                  ans.append([self.nums[m], maxval])
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n log(n)) - We use inorder tree traversal to create a list of the binary search tree's values
+  in O(n) time. For each query, we conduct binary search in log(n) time.
+
+_ Space Complexity:
+
+  O(n) - We convert the input tree to an array.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

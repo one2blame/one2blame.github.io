@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/">
+188. Best Time to Buy and Sell Stock IV</a>
+
+Relate to other "Best Time to Buy and Sell Stock" problems, this problem allows at most k
+transactions, that being buying and selling a stock. Like most dynamic programming problems, we think
+of states and actions.
+
+What are the states? Well there's the current day and its price, whether or not we currently hold the
+stock, and how many transactions we've made so far. Also, a transaction is only complete if we buy
+and then sell.
+
+What are the actions? We can either buy, sell, or do nothing.
+
+With that, we essentially search our way to the right answer - DFS and dynamic programming are pretty
+closely related. Recursively, we start at day 0, we don't hold the stock, and we still have k
+transactions to make. We can either do nothing, buy the stock, or if we currently hold the stock we
+can sell it. At each state, we maximize for profit.
+
+To terminate the search, if we reach the last day or we've made all k transactions, we return 0.
+
+The solution is as follows:
+
+
+  class Solution:
+      def maxProfit(self, k: int, prices: List[int]) -> int:
+          n = len(prices)
+
+          @cache
+          def dp(i: int, h: bool, j: int) -> int:
+              if i == n or j == 0:
+                  return 0
+
+              ans = dp(i + 1, h, j)
+
+              if h:
+                  ans = max(ans, prices[i] + dp(i + 1, False, j - 1))
+              else:
+                  ans = max(ans, -prices[i] + dp(i + 1, True, j))
+
+              return ans
+
+          return dp(0, False, k)
+
+
+_ Time Complexity:
+
+  O(n * k) - Where n is the number of days and k is the number of transactions. This is a typical
+  time complexity of DFS, we just applied it to a dynamic programming problem.
+
+_ Space Complexity:
+
+  O(n * k) - Our recursive call stack can grow to a maximum of n * k.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

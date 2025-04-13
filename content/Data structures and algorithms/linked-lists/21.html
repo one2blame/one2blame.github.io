@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/merge-two-sorted-lists/">21. Merge Two Sorted Lists</a>
+
+We're given two sorted linked lists where each node has an integer value. We're asked to merge the
+two linked lists, maintaining their sorted property, and return the head. Pretty straightforward, we
+traverse both linked lists simultaneously comparing their values. We maintain a dummy node to keep
+track of the new head, and we maintain a head to add nodes to the merged linked list.
+
+If the value in list1 is less than the value in list2, we append it to the list, else we append the
+value from list2 to the list. Finally, we check to make sure no nodes remain in list1 and list2. If
+nodes remain, we append them.
+
+Then we return dummy.next, which is the head node of the new merged linked list.
+
+The solution is as follows:
+
+
+  class Solution:
+      def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+          dummy = ListNode()
+          head = dummy
+
+          while list1 and list2:
+              if list1.val < list2.val:
+                  head.next, list1 = list1, list1.next
+              else:
+                  head.next, list2 = list2, list2.next
+
+              head = head.next
+
+          while list1:
+              head.next, list1 = list1, list1.next
+              head = head.next
+
+          while list2:
+              head.next, list2 = list2, list2.next
+              head = head.next
+
+          return dummy.next
+
+
+_ Time Complexity:
+
+  O(n + m) - We traverse all nodes within lists 1 and 2.
+
+_ Space Complexity:
+
+  O(1) - We maintain a dummy node to keep track of the head of the new linked list.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

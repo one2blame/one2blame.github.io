@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/">
+863. All Nodes Distance K in Binary Tree</a>
+
+We're asked to return the values of the nodes that are distance k from a given target node. We can
+accomplish this by conducting a DFS through the binary tree to assign each node a parent node. This
+allows us to treat the binary tree as an undirected graph.
+
+With this updated graph, we can condcut a BFS from the target node outwards, conducting k steps.
+Once we've done k steps, we return the values of the nodes still remaining in the queue - these are
+the nodes at the level that are k distance away from the target.
+
+The solution is as follows:
+
+
+  class Solution:
+      def distanceK(self, root: TreeNode, target: TreeNode, k: int) -> List[int]:
+          stack = [(root, None)]
+
+          while stack:
+              node, parent = stack.pop()
+              node.parent = parent
+              if node.left:
+                  stack.append((node.left, node))
+              if node.right:
+                  stack.append((node.right, node))
+
+          distance = 0
+          seen = {target}
+          queue = [target]
+
+          while queue and distance < k:
+              curr_queue, queue = queue, []
+
+              for node in curr_queue:
+                  for neighbor in [node.left, node.right, node.parent]:
+                      if neighbor and neighbor not in seen:
+                          seen.add(neighbor)
+                          queue.append(neighbor)
+
+              distance += 1
+
+          return [node.val for node in queue]
+
+
+_ Time Complexity:
+
+  O(n) - DFS and BFS both take O(n) time.
+
+_ Space Complexity:
+
+  O(n) - We maintain a stack, queue, and seen set that all take up O(n) space.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/maximum-tastiness-of-candy-basket/">
+2517. Maximum Tastiness of Candy Basket</a>
+
+We're given a list of prices, price[i], where price[i] is the price of the ith candy. We're also
+given the desired size of a candy basket, k. We're asked to find the maximum tastiness of a basket,
+where tastiness is a function of the minimum absolute difference between the prices of any pair of
+candies in the basket.
+
+To solve this problem, we binary search through the prices of the candies provided, from the minimum
+price to maximum difference of prices, max(price) - min(price). During each step of the binary
+search, our decision function involves constructing a basket of candies with the difference between
+the pairs of candies being greater than or equal to the current mid value. If we can construct a
+basket with k or more candies, we update our left pointer to mid + 1. Otherwise, we update our right
+pointer to mid - 1. We continue this process until our left pointer is greater than our right
+pointer. The maximum tastiness of the basket is the value of the right pointer.
+
+The solution is as follows:
+
+
+  class Solution:
+      def maximumTastiness(self, price: List[int], k: int) -> int:
+          price.sort()
+          min_price = price[0]
+          l, r, n = 0, price[-1] - min_price, len(price)
+
+          while l <= r:
+              m = (r + l) // 2
+
+              prev, basket = min_price, 1
+
+              for i in range(1, n):
+                  if price[i] - prev >= m:
+                      basket += 1
+                      prev = price[i]
+
+              if basket < k:
+                  r = m - 1
+              else:
+                  l = m + 1
+
+          return r
+
+
+_ Time Complexity:
+
+  O(n log(n) + n log(p)) - Where n is the number of prices and p is the maximum difference of prices.
+
+_ Space Complexity:
+
+  O(n) - Python's sorting algorithm uses O(n) space.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

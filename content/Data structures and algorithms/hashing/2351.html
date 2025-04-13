@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/first-letter-to-appear-twice/">
+2351. First Letter to Appear Twice</a>
+
+We return the first letter to appear twice in a string. Honestly, just maintain a set, check to see
+if the letter is already in the set - add it to the set if it's not in the set. If the letter is in
+the set, return it.
+
+The solution is as follows:
+
+
+  class Solution:
+      def repeatedCharacter(self, s: str) -> str:
+          seen = set()
+
+          for c in s:
+              if c in seen:
+                  return c
+
+              seen.add(c)
+
+
+_ Time Complexity:
+
+  O(n) - We iterate through the string once.
+
+_ Space Complexity:
+
+  O(n) - We store at most n values in the set.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

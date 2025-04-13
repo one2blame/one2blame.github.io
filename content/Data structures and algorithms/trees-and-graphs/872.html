@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/leaf-similar-trees/">872. Leaf-Similar Trees</a>
+
+Given the root of two binary trees, we're asked to determine if their leaves are similar - meaning
+that they are in the same sequence, regardless of orientation of the tree. This can be easily solved
+by conducting DFS on both trees, processing the nodes in order. If we encounter a leaf, we return
+the value of the leaf. Otherwise, we conduct dfs on the left node first and the right node second.
+This consistent order of operations retains the order of the leaf nodes - allowing us to determine
+if the two trees are leaf similar.
+
+The solution is as follows:
+
+
+  class Solution:
+      def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+          def dfs(node: Optional[TreeNode]) -> list:
+              if not node:
+                  return []
+
+              if not node.left and not node.right:
+                  return [node.val]
+              else:
+                  return dfs(node.left) + dfs(node.right)
+
+          return dfs(root1) == dfs(root2)
+
+
+_ Time Complexity:
+
+  O(n + m) - Where n is the first tree and m is the second tree.
+
+_ Space Complexity:
+
+  O(n + m) - Where n is the first tree and m is the second tree.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

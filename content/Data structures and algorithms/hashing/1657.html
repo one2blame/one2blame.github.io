@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/determine-if-two-strings-are-close/">
+1657. Determine if Two Strings are Close</a>
+
+We have two strings. We need to know if we can create one string from the other by replacing
+characters. The characters within the first string need to exist in the second string. If we were to
+replace characters, they should have the same frequency in both strings.
+
+First we check to see if the strings are the same length. Then we check to see if the characters in
+both strings are the same. Finally, we count the frequency of the characters, sort the frequencies,
+and verify that they match.
+
+Because we only deal with lowercase letters, our storage is O(1) and our time complexity is O(n).
+Usually sorting is O(n log n), but because we only have 26 characters, we can consider it O(1).
+Therefore, we only incur an O(n) time complexity because of the counting.
+
+The solution is as follows:
+
+
+  from collections import Counter
+
+  class Solution:
+      def closeStrings(self, word1: str, word2: str) -> bool:
+          if len(word1) != len(word2): return False
+          if set(word1) != set(word2): return False
+          word1_count = Counter(word1)
+          word2_count = Counter(word2)
+          return sorted(word1_count.values()) == sorted(word2_count.values())
+
+
+_ Time Complexity:
+
+  O(n) - We count the frequency of all the characters in the input, and conduct a sort with a time
+  complexity of O(26 log 26).
+
+_ Space Complexity:
+
+  O(1) - All inputs consist of lowercase English letters, so the space complexity is constant.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

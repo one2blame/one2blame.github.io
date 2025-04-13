@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/find-k-pairs-with-smallest-sums/">
+373. Find K Pairs with Smallest Sums</a>
+
+Given two list of integers in increasing order, and an integer, k, we're asked to find k pairs with
+the smallest sums. Naturally, we think to use a min heap to solve this problem.
+
+Our brute force solution would be to calculate all pairs and push them onto a min heap, however,
+this would result in a time limit exceeded from the test suite as we would have to process m * n
+pairs.
+
+What we can do, however, is essentially use a depth first search, treating the two lists as part of
+a m * n matrix. We start at the top left corner, (0, 0), which is guaranteed to be the smallest sum
+pair as it's the first element in both lists. We push this value to the heap and continue. For k
+steps, we pop the smallest value from the heap, and add it to the answer. We search the adjacent
+cells i + 1 and j + 1, pushing them to the heap. Like a regular depth first search, we also maintain
+a seen set to avoid duplicates.
+
+We're essentially treating each integer in the matrix as a node, and the edges are the sum of the
+two integers. We're not searching for the shortest path to any particular destination, but rather
+the shortest path in general.
+
+The solution is as follows:
+
+
+  from heapq import heappop, heappush
+
+  class Solution:
+      def kSmallestPairs(
+          self, nums1: List[int], nums2: List[int], k: int
+      ) -> List[List[int]]:
+          m, n = len(nums1), len(nums2)
+
+          ans, seen = [], set()
+          h = [(nums1[0] + nums2[0], (0, 0))]
+          seen.add((0, 0))
+
+          while k and h:
+              val, (i, j) = heappop(h)
+              ans.append([nums1[i], nums2[j]])
+
+              if i + 1 < m and (i + 1, j) not in seen:
+                  heappush(h, (nums1[i + 1] + nums2[j], (i + 1, j)))
+                  seen.add((i + 1, j))
+
+              if j + 1 < n and (i, j + 1) not in seen:
+                  heappush(h, (nums1[i] + nums2[j + 1], (i, j + 1)))
+                  seen.add((i, j + 1))
+
+              k -= 1
+
+          return ans
+
+
+_ Time Complexity:
+
+  O((min(k * log(k), m * n * log(m * n)))) - Unlikely we'll process m * n pairs, but if k is >=,
+  this is the worst case.
+
+_ Space Complexity:
+
+  O(min(k, m * n)) - Likely that k will be less than m * n, but this is the size of the heap in the
+  worst case. 
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

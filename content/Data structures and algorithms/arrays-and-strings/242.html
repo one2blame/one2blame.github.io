@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/valid-anagram/">242. Valid Anagram</a>
+
+Given an string, return True or False if it's a valid anagram. An anagram is a word or phrase formed
+by rearranging the letters of a different word or phrase, typically using all the original letters
+exactly once. We can solve this problem by sorting both strings and comparing them. If they're equal,
+we return True, otherwise, we return False.
+
+The solution is as follows:
+
+
+  from collections import Counter
+
+  class Solution:
+      def isAnagram(self, s: str, t: str) -> bool:
+          return Counter(s) == Counter(t)
+
+
+_ Time Complexity:
+
+  O(n + m) - Where n is the size of s and m is the size of t, we count the frequency of characters in
+  both strings.
+
+_ Space Complexity:
+
+  O(n + m) - We store character counts for each string in a Counter object.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

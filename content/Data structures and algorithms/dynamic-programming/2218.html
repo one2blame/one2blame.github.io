@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/maximum-value-of-k-coins-from-piles/">
+2218. Maximum Value of K Coins From Piles</a>
+
+This can be solved using knapsack, but I'll show the recursive dynamic programming solution because
+it's easier to understand. With dynamic programming, we know we need to use memoization to avoid
+recalculating solutions for states we've already visited. We learn that states in this problem are
+defined by the current pile of coins we're visiting, and the number of coins we've already selected.
+
+During our recursion, we'll check to see if we've memoized the current state - if so we return the
+answer. Otherwise, starting from the last pile, we keep a current sum to track the value of the coins
+we've taken. We start from 0, and take as many coins as possible from the pile or from the number of
+coins we're still allowed to take.
+
+We recursively call this function on the next pile of coins, keeping track of the number of coins
+we've already selected.
+
+The solution is as follows:
+
+
+  class Solution:
+      def maxValueOfCoins(self, piles: List[List[int]], k: int) -> int:
+          n = len(piles)
+          lengths = [len(pile) for pile in piles]
+          memo = [[-1 for _ in range(k + 1)] for _ in range(n + 1)]
+
+          def dp(i: int, c: int) -> int:
+              if not i:
+                  return 0
+
+              if memo[i][c] != -1:
+                  return memo[i][c]
+
+              curr_sum = 0
+
+              for curr_coins in range(0, min(lengths[i - 1], c) + 1):
+                  if curr_coins > 0:
+                      curr_sum += piles[i - 1][curr_coins - 1]
+
+                  memo[i][c] = max(memo[i][c], curr_sum + dp(i - 1, c - curr_coins))
+
+              return memo[i][c]
+
+          return dp(n, k)
+
+
+_ Time Complexity:
+
+  O(n * k) - Where n is the number of piles and k is the number of coins we're allowed to take.
+
+_ Space Complexity:
+
+  O(n * k) - Our recursive call stack can grow to a maximum of n * k.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

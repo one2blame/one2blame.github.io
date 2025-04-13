@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/daily-temperatures/">739. Daily Temperatures</a>
+
+Given some temperatures, we return an array that correlates to the number of days we'll have to wait
+for a higher temperature to appear. A brute force solution would have a time complexity of O(n^2),
+wherein for each temperature we'd iterate through the rest of the list to find the next higher
+temperature.
+
+Instead, we can use a monotonic stack to keep track of the indicies of the temperatures we've seen so
+far. It's monotonic because we will only begin to pop values once we've encountered a temperature
+higher than the one at the top of the stack. When we pop the top of the stack, we receive an index
+that has a lower temperature than the current day. We update its answer by subtracting the current
+day's index from the previous day.
+
+The solution is as follows:
+
+
+  class Solution:
+      def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+          stack = []
+          answer = [0] * len(temperatures)
+
+          for i in range(len(temperatures)):
+              while stack and temperatures[stack[-1]] < temperatures[i]:
+                  j = stack.pop()
+                  answer[j] = i - j
+              stack.append(i)
+
+          return answer
+
+
+_ Time Complexity:
+
+  O(n) - We iterate through the list once.
+
+_ Space Complexity:
+
+  O(n) - We maintain a monotonic stack that could grow to n in the worst case.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

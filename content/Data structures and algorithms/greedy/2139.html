@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/minimum-moves-to-reach-target-score/">
+2139. Minimum Moves to Reach Target Score</a>
+
+We're given an integer, target, that we want to reach with the minimum amount of operations. The
+operations we can conduct or multiply by 2, and increment by 1. We also have an integer, maxDoubles,
+the maximum number of times we can multiply by 2. We need to return the minimum number of operations
+required to reach the target.
+
+We solve this problem greedily, and work backwards. While we have maxDoubles left and the target is
+greater than 1, if the target is even and greater than 2, we multiply by 2 and decremenet maxDoubles
+by 1. Otherwise, we decrement the target by 1. After conducting either operation, we'll increment
+the number of operations we've done so far by 1.
+
+Eventually, target will be equal to 1, and we'll return the minimum number of operations needed to
+reach target.
+
+The solution is as follows:
+
+
+  class Solution:
+      def minMoves(self, target: int, maxDoubles: int) -> int:
+          ans = 0
+
+          while target > 1 and maxDoubles:
+              if not target % 2 and target != 2:
+                  maxDoubles -= 1
+                  target = target // 2
+              else:
+                  target -= 1
+
+              ans += 1
+
+          return ans + target - 1
+
+
+_ Time Complexity:
+
+  O(n) - Where n is the target, we iterate n times in the worst case.
+
+_ Space Complexity:
+
+  O(1) - We use constant space to track number of operations.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

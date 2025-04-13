@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/subsets/">78. Subsets</a>
+
+We're given a list of nums and asked to generate all subsets of the input, maintaining the order of
+the integers in the input. The subsets can be returned in any order, but the integers in each subset
+must remain in the original order.
+
+We use backtracking to solve this, treating each subset as a node in a graph. We pass the index to
+start iteration through nums during each backtrack() function call. This enables us to decrease the
+amount of input we're traversing at each node in the graph. This also maintains the original order
+of the input. No need to check the size of the subset, we add all of them as we create the final
+subset when traversing the graph.
+
+The solution is as follows:
+
+
+  class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        ans, n = [], len(nums)
+
+        def backtrack(s: List[int], i: int) -> None:
+            ans.append(s[:])
+
+            for j in range(i, n):
+                s.append(nums[j])
+                backtrack(s, j + 1)
+                s.pop()
+
+        backtrack([], 0)
+
+        return ans
+
+
+_ Time Complexity:
+
+  O(n * 2^n) - Where n is the length of nums, we have to generate all subsets and then copy them
+  into the output list.
+
+_ Space Complexity:
+
+  O(n) - We use this much space to store s, the working list for each subset.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/implement-stack-using-queues/">
+225. Implement Stack using Queues</a>
+
+Another fun problem requiring us to implement methods in a class. This time, instead of implementing
+a queue using stacks, like <a href="232.html">232. Implement Queue using Stacks</a>, we are asked to
+implement a stack using queues. Surprise here, we're only going to need one queue for the optimal
+solution.
+
+A stack always return the most recently pushed element. A queue returns the element that was pushed
+first. In a queue, our elements can only enter from the back and exit from the front. So, in order
+to emulate the behavior of a stack, we're going to have to get the most recently entered element
+from the back to the front.
+
+We do this by rotating the queue, dequeuing the elements from the front and enqueuing to the back,
+except for the most recently enqueued element. Eventually, the most recenelty enqueued element will
+be in the front, and we will not be emulating a stack.
+
+What's also pretty is, if we do this every time a push operation occurs, we essentially emulate a
+stack with a queue.
+
+The solution is as follows:
+
+
+  from collections import deque
+
+  class MyStack:
+      def __init__(self):
+          self.queue = deque([])
+
+      def push(self, x: int) -> None:
+          self.queue.append(x)
+          for _ in range(len(self.queue) - 1):
+              self.queue.append(self.queue.popleft())
+
+      def pop(self) -> int:
+          return self.queue.popleft()
+
+      def top(self) -> int:
+          return self.queue[0]
+
+      def empty(self) -> bool:
+          return not self.queue
+
+
+_ Time Complexity:
+
+  O(n) - We have to process all the elements of the queue every time a push operation occurs.
+
+_ Space Complexity:
+
+  O(n) - We maintain one queue to emulate a stack.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

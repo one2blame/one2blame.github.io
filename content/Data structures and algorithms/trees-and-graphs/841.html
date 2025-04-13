@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/keys-and-rooms/">841. Keys and Rooms</a>
+
+Pretty simple depth-first search problem. We're asked to determine if we're able to travel to every
+room from room 0. In each room, we're given a list of keys that allow us to open other rooms. This
+list of keys can be treated like a list of neighbors for the current room.
+
+Each time we visit a room, we mark it as seen or visited. At the end of the DFS from the 0th node,
+if all rooms are marked as seen we return True, otherwise False.
+
+The solution is as follows:
+
+
+  class Solution:
+      def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+          seen = [False] * len(rooms)
+          seen[0] = True
+          stack = [0]
+
+          while stack:
+              node = stack.pop()
+              for neighbor in rooms[node]:
+                  if not seen[neighbor]:
+                      seen[neighbor] = True
+                      stack.append(neighbor)
+
+          return all(seen)
+
+
+_ Time Complexity:
+
+  O(n + e) - Where n is the number of rooms and e is the number of keys.
+
+_ Space Complexity:
+
+  O(n) - We store the stack and a set of seen rooms.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/missing-number/">268. Missing Number</a>
+
+Honestly, an annoying question. The optimal answer requires you to recall the formula for the sum of
+an arithmetic sequence. The formula is as follows:
+
+  sum = (n * (n + 1)) // 2
+
+where n is the number of elements in the sequence. We can use this formula to find the sum of the
+sequence of numbers from 0 to n. Then, we can subtract the sum of the given array from the sum of
+the sequence of numbers from 0 to n. The result will be the missing number.
+
+The solution is as follows:
+
+
+  class Solution:
+      def missingNumber(self, nums: List[int]) -> int:
+          return ((len(nums) * (len(nums) + 1)) // 2) - sum(nums)
+
+
+_ Time Complexity:
+
+  O(n) - We calculate the length of the nums array. We also calculate the sum of the nums array.
+
+_ Space Complexity:
+
+  O(1) - We only use a constant amount of space to store the sum of the nums array and the length of
+  the nums array.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

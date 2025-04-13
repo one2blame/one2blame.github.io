@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/maximal-square/">221. Maximal Square</a>
+
+Given a matrix of m x n size, we're asked to find the largest square in the matrix such that all
+cells of the square contain the string "1". Knowing this is a dynamic programming problem, we need
+to figure out what our recurrence relation is.
+
+We'll start from the top left of the matrix, and make our way towards the bottom right. For each
+cell, we first check to see if it's a "1" or a "0". If it's a "1", it could possibly be part of a
+larger square that we've previously discovered. Since we're moving from the top left to the bottom
+right, we know that we can probably use previously solved solutions for problems in the cells:
+
+  * [i - 1][j - 1]
+  * [i - 1][j]
+  * [i][j - 1]
+
+The current cell will always be the bottom right corner of a square, and its value represents the
+length of the edge of that square. Thus, if a current cell's previous cells are all 1's, it means
+that adding the current cell to the square will increase the size of the total square's edges to 2.
+That's because we'll be adding 3 squares together with this one.
+
+Similarly, if all the neighbor cells have a value of 2, it means that they are cells within the
+bottom right corner of squares that have edges of length 2. Adding all three of these squares
+together, plus the current cell, will create a square with edges length 3.
+
+Imagine a situation in which 2 cells have a value of 2, but one has a value of 1. This means that
+the cell with a value of 1 is not in a square that's as large as the other two cells. Therefore,
+if we add the current cell, we still won't have a complete square. Thus, we must stick with the
+smallest of our neighbors to accurately represent the size of squares in the matrix. Taking the
+minimum neighbor's cell value, 1, and adding 1, accounting for our current cell, we're merging the
+corners of the smaller squares and the larger squares, ending up with a separate square with edges
+length 2.
+
+The solution is as follows:
+
+
+  class Solution:
+      def maximalSquare(self, matrix: List[List[str]]) -> int:
+          m, n, ans = len(matrix), len(matrix[0]), 0
+          T = [[0 for _ in range(n + 1)] for _ in range(m + 1)]
+
+          for i in range(1, m + 1):
+              for j in range(1, n + 1):
+                  if int(matrix[i - 1][j - 1]):
+                      T[i][j] = min(T[i - 1][j - 1], T[i - 1][j], T[i][j - 1]) + 1
+                  else:
+                      T[i][j] = 0
+
+                  ans = max(ans, T[i][j])
+
+          return ans * ans
+
+
+_ Time Complexity:
+
+  O(mn) - We iterate over each row and column once.
+
+_ Space Complexity:
+
+  O(mn) - We memoize our solution for each cell in a table m x n size.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

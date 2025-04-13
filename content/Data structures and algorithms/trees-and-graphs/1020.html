@@ -1,0 +1,84 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/number-of-enclaves/">1020. Number of Enclaves</a>
+
+Given a 2D matrix of 1s and 0s, we're asked to treat 1s and connected 1s as islands, and 0s as water.
+We're asked to find the number of 1s that are not on the boundary of the matrix. We can solve this by
+inspecting each cell in the grid - if the cell contains land we conduct a DFS.
+
+During our DFS, if we detect a boundary for this island, we return the count of 0 for this island. We
+then add this count to our answer. Otherwise, during our DFS we count the number of 1s in this island
+and return this count, adding it to our answer.
+
+The seen set from our DFS prevents us from conducting DFS on the same island multiple times.
+
+The solution is as follows:
+
+
+  class Solution:
+      def numEnclaves(self, grid: List[List[int]]) -> int:
+          n, m, ans = len(grid), len(grid[0]), 0
+          directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+          self.seen = set()
+
+          def is_valid(y: int, x: int) -> bool:
+              return -1 < y < n and -1 < x < m
+
+          def dfs(q: int, p: int) -> int:
+              count = 0
+              boundary = False
+              stack = [(q, p)]
+
+              while stack:
+                  y, x = stack.pop()
+                  count += 1
+
+                  for dy, dx in directions:
+                      ny, nx = y + dy, x + dx
+
+                      if is_valid(ny, nx):
+                          if grid[ny][nx] and (ny, nx) not in self.seen:
+                              self.seen.add((ny, nx))
+                              stack.append((ny, nx))
+                      else:
+                          boundary = True
+
+              return count if not boundary else 0
+
+          for i in range(n):
+              for j in range(m):
+                  if grid[i][j] and (i, j) not in self.seen:
+                      self.seen.add((i, j))
+                      ans += dfs(i, j)
+          
+          return ans
+
+
+_ Time Complexity:
+
+  O(n * m) - DFS is O(n + m) and we visit each cell in the matrix.
+
+_ Space Complexity:
+
+  O(n * m) - In the worst case, we maintain a seen set the same size as the matrix.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/maximum-distance-between-a-pair-of-values/">
+1855. Maximum Distance Between a Pair of Values</a>
+
+We could use binary search for each number in nums1 to find the lowest number in nums2 that is
+greater than or equal to our current selection. Then we bisect candidate numbers and maximize our
+answer.
+
+This is suboptimal to a two pointers solution where we iterate through both lists and increment the
+pointer of the list with the smaller number. We update our answer when we find a pair that satisfies
+our condition.
+
+The solution is as follows:
+
+
+  class Solution:
+    def maxDistance(self, nums1: List[int], nums2: List[int]) -> int:
+        ans, i, j = 0, 0, 0
+
+        while i < len(nums1) and j < len(nums2):
+            if nums1[i] > nums2[j]:
+                i += 1
+            else:
+                ans = max(ans, j - i)
+                j += 1
+
+        return ans
+
+
+_ Time Complexity:
+
+  O(m + n) - We use two pointers and iterate through both lists.
+
+_ Space Complexity:
+
+  O(1) - We use constant space to retain our variables.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,127 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/design-linked-list/">707. Design Linked List</a>
+
+We're required to desing our own implementation of a Linked List. It can be singly or doubly linked,
+doesn't matter, just has to meet the requirements. The biggest trick is to go ahead and use a
+doubly linked list. It's easier to reason about and faster than a singly linked list to traverse.
+
+First we start off by declaring the ListNode class. Then we create the __init__ method for the
+MyLinkedList class, creating a head and tail with two dummy (sentinel) nodes. We also have to track
+the size of the linked list.
+
+Adding nodes at the head and tail are pretty straightforward. Just realize the head and tail will
+always be dummy nodes and the predecessor and successor of the new node, respectively.
+
+When indexing into the doubly linked list, we'll calculate the distance from the head or tail to the
+requested index. This helps us decide whether to traverse from the head or tail, decreasing the
+amount of time it takes for us to conduct an operation.
+
+The solution is as follows:
+
+
+  class ListNode:
+      def __init__(self, val, pred=None, succ=None):
+          self.val = val
+          self.prev, self.next = pred, succ
+
+
+  class MyLinkedList:
+      def __init__(self):
+          self.size = 0
+          self.head, self.tail = ListNode(0), ListNode(0)
+          self.head.next, self.tail.prev = self.tail, self.head
+
+      def get(self, index: int) -> int:
+          if index < 0 or index >= self.size:
+              return -1
+
+          if index + 1 < self.size - index:
+              curr = self.head
+              for _ in range(index + 1):
+                  curr = curr.next
+          else:
+              curr = self.tail
+              for _ in range(self.size - index):
+                  curr = curr.prev
+
+          return curr.val
+
+      def addAtHead(self, val: int) -> None:
+          pred, succ = self.head, self.head.next
+          self.size += 1
+          pred.next = succ.prev = ListNode(val, pred, succ)
+
+      def addAtTail(self, val: int) -> None:
+          pred, succ = self.tail.prev, self.tail
+          self.size += 1
+          pred.next = succ.prev = ListNode(val, pred, succ)
+
+      def addAtIndex(self, index: int, val: int) -> None:
+          if index > self.size:
+              return
+          if index < 0:
+              index = 0
+
+          if index < self.size - index:
+              pred = self.head
+              for _ in range(index):
+                  pred = pred.next
+              succ = pred.next
+          else:
+              succ = self.tail
+              for _ in range(self.size - index):
+                  succ = succ.prev
+              pred = succ.prev
+
+          self.size += 1
+          pred.next = succ.prev = ListNode(val, pred, succ)
+
+      def deleteAtIndex(self, index: int) -> None:
+          if index < 0 or index >= self.size:
+              return
+
+          if index < self.size - index:
+              pred = self.head
+              for _ in range(index):
+                  pred = pred.next
+              succ = pred.next.next
+          else:
+              succ = self.tail
+              for _ in range(self.size - index - 1):
+                  succ = succ.prev
+              pred = succ.prev.prev
+
+          self.size -= 1
+          pred.next, succ.prev = succ, pred
+
+
+_ Time Complexity:
+
+  O(1) - For adding at the tail or head.
+  O(min(k, N-k)) - For adding at an index, getting, or deleting a node, where k is the index.
+
+_ Space Complexity:
+
+  O(1) - We maintain two pointers, slow and fast.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

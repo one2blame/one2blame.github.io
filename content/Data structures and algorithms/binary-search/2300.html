@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/successful-pairs-of-spells-and-potions/">
+2300. Successful Pairs of Spells and Potions</a>
+
+The input provides is an integer list of spells, an integer list of potions, and an integer, success.
+A pair of spells and potions are considered successful if the product of their strings is at least
+success. We're asked to find the number of potions that will form a successful pair with each spell.
+
+The potion input is not sorted - without sorting our time complexity to solve this problem using
+brute force would be O(n^2). We can solve this problem in O(n log(n)) by sorting the input first.
+With potions sorted in ascending order, for each spell we can conduct binary search to find the
+minimum potion that will form a successful pair with the spell. Once we find the minimum successful
+pairing, we know that all potions after the minimum are also successful, counting them in the answer.
+
+The solution is as follows:
+
+
+  class Solution:
+      def successfulPairs(self, spells: List[int], potions: List[int], success: int) -> List[int]:
+          potions.sort()
+          ans = []
+          n = len(potions)
+
+          for spell in spells:
+              l, r = 0, n - 1
+
+              while l <= r:
+                  m = (r + l) // 2
+
+                  if potions[m] * spell < success:
+                      l = m + 1
+                  else:
+                      r = m - 1
+
+              ans.append(n - l)
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(nlog(n) + mlog(m)) - We sort n potions and conduct a binary search for m spells.
+
+_ Space Complexity:
+
+  O(n + m) - Sorting in Python uses O(n) space. We use O(m) space for the answer list.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

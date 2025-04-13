@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/odd-even-linked-list/">328. Odd Even Linked List</a>
+
+Fun problem, pretty intuitive solution. We're given a singly linked list and asked to relink and
+return it with a catch - all odd-indexed nodes should be linked together in a group, and all
+even-indexed nodes should be linked together in a group succeeding the odd-indexed node group.
+
+The best way to solve this is with a whiteboard, but afterwards we quickly identify the edge cases.
+We just need to make sure that for smaller lists we don't run into referencing non-existant nodes.
+Maintain an even and an odd pointer that we use to traverse and link odd and even nodes together.
+We also need a third node to maintain the location of the even list's head.
+
+After successfully linking together the odd and even nodes, we link the odd list to the even list
+using the third pointer mentioned ealier. We then return the head of the list.
+
+The solution is as follows:
+
+
+  class Solution:
+      def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+          if not head: return head
+
+          odd = head
+          even = conn = head.next
+
+          while even and even.next:
+              odd.next = even.next
+              odd = odd.next
+              even.next = odd.next
+              even = even.next
+
+          odd.next = conn
+
+          return head
+
+
+_ Time Complexity:
+
+  O(n) - We traverse all nodes within the linked list.
+
+_ Space Complexity:
+
+  O(1) - We maintain pointers in constant space.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

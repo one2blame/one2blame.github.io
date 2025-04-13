@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/middle-of-the-linked-list/">876. Middle of the Linked List</a>
+
+Given a singly linked list, return the middle element. Pretty straight forward with a fast and slow
+pointer. If the fast pointer moves two nodes for every one node the slow pointer moves, then when the
+fast pointer reaches the end of the list, the slow pointer will be at the middle node.
+
+The solution is as follows:
+
+
+  class Solution:
+      def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+          slow, fast = head, head.next
+
+          while fast:
+              fast = fast.next
+              if fast: fast = fast.next
+              slow = slow.next
+
+          return slow
+
+
+_ Time Complexity:
+
+  O(n) - We traverse all nodes within the linked list.
+
+_ Space Complexity:
+
+  O(1) - We maintain two pointers, slow and fast.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/even-odd-tree/">1609. Even Odd Tree</a>
+
+For a binary tree where levels start at 0 from the root, we're asked to determine if the nodes at
+each level are of the opposite parity from the level. So if a level is 0, all the nodes have to be
+odd, and vice versa.
+
+We're also asked to make sure that on even levels, the nodes are strictly increasing from left to
+right, and vice versa for odd levels, while maintain the parity constraint mentioned above.
+
+To solve this, we conduct a BFS and check the parity of all nodes at the current level to make sure
+it satisfies the constraint. We return False as soon as that constraint is violated. Next, we
+maintain the value of the last node we've seen. If the level is odd and the node is greater than or
+equal to the last value, we return False. If the level is even and the node is less than or equal to
+the last value, we return False.
+
+If none of the constraints are violated during the BFS, we return True.
+
+The solution is as follows:
+
+
+  class Solution:
+      def isEvenOddTree(self, root: Optional[TreeNode]) -> bool:
+          level = -1
+          queue = [root]
+
+          while queue:
+              this_queue, queue = queue, []
+              last_val = 0
+              level += 1
+
+              for node in this_queue:
+                  if node.val % 2 == level % 2:
+                      return False
+
+                  if level % 2:
+                      if last_val and last_val <= node.val:
+                          return False
+                  else:
+                      if last_val and last_val >= node.val:
+                          return False
+
+                  last_val = node.val
+
+                  if node.left:
+                      queue.append(node.left)
+                  if node.right:
+                      queue.append(node.right)
+
+          return True
+
+
+_ Time Complexity:
+
+  O(n) - We traverse O(n) nodes of the tree.
+
+_ Space Complexity:
+
+  O(n) - The queue can contain at most O(n) nodes of the tree.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination/">
+1293. Shortest Path in a Grid with Obstacles Elimination</a>
+
+Hard question, for sure. With a n x m grid, we're asked to start at location (0, 0) and make our way
+to (n - 1, m - 1). We can move up, down, left, and right. There are obstacles in the way, and we're
+given k opportunities to destroy obstacles.
+
+This is similar to a different problem where we need to travel from (0, 0) to (n - 1, m - 1). To
+solve this, we can conduct a BFS and maintain the number of obstacles we can still destroy as part
+of the state for each cell / node as we travese the graph. Like always, we maintain a set of seen
+locations to avoid visiting the same cell twice. If we still have opportunities to destroy obstacles
+remaining during our travels, we decrement the remain counter and pass this information to the next
+step.
+
+If we reach a cell and the neighbors are obstacles but we have no opportunities to destroy them, the
+traversal for this path in the BFS ends. If we reach the destination, we return the number of steps,
+otherwise we return -1.
+
+The solution is as follows:
+
+
+  class Solution:
+      def shortestPath(self, grid: List[List[int]], k: int) -> int:
+          n = len(grid)
+          m = len(grid[0])
+
+          def is_valid(row: int, col: int) -> bool:
+              return -1 < row < n and -1 < col < m
+
+          seen = {(0, 0, k)}
+          queue = [(0, 0, k, 0)]
+          directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+          while queue:
+              curr_queue, queue = queue, []
+
+              for row, col, remain, steps in curr_queue:
+                  if row == n - 1 and col == m - 1:
+                      return steps
+
+                  for dy, dx in directions:
+                      nrow, ncol = row + dy, col + dx
+
+                      if is_valid(nrow, ncol):
+                          if grid[nrow][ncol] == 0:
+                              if (nrow, ncol, remain) not in seen:
+                                  seen.add((nrow, ncol, remain))
+                                  queue.append((nrow, ncol, remain, steps + 1))
+                          elif remain and (nrow, ncol, remain - 1) not in seen:
+                              seen.add((nrow, ncol, remain - 1))
+                              queue.append((nrow, ncol, remain - 1, steps + 1))
+
+          return -1
+
+
+_ Time Complexity:
+
+  O(n * k) - BFS takes O(n) time. For each cell, at most, it will be visited k times.
+
+_ Space Complexity:
+
+  O(n * k) - We use a queue to implement BFS and can contain states with k.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

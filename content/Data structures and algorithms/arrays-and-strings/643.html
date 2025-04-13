@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/maximum-average-subarray-i/">
+643. Maximum Average Subarray I</a>
+
+This is a sliding window problem, which is closely related to two-pointers. We're also maximizing the
+value of subarrays defined within the larger array. So the patterns we'll notice here are a sliding
+window, two pointers, and a function (max) used to evalute each subarray defined by the sliding
+window.
+
+Given k, the length of the window, we iterate through the array until we reach the kth element,
+summing the contents of the subarray defined by array[0:k]. Then from array[k:n], we add the current
+value, array[i], and subtract the value at array[i-k], maintaining the sliding window.
+
+Our function (max) is used to compare the previous sliding window to the current sliding window, and
+we retain the maximum value. Once we've iterated through the entire array, we return the maximum
+average value of all subarrays discovered in the input.
+
+The solution is as follows:
+
+
+  class Solution:
+      def findMaxAverage(self, nums: List[int], k: int) -> float:
+          curr = 0
+          for i in range(k):
+              curr += nums[i]
+              
+          ans = curr
+          for i in range(k, len(nums)):
+              curr += nums[i] - nums[i - k]
+              ans = max(ans, curr)
+              
+          return ans / k
+
+
+_ Time Complexity:
+
+  O(n) - We iterate through the array once.
+
+_ Space Complexity:
+
+  O(1) - We don't use any additional space.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

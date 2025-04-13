@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/">
+2095. Delete the Middle Node of a Linked List</a>
+
+Given a linked list, remove the middle node. This one's pretty straightforward. Using a fast and slow
+pointer, we traverse the list with the fast pointer until the slow pointer reaches the middle. We
+also maintain the previous node, the node before the slow pointer.
+
+Once we reach the middle, we point the previous node the the node after the slow pointer and return
+the head.
+
+The solution is as follows:
+
+
+  class Solution:
+      def deleteMiddle(self, head: Optional[ListNode]) -> Optional[ListNode]:
+          prev, slow, fast = None, head, head.next
+
+          while fast:
+              fast = fast.next
+              if fast:
+                  fast = fast.next
+              prev = slow
+              slow = slow.next
+
+          if not prev:
+              return prev
+
+          prev.next = slow.next
+          return head
+
+
+_ Time Complexity:
+
+  O(n) - We traverse all nodes within the linked list.
+
+_ Space Complexity:
+
+  O(1) - We maintain pointers that occupy constant space.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

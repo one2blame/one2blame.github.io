@@ -1,0 +1,63 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/house-robber-ii/">213. House Robber II</a>
+
+Similar to previous house robber problems, however, the houses are in a circle so if we rob the
+first one we can't rob the last one.
+
+We use the simple robbing algorithm wherein we maintain a and b, two different totals based on
+whether or not we rob or skip the current house. Then we just take the max of the two outcomes,
+skipping the first house and robbing the rest, or robbing the first house and skipping the last.
+
+The solution is as follows:
+
+
+  class Solution:
+      def simpleRob(self, nums: List[int]) -> int:
+          a = b = 0
+
+          for num in nums:
+              a, b = max(num + b, a), a
+
+          return a
+
+      def rob(self, nums: List[int]) -> int:
+          n = len(nums)
+
+          if not n or not nums:
+              return 0
+
+          if n == 1:
+              return nums[0]
+
+          return max(self.simpleRob(nums[:-1]), self.simpleRob(nums[1:]))
+
+
+_ Time Complexity:
+
+  O(n) - Where n is the length of nums, we iterate through the numebr list twice.
+
+_ Space Complexity:
+
+  O(1) - We use constant space to calculate the result.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/fair-distribution-of-cookies/">
+2305. Fair Distribution of Cookies</a>
+
+We're given a list of cookies and k, the number of children we have to evenly distribute the cookies
+to. The problem statement provided isn't the greatest - there are invalid distributions, that being
+that all children have to be given at least one bag of cookies. We're asked to find the minimum
+unfairness of all possible distributions, where unfairness is measured by the maximum sum of cookies
+provided to a single child.
+
+Using backtracking, we can traverse our choices to distribute cookies to children like a graph. For
+each node in the graph, we have k neighbors representing the child we give a bag of cookies to.
+During each step in the traversal of this graph, we maintain the bag of cookies we're distributing,
+and increment after a child is chosen.
+
+Once we've distributed all the cookies, such that i == n, we take the maximum unfairness and compare
+it to our currently running answer, keeping the minimum of the two values.
+
+To decrease our search space, we realize we're going to encounter situations in which we've
+distributed too many cookies to one child, and there are not enough cookies left for the remaining
+children. To avoid searching paths where this occurs, we keep track of how many children don't have
+cookies, and how many cookies we have left. During the recursion, if we realize that the number of
+children without cookies is greater than the number of cookies remaining, we backtrack - there's no
+point in traversing this path.
+
+Finally, we decrease our search space by only traversing paths where the number of cookies a child
+has is less than the current minimum unfairness we've seen so far. That eliminates paths later in
+the traversal where our answer probably won't be updated.
+
+The solution is as follows:
+
+
+  class Solution:
+      def distributeCookies(self, cookies: List[int], k: int) -> int:
+          self.ans, child, n = float("inf"), [0] * k, len(cookies)
+
+          def backtrack(i: int, z: int) -> None:
+              if n - i < z:
+                  return
+
+              if i == n:
+                  self.ans = min(self.ans, max(child))
+                  return
+
+              for j in range(k):
+                  z -= int(child[j] == 0)
+                  child[j] += cookies[i]
+
+                  if child[j] < self.ans:
+                      backtrack(i + 1, z)
+
+                  child[j] -= cookies[i]
+                  z += int(child[j] == 0)
+
+          backtrack(0, k)
+
+          return self.ans
+
+
+_ Time Complexity:
+
+  O(k^n) - We make k choices during each step of the search, and we have to distribute n cookies.
+
+_ Space Complexity:
+
+  O(k + n) - n levels of recursion will occur, and we store k space to keep track of the cookies
+  distributed.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

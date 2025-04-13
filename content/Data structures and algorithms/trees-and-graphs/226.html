@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/invert-binary-tree/">226. Invert Binary Tree</a>
+
+We invert a binary tree. Pretty straightforward, just recursively swap the nodes.
+
+The solution is as follows:
+
+
+  class Solution:
+      def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+          if not root:
+              return root
+          root.left, root.right = self.invertTree(root.right), self.invertTree(root.left)
+          return root
+
+
+_ Time Complexity:
+
+  O(n) - Where n is the number of nodes in the tree.
+
+_ Space Complexity:
+
+  O(h) - Where h is the height of the tree.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

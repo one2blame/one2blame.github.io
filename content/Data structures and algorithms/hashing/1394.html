@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/find-lucky-integer-in-an-array/">
+1394. Find Lucky Integer in an Array</a>
+
+A lucky integer is one that its interger value is the same as its frequency in the input array.
+Return the largets lucky integer or, if there isn't one, return -1.
+
+The solution is as follows:
+
+
+  from collections import Counter
+
+  class Solution:
+      def findLucky(self, arr: List[int]) -> int:
+          counts = Counter(arr)
+          ans = -1
+
+          for num, count in counts.items():
+              if num == count:
+                  ans = max(ans, num)
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n) - We have to iterate through the entire input array.
+
+_ Space Complexity:
+
+  O(n) - We store the frequency of each number in the input array.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

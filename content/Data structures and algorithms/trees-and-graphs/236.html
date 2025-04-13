@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/">
+236. Lowest Common Ancestor of a Binary Tree</a>
+
+Given the root of a binary tree and two nodes, p and q, we're asked to determine their
+<a href="https://en.wikipedia.org/wiki/Lowest_common_ancestor">lowest common ancestor</a>. The
+lowest common ancestor can be either p or q, or some node in between.
+
+We conduct a depth-first search to search for the two nodes, p and q. If we encounter either p or q,
+we return the node. While search, if a particular path never sees p or q, None will propagate up the
+tree as we backtrack. Eventually, we encounter a node where the left and right nodes are not None,
+meaning that p and q are on different sides of the tree. This is the lowest common ancestor.
+
+The solution is as follows:
+
+
+  class Solution:
+      def lowestCommonAncestor(
+          self, root: TreeNode, p: TreeNode, q: TreeNode
+      ) -> TreeNode:
+          if not root:
+              return None
+
+          if root == p or root == q:
+              return root
+
+          left, right = self.lowestCommonAncestor(
+              root.left, p, q
+          ), self.lowestCommonAncestor(root.right, p, q)
+
+          if left and right:
+              return root
+
+          if left:
+              return left
+
+          return right
+
+
+_ Time Complexity:
+
+  O(n) - We inspect all nodes in the binary tree.
+
+_ Space Complexity:
+
+  O(n) - We use recursion, so our call stack is size O(n).
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/count-number-of-nice-subarrays/">
+1248. Count Number of Nice Subarrays</a>
+
+This problem is very similar to <a href="560.html">560</a>. Instead of finding the number of
+subarrays that sum to k, we're finding the number of subarrays that have at most k odd numbers. We
+simply change the increment of the curr variable to the isOdd constraint, num % 2.
+
+The logic is still the same. The count dictionary maintains the last seen prefix sum that defines the
+beginning of a subarray that satisfies our constraint. We add the value of count[curr - k] to the
+result, and mark the current prefix sum as seen.
+
+The solution is as follows:
+
+
+  from collections import defaultdict
+
+  class Solution:
+      def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+          count = defaultdict(int)
+          ans = curr = 0
+          count[0] = 1
+
+          for num in nums:
+              curr += num % 2
+              ans += count[curr - k]
+              count[curr] += 1
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n) - We iterate through the interger list once.
+
+_ Space Complexity:
+
+  O(n) - We store at most n values in the dictionary.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

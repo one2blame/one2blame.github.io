@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/minimum-absolute-difference-in-bst/">
+530. Minimum Absolute Difference in BST</a>
+
+We're given a binary search tree and we're asked to find the minimum absolute difference between any
+two nodes in the tree. Known trick - if we traverse the binary search tree with depth-first search
+in order, meaning we do our operation between visiting the left and right node for any given node,
+we will access node values in sorted order.
+
+Knowing this, we maintain a global answer for the minimum difference and a global variable for the
+last visited node. We then traverse the tree in order, we update the global minimum difference with
+the current node less the previous node.
+
+The solution is as follows:
+
+
+  class Solution:
+      def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
+          self.ans = float("inf")
+          self.prev = None
+
+          def dfs(node: Optional[TreeNode]) -> None:
+              if not node:
+                  return
+
+              dfs(node.left)
+              if self.prev:
+                  self.ans = min(self.ans, node.val - self.prev.val)
+              self.prev = node
+              dfs(node.right)
+
+          dfs(root)
+          return self.ans
+
+
+_ Time Complexity:
+
+  O(n) - We inspect all nodes in the binary search tree.
+
+_ Space Complexity:
+
+  O(n) - Our recursive call stack can reach O(n).
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/">
+714. Best Time to Buy and Sell Stock with Transaction Fee</a>
+
+Fun dynamic programming problem, we just have to consider the states in which we currently hold a
+stock and can sell, and when we don't have a stock and buy. During the selling action, we account
+for the transaction fee. There are multiple ways to solve this problem, one using recursion, another
+using a memoization table, and the final one being an O(1) space solution.
+
+The O(1) space solution, we maintain two variables, free and hold, denoting the current state and
+winnings so far for those choices, with free starting on day 0 at 0 in value and hold starting on
+day 0 at -prices[0] in value.
+
+We iterate through the days from 1 to n. During each day we make both choices to update the free and
+hold variables, updating free to be the maximum of skipping a buy for today, or buying the stock and
+updating hold to be the maximum of skipping a sell for today, or holding the stock.
+
+The solution is as follows:
+
+
+  class Solution:
+      def maxProfit(self, prices: List[int], fee: int) -> int:
+          n = len(prices)
+          free, hold = 0, -prices[0]
+
+          for i in range(1, n):
+              hold, free = max(hold, free - prices[i]), max(free, hold + prices[i] - fee)
+
+          return free
+
+
+_ Time Complexity:
+
+  O(n) - Where n is the number of prices.
+
+_ Space Complexity:
+
+  O(1) - We store our states in constant space.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/smallest-string-with-a-given-numeric-value/">
+1663. Smallest String With A Given Numeric Value</a>
+
+We're asked to create a string of size n with a value k where each letter from a - z is valued
+1 - 26. The string should be lexicographically smallest, essentially the chatacters should be in
+increasing order from left to right.
+
+This is a greedy problem, easily solvable by selecting the largest possible character at each
+location, starting from the right. We create an array of 0's of size n, then iterate from n - 1 to 0.
+At each location, we select min(k - i, 26) where i is our current position in the string. This helps
+us maintain an idea of how many characters are remaining for selection.
+
+After we select a character, we decrement k by the value of the character and store the character in
+the answer array at the current position.
+
+The solution is as follows:
+
+
+  class Solution:
+      def getSmallestString(self, n: int, k: int) -> str:
+          ans = [0] * n
+
+          for i in range(n - 1, -1, -1):
+              char = min(k - i, 26)
+              k -= char
+              ans[i] = chr(char + ord('a') - 1)
+
+          return "".join(ans)
+
+
+_ Time Complexity:
+
+  O(n) - We iterate n times to select n characters.
+
+_ Space Complexity:
+
+  O(n) - We store our answer in an array of size n.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

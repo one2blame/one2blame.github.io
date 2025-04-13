@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/add-binary/">67. Add Binary</a>
+
+Given two strings representing binary numbers, add them together and return their sum as a binary
+string. This is just a fun bit manipulation problem, and we use some native Python tricks to convert
+the binary numbers to integers.
+
+Once in integer format, we use XOR to add x and y. If two bits are 1, we'll place a 0 in that
+location. Simultaneously, y will store the carry after we do AND x and y, and then we'll shift the
+carry bit left.
+
+Eventually y will be empty after shifting it so much, and x will be the sum of x and y.
+
+The solution is as follows:
+
+
+  class Solution:
+      def addBinary(self, a, b) -> str:
+          x, y = int(a, 2), int(b, 2)
+          while y:
+              x, y = x ^ y, (x & y) << 1
+          return bin(x)[2:]
+
+
+_ Time Complexity:
+
+  O(n + m) - Where n and m are length of the inputs strings.
+
+_ Space Complexity:
+
+  O(max(n, m)) - We have to convert the input strings from strings to integers.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

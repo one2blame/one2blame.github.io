@@ -1,0 +1,131 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/escape-the-spreading-fire/">
+2258. Escape the Spreading Fire</a>
+
+Did I mention how much I love graph questions?
+
+This one gives us a 2D matrix where 0 represents grass, 1 represents fire, and 2 represents a wall.
+During each tick in time, t, the fire spreads from its starting point to all adjacent cells, left,
+right, up, and down. We're asked to start at (0, 0) and make our way to the safehouse at
+(m - 1, n - 1) before the fire burns us. We're asked: how long can we wait before we're no longer
+able to reach the safehouse?
+
+Solving this with binary search, first we'll use BFS to determine at what time each cell in the
+matrix is covered with fire. This will be our dist[][] matrix. We'll search from 0 to 10 ** 9, the
+maximum amount of time we can wait.
+
+For each step in the search, we select a time we'll wait. We conduct BFS with this time, starting
+from (0, 0), only visiting cells that are grass, 0, and not on fire. What does not on fire mean?
+It means that, from some time, t, we will reach the next cell before the fire does. This is defined
+by dist[ny][nx], where (ny, nx) is the next cell. Reaching the next cell before the fire does means
+we'll get there at time t + 1, and the fire will still be at least t + 2 away.
+
+If we can make it to the end without getting burnt, we know we're not waiting long enough, so we
+decrease the left side of our search space. Vice versa, if we are getting burnt by waiting too long,
+we decrease the right side of our search space.
+
+Eventually, we return the maximum time we can wait before running towards the safehouse. If the fire
+never reaches the safe house, we can wait 10 ** 9 minutes. If there is no route to the safe house
+without getting burnt, we'll return -1 by default.
+
+The solution is as follows:
+
+
+  class Solution:
+      def maximumMinutes(self, grid: List[List[int]]) -> int:
+          directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
+          m, n = len(grid), len(grid[0])
+          starts = []
+
+          def is_valid(y: int, x: int) -> bool:
+              return -1 < y < m and -1 < x < n
+
+          dist = [[float("inf")] * n for _ in range(m)]
+          seen = set()
+
+          for i in range(m):
+              for j in range(n):
+                  if grid[i][j] == 1:
+                      starts.append((i, j, 0))
+                      seen.add((i, j))
+                      dist[i][j] = 0
+
+          queue = starts
+
+          while queue:
+              curr_queue, queue = queue, []
+
+              for y, x, z in curr_queue:
+                  for dy, dx in directions:
+                      ny, nx = y + dy, x + dx
+
+                      if is_valid(ny, nx) and not grid[ny][nx] and (ny, nx) not in seen:
+                          queue.append((ny, nx, z + 1))
+                          seen.add((ny, nx))
+                          dist[ny][nx] = z + 1
+
+          def bfs(t: int) -> bool:
+              queue = [(0, 0, t)]
+              seen = set((0, 0))
+
+              while queue:
+                  curr_queue, queue = queue, []
+
+                  for y, x, z in curr_queue:
+                      for dy, dx in directions:
+                          ny, nx = y + dy, x + dx
+
+                          if is_valid(ny, nx) and (ny, nx) not in seen and not grid[ny][nx]:
+                              if (ny, nx) == (m - 1, n - 1) and dist[ny][nx] >= z + 1:
+                                  return True
+
+                              if dist[ny][nx] > z + 1:
+                                  queue.append((ny, nx, z + 1))
+                                  seen.add((ny, nx))
+
+              return False
+
+          l, r, ans = 0, 10 ** 9, -1
+
+          while l <= r:
+              mid = (r + l) // 2
+
+              if bfs(mid):
+                  ans = mid
+                  l = mid + 1
+              else:
+                  r = mid - 1
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(m * n log(10 ** 9)) - Where m and n are the row and col dimensions of the matrix. We perform
+  binary search 10 ** 9 times, the maximum number of minutes we can wait. BFS takes O(m * n) time.
+
+_ Space Complexity:
+
+  O(m * n) - During BFS, we have at most m * n cells in the queue.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>

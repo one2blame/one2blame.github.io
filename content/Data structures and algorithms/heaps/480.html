@@ -1,0 +1,108 @@
+<html>
+  <head>
+    <title>one2bla.me</title>
+    <meta charset="utf-8" />
+    <link href="../../style.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <div class="txtdiv">
+      <pre>
+< <a href="index.html">Back</a>
+
+
+
+
+<a href="https://leetcode.com/problems/sliding-window-median/">480. Sliding Window Median</a>
+
+Similar to <a href="295.html">295</a>, except we're asked to find the median of a sliding window of
+size k. We use the same thinking here, having two heaps to maintain the median, and the heaps will
+be of equal size - save the median being stored on the max heap.
+
+We start off by processing k numbers, pushing them onto the max heap. We the balance the heaps by
+pushing half of the max heap onto the min heap. We then calculate the median and store it in our
+answer array.
+
+We start the sliding window's right pointer at k, and maintain a balance variable to keep track of
+which heap, min or max, has more numbers. We also maintain a dictionary to count numbers that are
+marked for deletion (mfd). This means that this number is the leftmost number in the sliding window.
+
+If the leftmost number marked for deletion is in the max heap, we decrement the balance by 1,
+meaning that we'll need to push a number from the min heap onto the max heap. Otherwise, the number
+marked for deletion is in the min heap, so we increment the balance by 1, meaning we'll need to push
+a number from the max heap onto the min heap.
+
+If the rightmost number added to the sliding window is less than the max heap's top, we push it onto
+the max heap and increment the balance by 1. Otherwise, we push it onto the min heap and decrement
+the balance by 1.
+
+Using the balance, we rebalance the two heaps to make sure they're of equal size. We then remove
+numbers from the heaps that are marked for deletion. We then calculate the median and store it in
+our answer array.
+
+The solution is as follows:
+
+
+  from heapq import *
+  from collections import defaultdict
+
+  class Solution:
+      def medianSlidingWindow(self, nums: List[int], k: int) -> List[float]:
+          minheap, maxheap, ans = [], [], []
+          mfd = defaultdict(int)
+
+          def get_median():
+              return -maxheap[0] if k % 2 else (minheap[0] - maxheap[0]) / 2
+
+          for i in range(k):
+              heappush(maxheap, -nums[i])
+
+          for i in range(k // 2):
+              heappush(minheap, -heappop(maxheap))œ
+
+          ans = [get_median()]
+
+          for r in range(k, len(nums)):
+              balance, l = 0, nums[r - k]
+              mfd[l] += 1
+              balance += -1 if not l > -maxheap[0] else 1
+
+              if not nums[r] > -maxheap[0]:
+                  heappush(maxheap, -nums[r])
+                  balance += 1
+              else:
+                  heappush(minheap, nums[r])
+                  balance -= 1
+
+              if balance > 0:
+                  heappush(minheap, -heappop(maxheap))
+              elif balance < 0:
+                  heappush(maxheap, -heappop(minheap))
+
+              while maxheap and mfd[-maxheap[0]]:
+                  mfd[-heappop(maxheap)] -= 1
+
+              while minheap and mfd[minheap[0]]:
+                  mfd[heappop(minheap)] -= 1
+
+              ans.append(get_median())
+
+          return ans
+
+
+_ Time Complexity:
+
+  O(n * k log k) - We process all numbers, and we process k numbers of the sliding window using
+  heap operations.
+
+_ Space Complexity:
+
+  O(k) - We require two heaps to store the numbers in the sliding window.
+
+
+
+
+</pre>
+    </div>
+  </body>
+</html>
