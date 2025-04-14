@@ -1,8 +1,6 @@
 ---
-title: ▒▒▒▒▒▒▒▒▒▒▒▒▒
+title: Welcome, stranger. ▒
 ---
-
-Welcome, stranger.
 
 This site contains my grimoire of netrunner quickhacks and techniques, adjacent
 learnings and ideas. Can't guarantee anything you find here is novel or unique.
