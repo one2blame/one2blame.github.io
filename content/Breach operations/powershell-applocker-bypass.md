@@ -186,9 +186,9 @@ sudo systemctl start apache2
 
 Using
 [Invoke-ReflectivePEInjection](https://github.com/PowerShellMafia/PowerSploit/blob/master/CodeExecution/Invoke-ReflectivePEInjection.ps1)
-from **PowerSploit**, we can also inject **meterpreter** reverse shell payload
-DLLs into target processes through this **PowerShell** code execution bypass
-using C# .NET.
+from **PowerSploit**, we can also inject meterpreter reverse shell payload DLLs
+into target processes through this PowerShell code execution bypass using C#
+.NET.
 
 The following C# .NET project uses the previous `installutil.exe` technique to
 download a payload from our attacker host and inject it into the `explorer.exe`

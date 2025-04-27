@@ -10,8 +10,8 @@ tags:
   - shellcode
 ---
 
-We can't execute **Win32API** methods directly from PowerShell. What are
-**Win32API** methods? We discuss them in
+We can't execute **Win32API** methods directly from **PowerShell**. What are
+Win32API methods? We discuss them in
 [[phishing-in-microsoft-office#Calling Win32API|Phishing in Microsoft Office - Calling Win32API]].
 These are methods usually implemented in `.dll`s like `kernel32.dll` that you
 can usually find in `C:\Windows\System32`.
@@ -19,14 +19,13 @@ can usually find in `C:\Windows\System32`.
 We can, however, compile and execute C# (CSharp) from PowerShell, and invoke
 these methods using the .NET Framework. Using
 [Platform Invoke (P/Invoke)](https://learn.microsoft.com/en-us/dotnet/standard/native-interop/pinvoke),
-we can directly reference **Win32API** methods implemented in our target
-`.dll`s.
+we can directly reference Win32API methods implemented in our target `.dll`s.
 
 For effective translation of C# types to C/C++ types for parameters defined in
-these **Win32API** methods, we can reference helpful documentation provided at
+these Win32API methods, we can reference helpful documentation provided at
 [pinvoke.net](https://www.pinvoke.net/). The following PowerShell script
 demonstrates how to invoke **user32.MessageBox** from `user32.dll` using
-**P/Invoke** and **C#**:
+**P/Invoke** and C#:
 
 ```powershell
 $User32 = @"
@@ -49,20 +48,20 @@ Add-Type $User32
 
 The following example uses the interoperability features described above to
 define references to the `VirtualAlloc` and `CreateThread` methods from
-`kernel32.dll` . This **Bash** script will generate a **Meterpreter**
+`kernel32.dll` . This **Bash** script will generate a **meterpreter**
 `windows/x64/meterpreter/reverse_https` payload directed to callback to a
-provided `LHOST` and `LPORT`for the next stage of the **Meterpreter** payload.
+provided `LHOST` and `LPORT`for the next stage of the meterpreter payload.
 
-The PowerShell shellcode buffer for the **Meterpreter** payload will be placed
-into a **PowerShell** script that will call `VirtualAlloc` to allocate an `RWX`
-memory segment within the current process. The script will proceed to call
+The PowerShell shellcode buffer for the meterpreter payload will be placed into
+a PowerShell script that will call `VirtualAlloc` to allocate an `RWX` memory
+segment within the current process. The script will proceed to call
 `System.Runtime.InteropServices.Marshal` to copy the shellcode from managed
 memory to unmanaged memory - copying our shellcode to the newly created buffer
 from the previous `VirtualAlloc` call. Finally, we call `CreateThread` providing
 an address to our shellcode payload memory segment to gain shellcode execution.
 
 After generating our PowerShell payload, we kick off an `msfconsole` session to
-listen for our **Meterpreter** payload callback:
+listen for our meterpreter payload callback:
 
 ```bash
 #!/bin/bash

