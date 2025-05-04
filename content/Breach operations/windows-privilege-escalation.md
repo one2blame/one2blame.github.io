@@ -168,7 +168,7 @@ impersonate the token. Invoke the following:
 
 After a couple of seconds, `Pwn.exe` should report the SID of SYSTEM!
 
-#### Popping a shell
+### Popping a shell
 
 The following C# .NET code will impersonate a SYSTEM token and use it to create
 a new process, executing an arbitrary command:

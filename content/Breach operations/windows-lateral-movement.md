@@ -78,7 +78,7 @@ We can also pass NTLM hashes with **xfreerdp** by invoking the following:
 xfreerdp /u:${USER} /pth:${HASH} /v:${RHOST}
 ```
 
-### Proxying RDP sessions
+### Metasploit
 
 We'll frequently encounter scenarios where our compromised targets are protected
 within a virtual network with a NAT gateway, firewall, etc. preventing us from
@@ -86,8 +86,6 @@ creating inbound connections to our target. This is why reverse shells are so
 useful, because the compromised host can call back to our C2 to establish a
 connection, bypassing any firewalls and enabling our connection to the remote
 target.
-
-#### Metasploit
 
 Once we land a **meterpreter** agent on a target host, we can use that agent to
 proxy our RDP session by establishing a reverse tunnel and a **SOCKS** proxy. We
@@ -121,7 +119,7 @@ We can use `proxychains` for more than just RDP, we can use applications like
 **nmap**, for host discovery within the target's private network, or **firefox**
 to browse web applications on servers only routeable within the target network.
 
-#### Chisel
+### Chisel
 
 [Chisel](https://github.com/jpillora/chisel) is a pretty neat application that
 can also create reverse tunnels and proxy our communications. We can invoke the

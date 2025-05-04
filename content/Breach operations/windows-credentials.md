@@ -93,7 +93,7 @@ The Windows kernel issues users **access tokens** upon successful
 authentication. These access tokens authorize users to create processes at a
 certain **integrity level** with certain **privileges**.
 
-#### What are integrity levels?
+### What are integrity levels?
 
 Windows defines four integrity levels:
 
@@ -112,7 +112,7 @@ administrator**", their high integrity level access token is used to invoke the
 process. This action usually prompts for **User Account Control (UAC)** consent
 from the administrator.
 
-#### What are privileges?
+### What are privileges?
 
 **Privileges** are a set of access rights present within the token, defined by
 two (2) bitmasks. They govern what actions a process can perform. The first
