@@ -18,9 +18,10 @@ offers for HTTPS connections when delivering second stage payloads for first
 stage payload callbacks.
 
 It's probably a good a idea to register a domain and generate a valid
-certificate using a service like [Let's Encrypt]() to bypass this security
-mechanism, and we'll discuss that later. For now, you can invoke the following
-to generate a new certificate that can be used by meterpreter:
+certificate using a service like [Let's Encrypt](https://letsencrypt.org/) to
+bypass this security mechanism, and we'll discuss that later. For now, you can
+invoke the following to generate a new certificate that can be used by
+meterpreter:
 
 ```bash
 openssl req -new -x509 -nodes -out cert.crt -keyout priv.key

