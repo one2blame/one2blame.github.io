@@ -17,6 +17,7 @@ tags:
   - socks
   - chisel
   - psexec
+  - proxychains
 ---
 
 ## Remote desktop protocol

@@ -8,6 +8,13 @@ tags:
   - movement
   - ssh
   - keys
+  - kerberos
+  - impacket
+  - proxy
+  - proxychains
+  - psexec
+  - domain
+  - credentials
 ---
 
 ## Helpful SSH tips

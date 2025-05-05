@@ -15,6 +15,7 @@ tags:
   - directory
   - mimikatz
   - kerberos
+  - impacket
 ---
 
 ## SAM database
