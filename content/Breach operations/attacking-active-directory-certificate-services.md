@@ -10,6 +10,20 @@ tags:
   - services
   - service
   - certificate
+  - certify
+  - certipy
+  - specter
+  - ops
+  - powersploit
+  - powerview
+  - rubeus
+  - bloodhound
+  - coercer
+  - proxychains
+  - certifried
+  - impacket
+  - metasploit
+  - relay
 ---
 
 A majority of the discussion in this section references
