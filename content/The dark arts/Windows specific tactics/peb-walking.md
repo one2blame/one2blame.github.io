@@ -18,7 +18,7 @@ tags:
   - api
 ---
 
-The **Process Environment Block (PEB)** maintains an listing of libraries that
+The **Process Environment Block (PEB)** maintains a listing of libraries that
 have been loaded into the current process. When writing position independent
 shellcode for Windows targets, we need the ability to access and call Win32 API
 methods to execute more sophisticated actions, like spawning a new process. With
