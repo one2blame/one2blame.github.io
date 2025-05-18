@@ -693,3 +693,7 @@ EXEC ('EXEC (''sp_configure ''''show advanced options'''', 1; reconfigure;'') AT
 Executing the above SQL command from the `appsrv01` host allows us to execute
 our `exec` and `reconfigure` commands as `sa`, bouncing our SQL command off the
 `dc01` host.
+
+## Related pages
+
+- [[windows-privilege-escalation|Windows privilege escalation]]

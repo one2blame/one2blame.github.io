@@ -408,3 +408,7 @@ generate_macro
 stage
 listen
 ```
+
+## Related pages
+
+- [[executing-win32-apis-in-powershell|Executing Win32 APIs in PowerShell]]

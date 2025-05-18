@@ -315,3 +315,7 @@ While the above code is intended to be executed from a compromised host within
 our target domain, we can also exfiltrate NTLM hashes for target users and
 execute the same technique from our attacker machine. This tactic is implemented
 in the [SCShell](https://github.com/Mr-Un1k0d3r/SCShell) application.
+
+## Related pages
+
+- [[windows-credentials|Windows credentials]]

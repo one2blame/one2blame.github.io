@@ -199,3 +199,7 @@ Start-Process `
 	-FilePath (Get-Command -Name "wmic").Source `
 	-ArgumentList @("os", "get", '/format:"C:\Tools\shell.xsl"')
 ```
+
+## Related pages
+
+- [[bypassing-application-whitelisting|Bypassing application whitelisting]]
