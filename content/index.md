@@ -13,4 +13,4 @@ Happy hunting.
 | [GitHub](https://github.com/one2blame/) |
 [LeetCode](https://leetcode.com/u/one2blame/) |
 [LinkedIn](https://www.linkedin.com/in/austinjheath/) |
-[Résumé](https://one2blame.github.io/cv/) | [Contact](mailto:one2blame@icloud.com) |
+[Résumé](https://one2bla.me/cv/) | [Contact](mailto:one2blame@icloud.com) |
