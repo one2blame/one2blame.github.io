@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHOLLIMA 3CX // Secure Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: #111;
+            color: #ddd;
+        }
+        #terminal-container {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #ff1b1b;
+            border-radius: 0.5rem;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 0 25px rgba(255, 27, 27, 0.4);
+        }
+        #terminal {
+            height: 80vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: #ff1b1b #111;
+        }
+        #terminal::-webkit-scrollbar {
+            width: 8px;
+        }
+        #terminal::-webkit-scrollbar-track {
+            background: #222;
+        }
+        #terminal::-webkit-scrollbar-thumb {
+            background-color: #ff1b1b;
+            border-radius: 4px;
+        }
+        .terminal-line {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .red { 
+            color: #ff1b1b; 
+            text-shadow: 0 0 5px #ff1b1b, 0 0 10px #ff1b1b;
+        }
+        .green { 
+            color: #00ff41;
+            text-shadow: 0 0 5px #00ff41;
+        }
+        .yellow { 
+            color: #f0ad4e;
+            text-shadow: 0 0 5px #f0ad4e;
+        }
+        .cyan { 
+            color: #cccccc;
+        }
+        .bold { font-weight: bold; }
+
+        #input-line {
+            display: flex;
+            padding: 0 1.5rem 1.5rem;
+        }
+        #input-prompt {
+            color: #ff1b1b;
+            text-shadow: 0 0 5px #ff1b1b;
+        }
+        #terminal-input {
+            background: transparent;
+            border: none;
+            color: #ddd;
+            outline: none;
+            flex-grow: 1;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 flex items-center justify-center min-h-screen">
+    <div id="terminal-container" class="w-full max-w-5xl">
+        <div id="terminal"></div>
+        <div id="input-line">
+            <span id="input-prompt" class="mr-2">&gt;</span>
+            <input type="text" id="terminal-input" autofocus autocomplete="off">
+        </div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('terminal');
+        const input = document.getElementById('terminal-input');
+        const inputLine = document.getElementById('input-line');
+
+        // --- Configuration ---
+        // This URL is now injected by Terraform during the apply process.
+        const API_GATEWAY_URL = 'https://doifx4e5dj.execute-api.us-west-2.amazonaws.com/prod/verify'; 
+        
+        const BANNER = `
+<span class="red bold">
+██████╗██╗  ██╗ ██████╗ ██╗     ██╗     ██╗███╗   ███╗ █████╗      ██████╗  ██╗██╗  ██╗
+██╔════╝██║  ██║██╔═══██╗██║     ██║     ██║████╗ ████║██╔══██╗     ╚════██╗██╔╝╚██╗██╔╝
+██║     ███████║██║   ██║██║     ██║     ██║██╔████╔██║███████║      █████╔╝╚═╝  ╚███╔╝ 
+██║     ██╔══██║██║   ██║██║     ██║     ██║██║╚██╔╝██║██╔══██║     ██╔═══╝       ██╔╝  
+╚██████╗██║  ██║╚██████╔╝███████╗███████╗██║██║ ╚═╝ ██║██║  ██║     ███████╗      ██║   
+ ╚═════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝╚═╝╚═╝     ╚═╝╚═╝  ╚═╝     ╚══════╝      ╚═╝   
+</span>
+`;
+
+        const MENU = `
+<span class="cyan bold">Welcome to CHOLLIMA 3CX Terminal</span>
+
+Choose your option:
+<span class="yellow">[1]</span> View Threat Analysis
+<span class="yellow">[2]</span> View System Components
+<span class="yellow">[3]</span> Authorize Payment Protocol
+<span class="yellow">[4]</span> Initiate Decryption (Secure)
+<span class="yellow">[5]</span> Disconnect
+`;
+
+        const MESSAGE = `
+<span class="red bold">[+] Threat Analysis:</span>
+
+System integrity compromised by unknown hostile entity.
+
+Files encrypted with military-grade AES-256 protocol.
+Key retrieval requires remote authentication via a secure, off-site server.
+
+Standard security protocols have failed.
+Payment is the only viable path to data restoration.
+
+We are watching. We are everywhere.
+
+<span class="cyan">— CHOLLIMA 3CX</span>
+`;
+        
+        let state = 'menu';
+        let storedC2 = '';
+        
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function scrollToBottom() {
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        function addLine(html) {
+            terminal.innerHTML += `<div class="terminal-line">${html}</div>`;
+            scrollToBottom();
+        }
+
+        async function slow_print(html, delay = 10) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            terminal.appendChild(line);
+
+            let currentHTML = '';
+            let i = 0;
+            
+            return new Promise(resolve => {
+                function process() {
+                    if (i < html.length) {
+                        if (html[i] === '<') {
+                            const tagMatch = html.substring(i).match(/^<[^>]+>/);
+                            if (tagMatch) {
+                                currentHTML += tagMatch[0];
+                                i += tagMatch[0].length;
+                            } else {
+                                currentHTML += html[i]; i++;
+                            }
+                        } else {
+                            currentHTML += html[i]; i++;
+                        }
+                        line.innerHTML = currentHTML;
+                        scrollToBottom();
+                        setTimeout(process, delay);
+                    } else {
+                        resolve();
+                    }
+                }
+                process();
+            });
+        }
+
+        async function fake_loading(message = "Processing", duration = 3) {
+            const loadingLine = document.createElement('div');
+            loadingLine.className = 'terminal-line';
+            terminal.appendChild(loadingLine);
+            
+            const startTime = Date.now();
+            const dots = ['.', '..', '...', '....'];
+            let i = 0;
+            while(Date.now() - startTime < duration * 1000) {
+                loadingLine.innerHTML = `<span class="cyan">${message}${dots[i % dots.length]}</span>`;
+                i++;
+                scrollToBottom();
+                await sleep(400);
+            }
+            loadingLine.remove();
+        }
+
+        function showMenu() {
+            addLine(MENU);
+            state = 'menu';
+            input.disabled = false;
+            input.focus();
+        }
+
+        async function handleCommand(command) {
+            addLine(`<span id="input-prompt" class="mr-2">&gt;</span> ${command}`);
+            input.value = '';
+            input.disabled = true;
+
+            if (state === 'prompt_c2') {
+                storedC2 = command.trim();
+                state = 'prompt_key';
+                addLine("Enter decryption key:");
+                input.disabled = false;
+                input.focus();
+                return;
+            }
+
+            if (state === 'prompt_key') {
+                const userInputKey = command.trim();
+                await slow_print(`Verifying credentials with secure endpoint...`);
+
+                if (API_GATEWAY_URL.includes('api_url')) {
+                    await slow_print(`<span class="red">Error: API Gateway URL not configured.</span> This may be a deployment issue.`);
+                    showMenu();
+                    return;
+                }
+
+                try {
+                    const response = await fetch(API_GATEWAY_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ key: userInputKey, c2: storedC2 })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network error communicating with verification server.');
+                    }
+                    
+                    const result = await response.json();
+
+                    if (result.success === true) {
+                        await slow_print(`<span class="green">Credentials accepted.</span>`);
+                        await slow_print(`Initializing secure connection...`);
+                        await sleep(500);
+                        await slow_print(`Attempting to connect to AWS region <span class="yellow">us-east-1</span>...`);
+                        await sleep(1000);
+                        await slow_print(`Authenticating with instance <span class="yellow">i-0a1b2c3d4e5f6a7b8</span>...`);
+                        await sleep(1500);
+                        await slow_print(`<span class="green">Connection successful.</span>`);
+                        await fake_loading("Decrypting files", 4);
+                        await slow_print(`<span class="green">Decryption complete!</span>`);
+                        await slow_print(`<span class="bold">Decrypted flag:</span> <span class="cyan">${result.flag}</span>\n`);
+                    } else {
+                        await slow_print(`<span class="red">Invalid credentials.</span> Authentication failed.\n`);
+                    }
+                } catch (error) {
+                    await slow_print(`<span class="red">Error: Could not verify credentials. Connection to key server failed.</span>`);
+                    console.error("API Fetch Error:", error);
+                }
+                
+                storedC2 = '';
+                showMenu();
+                return;
+            }
+
+            switch (command) {
+                case '1':
+                    await slow_print(MESSAGE);
+                    showMenu();
+                    break;
+                case '2':
+                    let fileOutput = '<span class="bold">\nSystem Components (from S3):</span>\n';
+                    // This variable is now injected by Terraform with the pre-rendered HTML links.
+                    const fileLinks = `  <a href="https://overflow-dc33.s3.us-west-2.amazonaws.com/files/3cx_attack_capture.pcap" target="_blank" download class="yellow underline">3cx_attack_capture.pcap</a>\n  <a href="https://overflow-dc33.s3.us-west-2.amazonaws.com/files/SecretFile.txt" target="_blank" download class="yellow underline">SecretFile.txt</a>\n  <a href="https://overflow-dc33.s3.us-west-2.amazonaws.com/files/dummy_secret.enc" target="_blank" download class="yellow underline">dummy_secret.enc</a>\n`; 
+                    
+                    if (fileLinks.trim() === '') {
+                        fileOutput += '  <span class="yellow">No system components found in bucket.</span>';
+                    } else {
+                        fileOutput += fileLinks;
+                    }
+                    
+                    await slow_print(fileOutput);
+                    showMenu();
+                    break;
+                case '3':
+                    await slow_print(`<span class="green">Payment authorized. You may now initiate decryption.</span>\n`);
+                    showMenu();
+                    break;
+                case '4':
+                    addLine("Enter C2 DNS Name:");
+                    state = 'prompt_c2';
+                    input.disabled = false;
+                    input.focus();
+                    break;
+                case '5':
+                    await slow_print(`<span class="yellow">Disconnecting... This terminal will self-destruct.</span>`);
+                    input.disabled = true;
+                    inputLine.style.display = 'none';
+                    state = 'locked';
+                    break;
+                default:
+                    await slow_print(`<span class="red">Invalid command.</span>\n`);
+                    showMenu();
+                    break;
+            }
+        }
+
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !input.disabled) {
+                const command = input.value.trim();
+                if (command !== '') handleCommand(command);
+            }
+        });
+
+        async function start() {
+            input.disabled = true;
+            await slow_print(BANNER, 1);
+            showMenu();
+        }
+
+        window.onload = start;
+    </script>
+</body>
+</html>
