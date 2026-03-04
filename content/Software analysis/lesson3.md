@@ -60,7 +60,6 @@ program using the following equation:
 ## Random testing: pros and cons
 
 - **Pros**:
-
   - Easy to implement
   - Good coverage given enough tests
   - Works against programs of any format

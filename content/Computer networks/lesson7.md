@@ -13,20 +13,17 @@ The following are questions and answers from the Exam 2 Study Guide for Lesson
 7:
 
 - What spurred the development of Software Defined Networking (SDN)?
-
   - SDN arose as part of the process to make computer networks more programmable
     . Due to a diversity of equipment and the requirement to handle different
     proprietary technologies from different vendors for different network
     devices, SDN works to redesign networks to make them more manageable.
 
 - What are the three phases in the history of SDN?
-
   1. Active networks
   2. Control and data plane separation
   3. OpenFlow API and network operating systems
 
 - Summarize each phase in the history of SDN.
-
   1. Packaging of code in network packets to create flows / QoS for different
      packet types. Most of this occurred at the edge of the network. Code was
      executed inside of Virtual Machines. Backbone network managers were not
@@ -45,14 +42,12 @@ The following are questions and answers from the Exam 2 Study Guide for Lesson
      systems and distributed state management.
 
 - What is the function of the control and data planes?
-
   - The control plane contains the logic that implements the forwarding behavior
     of routers such as routing protocols and network middlebox configurations.
   - The data plane performs the actual forwarding as dictated by the control
     plane.
 
 - Why separate the control from the data plane?
-
   - Independent evolution and development - prior to their separation, any
     changes to the control plane had to be met with upgrades to the hardware.
   - Control from high-level software programs - software computes the forwarding
@@ -62,7 +57,6 @@ The following are questions and answers from the Exam 2 Study Guide for Lesson
 
 - Why did the SDN lead to opportunities in various areas such as data centers,
   routing, enterprise networks, and research network?
-
   1. Data centers - SDN assists in the management of large data centers with
      thousands of servers and VMs.
   2. Routing - SDN has the capability to make routing decisions using multiple
@@ -75,7 +69,6 @@ The following are questions and answers from the Exam 2 Study Guide for Lesson
      production networks (they so easy to create and tear down).
 
 - What is the relationship between forwarding and routing?
-
   - In forwarding, the router inspects the packet coming in from a port,
     consults the routing table, and sends the packet to the output port dictated
     by the forwarding table. Forwarding is a function of the data plane.
@@ -85,14 +78,12 @@ The following are questions and answers from the Exam 2 Study Guide for Lesson
 
 - What is the difference between a traditional and SDN approach in terms of
   coupling of control and data plane?
-
   - In the traditional approach, the control and data planes are closely
     coupled. The router runs routing algorithms and generates the forwarding
     table . In the SDN approach, the remote controller computers and distributes
     forwarding tables. The controller is physically separated from the router.
 
 - What are the main components of SDN network and their responsibilities?
-
   - SND-controlled network elements - infrastructure layer, responsible for
     forwarding traffic using rules computed by the SDN control plane.
   - SDN controller - logically centralized entity that behaves as an interface
@@ -102,7 +93,6 @@ The following are questions and answers from the Exam 2 Study Guide for Lesson
     SDN controller.
 
 - What are the four defining features in an SDN architecture?
-
   - Flow-base forwarding - rules for packets can be computed based on any number
     of header field values in various layers (transport, network, link).
   - Separation of data and control planes
@@ -114,7 +104,6 @@ The following are questions and answers from the Exam 2 Study Guide for Lesson
     automation, analytics, etc.
 
 - What are the three layers of SDN controller?
-
   - Communication layer - comms between the controller and the network elements
   - Network-wide state-management layer - stores information about the network
     state

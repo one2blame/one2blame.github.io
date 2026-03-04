@@ -85,7 +85,6 @@ steps:
 
 - Assume any interesting behavior is expressible as a predicate **P** on a
   program state at a particular program point:
-
   - **Observation of behavior = observing P**
 
 - Instrument the program to observe each predicate

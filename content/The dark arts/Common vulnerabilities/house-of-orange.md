@@ -29,7 +29,6 @@ is executed in three stages:
 
 - Leverage a heap overflow vulnerability to overwrite the size field of the
   `top chunk`.
-
   - Overwrite the `top chunk` with a small size, fooling `malloc()` in future
     requests to believe that the `top chunk` is smaller than it actually is.
   - The new `top chunk` size must be page-aligned and the `prev_inuse` bit must
@@ -45,7 +44,6 @@ is executed in three stages:
 
 - Use the same heap overflow vulnerability and chunk to overwrite the newly
   freed `top chunk` that resides in the unsortedbin.
-
   - The attacker forges the metadata for a fake chunk, setting the chunk size to
     `0x61`, and setting the `bk` pointer to a chunk that overlaps `_IO_list_all`
     in `glibc` .

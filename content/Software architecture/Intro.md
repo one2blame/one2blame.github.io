@@ -8,7 +8,7 @@ title: Intro
 ---
 
 This section and its respective subpages cover my notes from reading various
-book about software architecture and design during my journey to better
+books about software architecture and design during my journey to better
 understand how to build complex, reliable, and durable systems.
 
 The literature I've read and reference throughout this journey are the

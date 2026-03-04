@@ -17,7 +17,6 @@ The following are questions and answers from the Exam 1 Study Guide for Lesson
 4:
 
 - Describe the relationships between ISPs, IXPs, and CDNs
-
   - ISPs (Internet Service Providers) are the “backbone” network over which
     smaller networks can connect. IXPs (Internet Exchange Points) are physical
     interconnection infrastructures that are used by multiple networks (such as
@@ -29,27 +28,23 @@ The following are questions and answers from the Exam 1 Study Guide for Lesson
     multiple data centers with hundreds of servers distributed across the world.
 
 - What is an AS?
-
   - Autonomous System (AS) - a group of routers that operate under the same
     administrative authority. An ISP (or CDN) can operate as a single AS or
     multiple. Each AS has its own set of policies/strategies based on their
     needs and doesn’t need to share this info with other ASes.
 
 - What kind of relationship does AS have with other parties?
-
   - Competition and cooperation. T1 ISPs compete with each other, T2 with each
     other, etc - there is a hierarchy but this hierarchy is becoming more flat
     over time thanks to evolutions such as IXPs and CDNs. Competing ISPs also
     need to cooperate so that the Internet can work on a global scale.
 
 - What is BGP?
-
   - For traffic to go between ASes, BGP (Border Gateway Protocol) is used which
     is primarily based on incentives (money) - ASes do whatever makes the most
     sense for them from a financial standpoint.
 
 - How does an AS determine what rules to import/export?
-
   - It's entirely a business decision for both importing and exporting routes.
     ASes are incentivized to advertise customer routes, peer routes none, and
     provider routes none. For importing routes from other ASes, ASes are
@@ -57,7 +52,6 @@ The following are questions and answers from the Exam 1 Study Guide for Lesson
     routes none.
 
 - What are were original the design goals of BGP? What was considered later?
-
   - The original design goals were:
 
         * Scalability - quick convergence and loop-free pathing
@@ -73,14 +67,12 @@ The following are questions and answers from the Exam 1 Study Guide for Lesson
     complexity.
 
 - What are the basics of BGP?
-
   - A pair of routers, **BGP peers**, exchange routing info over a
     semi-permanent TCP port connection **(BGP session)**. This starts with an
     OPEN message and is followed by the routers sending each other announcements
     from their own routing tables.
 
   - There are two types of **BGP messages**:
-
     - **UPDATE** - announcements of new routes/updates to existing routes;
       withdrawal of previous routes due to a failure or change in routing policy
     - **KEEPALIVE** - message exchanged to keep a current session going
@@ -91,13 +83,11 @@ The following are questions and answers from the Exam 1 Study Guide for Lesson
     the nearest border router.
 
 - What is the difference between iBGP and eBGP?
-
   - **eBGP** - external BGP; BGP session between pair of routers in two
     different ASes
   - **iBGP** - internal BGP; BGP session between routers in the same AS
 
 - What is the difference between iBGP and IGP-like protocols (RIP or OSPF)?
-
   - iBGP is used to propagate information about what ASes can be reached by the
     gateway routers in the current AS. IGP-like protocols are used to establish
     paths between the internal routers of an AS based on specific costs within
@@ -105,7 +95,6 @@ The following are questions and answers from the Exam 1 Study Guide for Lesson
 
 - How does a router use the BGP decision process to choose which routes to
   import?
-
   - The actual policies are based on the business goals of the AS, but they all
     follow the same process to select the best routes based on the policy in
     place. The router compares a list of attributes, between a pair of routes,
@@ -123,7 +112,6 @@ The following are questions and answers from the Exam 1 Study Guide for Lesson
   - LocalPref = outbound; MED = inbound
 
 - What are 2 main challenges with BGP? Why?
-
   - Scalability and misconfigurations or faults. An error can result in an
     excessively large number of updates which can lead to route instability,
     overloading, outages, etc.
@@ -134,13 +122,11 @@ The following are questions and answers from the Exam 1 Study Guide for Lesson
     specific strategy).
 
 - What is an IXP?
-
   - **Internet Exchange Points** - physical infrastructures that provide the
     means for ASes to interconnect and directly exchange traffic with one
     another.
 
 - What are four reasons for IXPs increased popularity?
-
   1. They can handle large traffic volumes comparable to T1 ISPs
   2. Play an important role in mitigating DDoS attacks as they can play the role
      of a “shield” such as with BGP blackholing
@@ -149,12 +135,10 @@ The following are questions and answers from the Exam 1 Study Guide for Lesson
   4. Active marketplaces with many services beyond interconnection - they have
      been evolving from simple interconnection hubs to technology innovation
      hubs
-
   - Keeps traffic local when both on the same IXP, lower costs, incentives from
     big players.
 
 - Which services do IXPs provide?
-
   1. Public peering
   2. Private peering (separate from public)
   3. Route servers and service level agreements (many participants on a network
@@ -167,7 +151,6 @@ The following are questions and answers from the Exam 1 Study Guide for Lesson
      servers, etc.
 
 - How does a route server work?
-
   - Route servers help to make peering more manageable. In summary, a Route
     Server (RS):
 
